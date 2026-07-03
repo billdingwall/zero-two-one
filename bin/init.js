@@ -24,7 +24,6 @@ const dirsToCopy = [
 const filesToCopy = [
   'CLAUDE.md',
   'README.md',
-  'MEMORY.md',
   'AI_CODING_GUIDELINES.md',
   'LIFECYCLE_WORKFLOW.md'
 ];
@@ -72,5 +71,5 @@ filesToCopy.forEach(file => {
 console.log('✅ Framework initialized successfully!');
 console.log('\nNext Steps:');
 console.log('1. Review README.md');
-console.log('2. Check MEMORY.md for current phase');
+console.log('2. Ensure Claude Code is configured to use memory');
 console.log('3. Fill in templates in requirements/');

@@ -10,7 +10,7 @@ This repository provides a framework for project-level documentation, refinement
 
 To begin:
 1. Initialize your AI assistant and prompt it to help you fill in the key documents located in the `requirements/` folder (e.g., `01-PRD.md`, `02-TDD.md`).
-2. See **`MEMORY.md`** for the 4-phase project lifecycle and to track the current active phase. Update it along with `CLAUDE.md` and this `README.md` with your specific project details.
+2. Utilize Claude Code's memory to track the current active phase of the 4-phase project lifecycle. Update `CLAUDE.md` and this `README.md` with your specific project details.
 
 ## TODOs
 - [ ] Fill out key documents in `requirements/`

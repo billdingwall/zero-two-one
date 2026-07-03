@@ -5,7 +5,7 @@ This document outlines the coding standards, behavior constraints, and generatio
 ## 1. Core Principles
 * **Spec-Driven First:** Do not write code until a clear specification (`specs/NNN-feature-name/`) exists and is approved.
 * **Lean & Local-First:** Prefer lightweight, flat-file architectures (Markdown, JSON) or local databases (SQLite) over complex distributed systems, especially in Phase 1-3.
-* **Read Before Writing:** Always read `MEMORY.md` and `CLAUDE.md` at the start of a session. Always verify file contents using read-only tools before making modifications.
+* **Context is Key:** Always consult your memory and read `CLAUDE.md` at the start of a session to understand the current phase. Always verify file contents using read-only tools before making modifications.
 
 ## 2. Code Generation Rules
 * **Modularity:** Keep functions small and single-purpose.
