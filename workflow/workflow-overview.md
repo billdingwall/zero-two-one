@@ -19,7 +19,7 @@ The project-level docs live on `main` and evolve through prototype review rounds
 
 ```
 open-finance/
-├── docs/
+├── requirements/
 │   ├── product-requirements.md    # What & why — modules, user scenarios, data model, IA
 │   ├── technical-design.md        # How & where — architecture, CSV specs, service design
 │   ├── product-roadmap.md         # When — phased plan with milestone gates
@@ -41,14 +41,14 @@ open-finance/
 
 | Document | Role |
 |---|---|
-| `docs/product-requirements.md` | What & why: primary product direction — modules, user scenarios, data model, IA. Changelog at bottom. |
-| `docs/technical-design.md` | How & where: architecture decisions, UX decisions, interface design, all 24 CSV specs, service responsibilities, validation rules. Locked-decision record in §21. |
-| `docs/product-roadmap.md` | When: phased plan with Product/Design/Dev tasks and milestone gates. |
-| `docs/project-management.md` | Tasks: consolidated decisions and doc fixes remaining before the Phase 1 build. |
-| `docs/_refinement/r{n}-review.md` | Raw feedback from the team (or a short user-direction note) with links to design assets and notes. |
-| `docs/_refinement/r{n}-update-{doc}.md` | Formatted doc update plan synthesized from a round (e.g. `r4-update-product-requirements.md`, `r4-update-technical-design.md`). |
-| `docs/_design/*` | Design mocks, icons, images, design system. |
-| `docs/_notes/*` | Loose notes and domain research for team reference (e.g. `account-types.md`, `deduction-types.md`). |
+| `requirements/01-PRD.md` | What & why: primary product direction — modules, user scenarios, data model, IA. Changelog at bottom. |
+| `requirements/02-TDD.md` | How & where: architecture decisions, UX decisions, interface design, all 24 CSV specs, service responsibilities, validation rules. Locked-decision record in §21. |
+| `requirements/03-ROADMAP.md` | When: phased plan with Product/Design/Dev tasks and milestone gates. |
+| `requirements/04-PROJECT-TRACKING.md` | Tasks: consolidated decisions and doc fixes remaining before the Phase 1 build. |
+| `requirements/_refinement/r{n}-review.md` | Raw feedback from the team (or a short user-direction note) with links to design assets and notes. |
+| `requirements/_refinement/r{n}-update-{doc}.md` | Formatted doc update plan synthesized from a round (e.g. `r4-update-product-requirements.md`, `r4-update-technical-design.md`). |
+| `requirements/_design/*` | Design mocks, icons, images, design system. |
+| `requirements/_notes/*` | Loose notes and domain research for team reference (e.g. `account-types.md`, `deduction-types.md`). |
 | `prototype/*` | Static prototype used to review and refine the app experience before implementing changes. |
 | `.specify/memory/constitution.md` | Non-negotiable governing principles informed by the project-level docs. All spec documents must conform to it. |
 
@@ -74,13 +74,13 @@ This governs the core design documents that define the entire product. They can 
 ```
 User needs
 ↓
-docs/product-requirements.md
+requirements/01-PRD.md
 ↓
-docs/technical-design.md
+requirements/02-TDD.md
 ↓
-docs/product-roadmap.md
+requirements/03-ROADMAP.md
 ↓
-docs/_design/* → prototype/*
+requirements/_design/* → prototype/*
 ↓
 specs/*
 ↓
@@ -92,29 +92,29 @@ OpenFinance app
 ```
 Prototype review & UX design
 ↓
-docs/_refinement/r{n}-review.md
+requirements/_refinement/r{n}-review.md
 ↓
-docs/_refinement/r{n}-update-{doc}.md
+requirements/_refinement/r{n}-update-{doc}.md
 ↓
-docs/product-requirements.md      (+ Changelog entry)
+requirements/01-PRD.md      (+ Changelog entry)
 ↓
-docs/technical-design.md          (+ Changelog entry)
+requirements/02-TDD.md          (+ Changelog entry)
 ↓
-docs/product-roadmap.md
+requirements/03-ROADMAP.md
 ↓
-docs/_design/* → prototype/*
+requirements/_design/* → prototype/*
 ↓
 Start next round of prototype review
 ```
 
 Step by step:
 
-1. **Review** — add `docs/_refinement/r{n}-review.md` with UX and functionality notes (for a prototype round) or a short direction note (for a user-direction round). `{n}` is the next global round number.
-2. **Domain research** — add named kebab-case research docs to `docs/_notes/` as questions arise.
-3. **Update plan** — synthesize review and research into `docs/_refinement/r{n}-update-{doc}.md` per affected document, with a section-by-section change list. Mark the plan `Applied` with a date once executed.
-4. **Apply updates** — edit `docs/product-requirements.md` first, then cascade to `docs/technical-design.md` and `docs/product-roadmap.md`, each with its own Changelog entry.
+1. **Review** — add `requirements/_refinement/r{n}-review.md` with UX and functionality notes (for a prototype round) or a short direction note (for a user-direction round). `{n}` is the next global round number.
+2. **Domain research** — add named kebab-case research docs to `requirements/_notes/` as questions arise.
+3. **Update plan** — synthesize review and research into `requirements/_refinement/r{n}-update-{doc}.md` per affected document, with a section-by-section change list. Mark the plan `Applied` with a date once executed.
+4. **Apply updates** — edit `requirements/01-PRD.md` first, then cascade to `requirements/02-TDD.md` and `requirements/03-ROADMAP.md`, each with its own Changelog entry.
 5. **Constitution check** — if principles changed, amend `.specify/memory/constitution.md` with a version bump and Sync Impact Report update.
-6. **Design & prototype** — update `docs/_design/` assets and `prototype/` to reflect the changes, then start the next review round.
+6. **Design & prototype** — update `requirements/_design/` assets and `prototype/` to reflect the changes, then start the next review round.
 7. **Commit** — all affected docs together in a single commit.
 
 ### Project-level → feature-level handoff
@@ -209,11 +209,11 @@ The 14 skills themselves live in `.claude/skills/` as Claude-executable skill fi
 ```
 .specify/memory/constitution.md   governs everything
        ↓
-docs/product-requirements.md      defines what gets built
+requirements/01-PRD.md      defines what gets built
        ↓
-docs/technical-design.md          defines how it gets built
+requirements/02-TDD.md          defines how it gets built
        ↓
-docs/product-roadmap.md           sequences when it gets built
+requirements/03-ROADMAP.md           sequences when it gets built
        ↓
 specs/NNN-feature-name/           operationalizes individual features
 ```
@@ -234,5 +234,5 @@ A feature branch contains only the Spec Kit artifacts for that feature. The proj
   changelogs and refinement files line up. Round 4 (2026-06-12, second prototype review:
   screen consolidation) — applied to the PRD, technical design, roadmap, and prototype on
   2026-06-12.
-- **Architectural decisions**: all Phase 1 decisions locked 2026-06-10; record in `docs/technical-design.md §21`. Remaining pre-build items tracked in `docs/project-management.md`.
+- **Architectural decisions**: all Phase 1 decisions locked 2026-06-10; record in `requirements/02-TDD.md §21`. Remaining pre-build items tracked in `requirements/04-PROJECT-TRACKING.md`.
 - **Features completed**: `001-prototype-prd-alignment` (prototype brought into alignment with the post-Round-1 PRD).

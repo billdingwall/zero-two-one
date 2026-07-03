@@ -13,7 +13,7 @@ This document tracks the active state of the project and should be updated by th
 
 ## Current Phase: 1. Planning
 
-* **Next Steps**: Fill out `docs/product-requirements.md` and define the project direction.
+* **Next Steps**: Fill out `requirements/01-PRD.md` and define the project direction.
 * **Recent Decisions**: Initial repository scaffolding created.
 * **Blockers**: None.
 
