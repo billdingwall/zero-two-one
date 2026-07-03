@@ -18,12 +18,12 @@ The project-level docs live on `main` and evolve through prototype review rounds
 ## 1. Repository Structure
 
 ```
-open-finance/
+zero-two-one/
 ├── requirements/
-│   ├── product-requirements.md    # What & why — modules, user scenarios, data model, IA
-│   ├── technical-design.md        # How & where — architecture, CSV specs, service design
-│   ├── product-roadmap.md         # When — phased plan with milestone gates
-│   ├── project-management.md      # Tasks — remaining work before the Phase 1 build
+│   ├── 01-PRD.md                  # What & why — modules, user scenarios, data model, IA
+│   ├── 02-TDD.md                  # How & where — architecture, specs, service design
+│   ├── 03-ROADMAP.md              # When — phased plan with milestone gates
+│   ├── 04-PROJECT-TRACKING.md     # Tasks — remaining work before the Phase 1 build
 │   ├── _refinement/               # Review rounds and doc update plans
 │   │   ├── r{n}-review.md         # Raw feedback (or user-direction note) per round
 │   │   └── r{n}-update-{doc}.md   # Formatted update plan per target doc per round
@@ -31,9 +31,9 @@ open-finance/
 │   └── _notes/                    # Loose notes and domain research (kebab-case names)
 ├── prototype/                     # Static HTML/CSS/JS prototype for design review
 ├── specs/                         # Feature-level Spec Kit artifacts (NNN-feature-name)
-├── .specify/                      # Spec Kit workflow engine, templates, constitution
-├── .claude/skills/                # The 14 Spec Kit skills as Claude-executable files
-├── CLAUDE.md                      # AI assistant context — bridge between both workflows
+├── templates/                     # Templates for project documentation
+├── skills/                        # AI Prompts/Skills
+├── CLAUDE.md                      # AI assistant context
 └── README.md
 ```
 
@@ -50,7 +50,6 @@ open-finance/
 | `requirements/_design/*` | Design mocks, icons, images, design system. |
 | `requirements/_notes/*` | Loose notes and domain research for team reference (e.g. `account-types.md`, `deduction-types.md`). |
 | `prototype/*` | Static prototype used to review and refine the app experience before implementing changes. |
-| `.specify/memory/constitution.md` | Non-negotiable governing principles informed by the project-level docs. All spec documents must conform to it. |
 
 ### Naming conventions
 
@@ -84,7 +83,7 @@ requirements/_design/* → prototype/*
 ↓
 specs/*
 ↓
-OpenFinance app
+Product MVP
 ```
 
 ### Product refinement loop
@@ -113,16 +112,16 @@ Step by step:
 2. **Domain research** — add named kebab-case research docs to `requirements/_notes/` as questions arise.
 3. **Update plan** — synthesize review and research into `requirements/_refinement/r{n}-update-{doc}.md` per affected document, with a section-by-section change list. Mark the plan `Applied` with a date once executed.
 4. **Apply updates** — edit `requirements/01-PRD.md` first, then cascade to `requirements/02-TDD.md` and `requirements/03-ROADMAP.md`, each with its own Changelog entry.
-5. **Constitution check** — if principles changed, amend `.specify/memory/constitution.md` with a version bump and Sync Impact Report update.
+5. **Constraint check** — if principles changed, amend `AI_CODING_GUIDELINES.md`.
 6. **Design & prototype** — update `requirements/_design/` assets and `prototype/` to reflect the changes, then start the next review round.
 7. **Commit** — all affected docs together in a single commit.
 
 ### Project-level → feature-level handoff
 
 ```
-product requirements → constitution.md
+product requirements → AI constraints
 ↓
-technical design → constitution.md
+technical design → AI constraints
 ↓
 roadmap → phases of feature development
 ↓
@@ -130,7 +129,7 @@ specs → feature requirements
 ↓
 feature delivery ← prototype ← design
 ↓
-OpenFinance app
+Product MVP
 ```
 
 ---
@@ -162,14 +161,14 @@ Git automation commands (`/speckit-git-feature`, `/speckit-git-commit`, `/specki
 
 ### Artifact set (full run)
 
-The one completed feature — `specs/001-prototype-prd-alignment/` — shows what a full run produces:
+A completed feature in `specs/NNN-feature-name/` shows what a full run produces:
 
 ```
-specs/001-prototype-prd-alignment/
+specs/001-feature-name/
   spec.md          ← what & why (user stories, requirements, success criteria)
   research.md      ← unknowns resolved, decisions documented
   data-model.md    ← entities, fields, validation rules
-  plan.md          ← phases, constitution check, technical context
+  plan.md          ← phases, constraint check, technical context
   contracts/
     nav-structure.md
   quickstart.md
@@ -187,27 +186,16 @@ specs/001-prototype-prd-alignment/
 | Constitution Check | Runs before Phase 0 research and again after Phase 1 design |
 | Violation justification | Any constitution violation must be documented in the Complexity Tracking table with explicit rationale |
 
-### Workflow engine (`.specify/`)
+### Workflow engine
 
-| Path | Purpose |
-|---|---|
-| `templates/` | Canonical templates for spec, plan, tasks, constitution, and checklist. Claude fills these in during each command. |
-| `memory/constitution.md` | The governance document. Every plan runs a Constitution Check against it. |
-| `extensions/git/` | Git automation: branch creation scripts, auto-commit hooks, naming conventions. |
-| `extensions.yml` | Lifecycle hooks wiring git operations to each Spec Kit command phase. |
-| `feature.json` | Pointer to the currently active feature directory. |
-| `init-options.json` | Configuration: Claude integration, sequential branch numbering, `CLAUDE.md` as context file. |
-| `workflows/speckit/workflow.yml` | Full SDD cycle definition (specify → plan → tasks → implement with review gates). |
-| `integrations/claude.manifest.json` | Manifest of all 14 installed Claude skills with versions and hashes. |
-
-The 14 skills themselves live in `.claude/skills/` as Claude-executable skill files. Each reads the templates, runs quality checks, and writes artifacts to the active feature directory.
+The templates and skills are provided in `templates/` and `skills/` respectively.
 
 ---
 
 ## 4. The Dependency Chain
 
 ```
-.specify/memory/constitution.md   governs everything
+AI_CODING_GUIDELINES.md   governs everything
        ↓
 requirements/01-PRD.md      defines what gets built
        ↓
@@ -222,17 +210,3 @@ A feature branch contains only the Spec Kit artifacts for that feature. The proj
 
 `CLAUDE.md` is the bridge between the two workflows. It tells Claude which documents to read before making changes, what the architecture constraints are, what is in and out of scope for V1, and the step-by-step doc update workflow.
 
----
-
-## 5. Current Status
-
-- **Phase**: pre-build. No Swift source exists; the Xcode project is created in Phase 1 of the roadmap.
-- **Refinement rounds**: Round 1 (2026-06-08, prototype review) — applied. Round 2 (2026-06-09,
-  user direction: multi-cloud + file formats) — applied. Round 3 (2026-06-10, user direction:
-  sidebar refinement + Phase 1 decision lock) — applied. Rounds 2–3 were originally applied
-  directly to the docs and were documented retroactively in `_refinement/` on 2026-06-12 so the
-  changelogs and refinement files line up. Round 4 (2026-06-12, second prototype review:
-  screen consolidation) — applied to the PRD, technical design, roadmap, and prototype on
-  2026-06-12.
-- **Architectural decisions**: all Phase 1 decisions locked 2026-06-10; record in `requirements/02-TDD.md §21`. Remaining pre-build items tracked in `requirements/04-PROJECT-TRACKING.md`.
-- **Features completed**: `001-prototype-prd-alignment` (prototype brought into alignment with the post-Round-1 PRD).

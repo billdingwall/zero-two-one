@@ -1,0 +1,24 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Welcome to Zero Two One. This project is designed to standup brand new projects starting at point 0 and taking them to point 1 (MVP) and helping them grow and stabilize from there.",
+  "main": "index.js",
+  "bin": {
+    "zero-two-one-init": "bin/init.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billdingwall/zero-two-one.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/billdingwall/zero-two-one/issues"
+  },
+  "homepage": "https://github.com/billdingwall/zero-two-one#readme"
+}
