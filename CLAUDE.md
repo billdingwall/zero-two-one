@@ -5,7 +5,9 @@ This repository is built as a Zero Two One Agentic Starter Template using a phas
 ## 4-Phase Project Lifecycle
 
 This project follows four distinct phases. Your goal as an AI assistant is to help the user navigate these phases by referencing the key documents. 
-Current phase and next steps are traxked in the MEMORY.md
+Current phase and next steps are tracked in the MEMORY.md
+Always check ⁠MEMORY.md⁠ at the start of a session to determine the current active phase. Do not begin work until you have read the current state.
+
 
 1. **Planning**: Define the product vision, fill in key docs, and initialize the guiding files (`CLAUDE.md`, `MEMORY.md`, `README.md`).
 2. **Pre-build (Refinement)**: Install Github Speckit. Establish a `DESIGN.md` file and build a static prototype using the first spec. Enter a refinement loop (review -> synthesize -> update docs & prototype) until the project reaches the desired fidelity.
