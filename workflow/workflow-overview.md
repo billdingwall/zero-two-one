@@ -1,6 +1,8 @@
 # Repository Workflow Overview
 
 > Updated: 2026-06-11. Reflects the repository after the workflow cleanup on branch `repo-workflows-update`. The pre-cleanup proposal this replaces is archived as `workflow-overview-v1.md`.
+>
+> **Note:** the expanded, canonical process documentation now lives in [`workflows.md`](workflows.md), which details Discovery, Design, Refinement, Speckit Implementation, QA, and Release — including agent/automation touchpoints and the enforced refinement gate. This file remains as the concise structural overview.
 
 ---
 

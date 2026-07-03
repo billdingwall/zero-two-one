@@ -1,19 +1,35 @@
 {
-  "name": "app",
-  "version": "1.0.0",
-  "description": "Welcome to Zero Two One. This project is designed to standup brand new projects starting at point 0 and taking them to point 1 (MVP) and helping them grow and stabilize from there.",
+  "name": "zero-two-one",
+  "version": "1.1.0",
+  "description": "Zero Two One — an agentic product framework that takes new products from point 0 (idea) to point 1 (MVP) via project-level refinement loops and Spec Kit-driven feature delivery.",
   "main": "index.js",
   "bin": {
     "zero-two-one-init": "bin/init.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "status": "node scripts/workflow-status.js",
+    "qa": "sh scripts/run-qa.sh",
+    "spec:status": "node scripts/speckit/spec-status.js",
+    "spec:context": "node scripts/speckit/fetch-speckit-context.js",
+    "spec:verify": "node scripts/speckit/verify-spec-compliance.js",
+    "tokens:sync": "node scripts/design/sync-design-tokens.js",
+    "test": "node scripts/speckit/spec-status.js list && node scripts/workflow-status.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/billdingwall/zero-two-one.git"
   },
-  "keywords": [],
+  "keywords": [
+    "spec-driven-development",
+    "speckit",
+    "ai-agents",
+    "product-framework",
+    "design-tokens",
+    "lifecycle"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
