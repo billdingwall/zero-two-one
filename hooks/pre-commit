@@ -1,0 +1,32 @@
+#!/bin/sh
+# pre-commit hook
+# Validates code changes against defined PRDs and Specs to ensure alignment.
+
+echo "Running Zero-Two-One pre-commit validation..."
+
+# 1. Ensure any changes in the specs/ directory are accompanied by updates in requirements/ if necessary,
+# or simply warn the user.
+git diff --cached --name-only | grep -E '^specs/.*\.md$' > /dev/null
+if [ $? -eq 0 ]; then
+    echo "Notice: Changes detected in 'specs/'. Ensure these align with the core PRD in 'requirements/01-PRD.md'."
+fi
+
+# 2. Check if an AI agent should review compliance.
+# This assumes the consumer has configured a CLI AI tool (like 'claude') to run the compliance check skill.
+# Here we provide a lightweight warning, but an advanced setup could block the commit:
+if [ -f "AI_CODING_GUIDELINES.md" ]; then
+    echo "Reminder: Did you ensure your code aligns with 'AI_CODING_GUIDELINES.md'?"
+    # Uncomment the next line if you have an automated CLI compliance checker:
+    # claude "Review my staged changes against AI_CODING_GUIDELINES.md" || exit 1
+fi
+
+# 3. Prevent direct commits to main/master without going through a feature branch (Spec-Driven Development)
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+    echo "Warning: You are committing directly to $branch."
+    echo "Spec-Driven Development dictates that features should be developed on 'feature/NNN-name' branches."
+    # exit 1 # uncomment to enforce
+fi
+
+echo "Pre-commit validation passed."
+exit 0

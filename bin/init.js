@@ -17,7 +17,9 @@ const dirsToCopy = [
   'specs',
   'templates',
   'workflow',
-  '.github'
+  '.github',
+  'scripts',
+  'hooks'
 ];
 
 // Files to copy
@@ -67,6 +69,14 @@ filesToCopy.forEach(file => {
     fs.copyFileSync(src, dest);
   }
 });
+
+// Setup Git Hooks
+const hooksDir = path.join(targetDir, '.git', 'hooks');
+if (fs.existsSync(hooksDir) && fs.existsSync(path.join(targetDir, 'hooks', 'pre-commit'))) {
+  console.log('Setting up Git hooks...');
+  fs.copyFileSync(path.join(targetDir, 'hooks', 'pre-commit'), path.join(hooksDir, 'pre-commit'));
+  execSync(`chmod +x ${path.join(hooksDir, 'pre-commit')}`);
+}
 
 console.log('✅ Framework initialized successfully!');
 console.log('\nNext Steps:');
