@@ -2,6 +2,8 @@
 
 This document tracks the active state of the project and should be updated by the AI assistant as we progress through the lifecycle phases.
 
+Always check ⁠MEMORY.md⁠ at the start of a session to determine the current active phase. Do not begin work until you have read the current state.
+
 ## The 4-Phase Lifecycle
 
 1. **Planning**: Define the product vision, fill in key docs, and initialize the guiding files (`CLAUDE.md`, `MEMORY.md`, `README.md`).
