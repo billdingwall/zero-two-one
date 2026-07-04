@@ -1,0 +1,4 @@
+# zero-two-one: generated AI context bundles (rebuild with `npm run spec:context`)
+.ai/context/*
+!.ai/context/.gitkeep
+node_modules/

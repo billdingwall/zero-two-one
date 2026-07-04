@@ -1,0 +1,68 @@
+{
+  "$comment": "Zero Two One agent tool definitions. Schemas follow the Anthropic tool-use input_schema format so they can be registered directly with an agent runtime. The non-standard `x_command` field maps each tool to its local CLI implementation for harnesses that execute tools via shell (substitute {placeholders} with the input values).",
+  "tools": [
+    {
+      "name": "fetch_speckit_context",
+      "description": "Retrieve the current feature's Spec Kit requirements and inject them into the agent's context. Reads specs/NNN-feature-name/ (spec, plan, research, data model, contracts, tasks, checklists) and generates .ai/context/NNN-feature-name.md (a single AI-readable markdown bundle) plus .ai/context/NNN-feature-name.json (structured: status, gate state, acceptance criteria, entities, task progress). Call this BEFORE starting any implementation work on a feature, and re-call after spec artifacts change. When 'spec' is omitted, the feature is derived from the current NNN-feature-name git branch.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "spec": {
+            "type": "string",
+            "description": "Spec identifier: a number ('1', '001'), a full directory name ('001-user-onboarding'), or a name prefix. Omit to derive from the current feature branch."
+          },
+          "format": {
+            "type": "string",
+            "enum": ["both", "markdown", "json"],
+            "description": "Which artifacts to generate. Default 'both'."
+          }
+        },
+        "required": []
+      },
+      "x_command": "node scripts/speckit/fetch-speckit-context.js {spec}"
+    },
+    {
+      "name": "verify_spec_compliance",
+      "description": "Validate that a feature's Spec Kit artifact set is complete, unambiguous, and cleared for implementation, and that generated work still adheres to the downloaded spec definitions. Checks: spec resolves for the branch; spec.md declares a lifecycle status; status passes the implementation gate (Approved | Ready for Dev | In Progress | Done); plan.md/tasks.md exist; no unresolved [NEEDS CLARIFICATION] markers; a 'Done' spec has no unchecked tasks; the .ai/context bundle is fresh. Returns findings with PASS/WARN/FAIL levels; exit code 1 on any FAIL. Run after generating components or logic, and before marking a spec Done.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "spec": {
+            "type": "string",
+            "description": "Spec identifier (number, directory name, or prefix). Omit to derive from the current feature branch."
+          },
+          "gate_only": {
+            "type": "boolean",
+            "description": "Run only the fast gate checks (spec exists + status passes). Default false — full compliance audit."
+          },
+          "json": {
+            "type": "boolean",
+            "description": "Emit machine-readable JSON findings instead of the human report. Default true for agent use."
+          }
+        },
+        "required": []
+      },
+      "x_command": "node scripts/speckit/verify-spec-compliance.js {spec} --json"
+    },
+    {
+      "name": "set_spec_status",
+      "description": "Advance a feature spec through its lifecycle (Draft → In Review → Approved → Ready for Dev → In Progress → Done) by updating the status declared in specs/NNN-feature-name/spec.md. This status is the single source of truth for the pre-commit refinement gate. Only set 'Approved' or 'Ready for Dev' when the user (or a recorded review round) has explicitly signed off on the spec.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "spec": {
+            "type": "string",
+            "description": "Spec identifier (number, directory name, or prefix)."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Draft", "In Review", "Approved", "Ready for Dev", "In Progress", "Done"],
+            "description": "The new lifecycle status."
+          }
+        },
+        "required": ["spec", "status"]
+      },
+      "x_command": "node scripts/speckit/spec-status.js set {spec} {status}"
+    }
+  ]
+}
