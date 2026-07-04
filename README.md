@@ -4,6 +4,12 @@
 
 Zero Two One is the foundational operating system for a product repository. It gives founders and product teams a structured starting point: living requirements documents, a project-level refinement loop, and feature delivery through [GitHub Spec Kit](https://github.com/github/spec-kit) — all wired for AI-agent execution with human decision gates.
 
+This README serves as the high-level entry point into the product documentation ecosystem, which branches into key core documents:
+- **[PRD (What & Why)](requirements/01-PRD.md)**: Product Requirements Document focusing on business logic and feature goals.
+- **[TDD (How - Technical)](requirements/02-TDD.md)**: Technical Design Document focusing on system architecture.
+- **[EDD (How - Experience)](requirements/EDD.md)**: Experience Design Document focusing on overall UX strategy and interaction architecture.
+- **[DESIGN.md (Design Tokens)](DESIGN.md)**: A machine-readable guiding document located in the root, defining the design tokens, color palettes, and typography for UI consistency.
+
 ## How it works
 
 The framework runs a **4-phase lifecycle** driven by two connected workflows:

@@ -132,15 +132,19 @@ requirements/_notes/*.md                          ← domain research as questio
 ↓
 requirements/_refinement/r{n}-update-{doc}.md     ← synthesized change plan per affected doc
 ↓
-requirements/01-PRD.md   (+ Changelog entry)      ← applied first
+requirements/01-PRD.md   (+ Changelog entry)      ← business logic applied first
 ↓
-requirements/02-TDD.md   (+ Changelog entry)      ← cascaded second
+requirements/EDD.md      (+ Changelog entry)      ← UX strategy updated based on PRD
 ↓
-requirements/03-ROADMAP.md                        ← re-sequenced third
+requirements/02-TDD.md   (+ Changelog entry)      ← technical architecture updated based on PRD + EDD
+↓
+requirements/03-ROADMAP.md                        ← re-sequenced based on PRD + EDD + TDD
+↓
+requirements/04-PROJECT-TRACKING.md               ← updated based on PRD + EDD + TDD + Roadmap
 ↓
 AI_CODING_GUIDELINES.md                           ← amended only if principles changed
 ↓
-requirements/_design/* → prototype/*              ← design & prototype updated
+DESIGN.md / prototype/*                           ← design tokens & prototype updated
 ↓
 next round
 ```
@@ -150,9 +154,14 @@ next round
 1. **Review** — create `r{n}-review.md` with the round's raw feedback (`templates/05-REVIEW-Template.md`). `{n}` is the next global round number.
 2. **Research** — capture domain answers in `requirements/_notes/`.
 3. **Synthesize** — the agent drafts `r{n}-update-{doc}.md` per affected document with a section-by-section change list. The human approves the plan **before** any document is edited.
-4. **Apply** — edit PRD → TDD → Roadmap in that order, each with its own changelog entry referencing round `r{n}`. Mark each update plan `Applied` with a date.
+4. **Apply & Cascade** — Apply updates in the exact dependency order, logging each in its respective changelog referencing round `r{n}`:
+   - **PRD > EDD:** Update the PRD, then update the EDD to support the new business logic.
+   - **PRD + EDD > TDD:** Update the TDD to architecturally support the new features and UX.
+   - **Alignment Checks:** Perform bidirectional checks (`PRD <> TDD` and `PRD <> EDD`) to ensure no contradictory constraints were introduced.
+   - **PRD + EDD + TDD > Roadmap:** Re-sequence the Roadmap based on the fully aligned requirements.
+   - **PRD + EDD + TDD + Roadmap > Project Tracking:** Update the project backlog and tracking documents.
 5. **Constraint check** — if principles changed, amend `AI_CODING_GUIDELINES.md`.
-6. **Design & prototype** — update assets and prototype to reflect the applied changes.
+6. **Design & prototype** — update `DESIGN.md` tokens, assets, and prototype to reflect the applied changes.
 7. **Commit** — all affected docs together in a single commit (`hooks/pre-commit` reminds when `specs/` changes may need requirement alignment).
 
 ### Why the loop is shaped this way
