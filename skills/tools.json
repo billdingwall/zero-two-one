@@ -45,29 +45,6 @@
       "x_command": "node scripts/speckit/verify-spec-compliance.js {spec} --json"
     },
     {
-      "name": "sync_design_tokens",
-      "description": "Ingest a Figma design-token export (W3C Design Tokens JSON or a flat name→value map) and synchronize it into the codebase's token architecture: requirements/_design/tokens/tokens.json (source of truth) and tokens.css (generated :root custom properties). Existing token names are preserved as the design system's public API — values update in place, new tokens are added, and tokens absent from the import are reported as orphaned but kept unless prune is set. Use dry_run first to review the diff, then apply. Run whenever a designer reports Figma updates, or during Phase 2 (Pre-build) prototype styling.",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "input_file": {
-            "type": "string",
-            "description": "Path to the Figma token export JSON file."
-          },
-          "dry_run": {
-            "type": "boolean",
-            "description": "Report the add/change/orphan diff without writing files. Default false."
-          },
-          "prune": {
-            "type": "boolean",
-            "description": "Remove tokens that are absent from the import. Destructive — confirm with the user first. Default false."
-          }
-        },
-        "required": ["input_file"]
-      },
-      "x_command": "node scripts/design/sync-design-tokens.js --input {input_file}"
-    },
-    {
       "name": "set_spec_status",
       "description": "Advance a feature spec through its lifecycle (Draft → In Review → Approved → Ready for Dev → In Progress → Done) by updating the status declared in specs/NNN-feature-name/spec.md. This status is the single source of truth for the pre-commit refinement gate. Only set 'Approved' or 'Ready for Dev' when the user (or a recorded review round) has explicitly signed off on the spec.",
       "input_schema": {

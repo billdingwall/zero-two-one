@@ -13,6 +13,6 @@ Run after generating or modifying implementation code (Phase 3/4), before commit
    - Every `acceptanceCriteria` entry maps to observable behavior in the code (and ideally a test).
    - Component props/fields match the entities and validation rules in `data-model.md`.
    - Interfaces match `contracts/` exactly — names, shapes, and error cases.
-   - Styling references design tokens (`var(--...)` from `requirements/_design/tokens/tokens.css`), never hard-coded values.
+   - Styling follows the design system defined in `requirements/_design/` — no ad-hoc values that conflict with it.
 4. **Update task state:** Check off completed items in `tasks.md` so progress reporting stays truthful.
 5. **Report:** Output a markdown compliance summary — criteria satisfied, criteria not yet covered, deviations needing a spec update (which must flow through the refinement loop, not silent code drift).

@@ -28,7 +28,7 @@ Always recall the current active phase at the start of a session. Do not begin w
 - **`requirements/_design/`**: Holds design assets.
 - **`workflow/`**: Documentation defining the overall project workflow and personas involved. `workflow/workflows.md` is the canonical process reference (Discovery, Design, Refinement, Speckit Implementation, QA, Release).
 - **`skills/`**: AI prompts used for generating project artifacts and specs, plus `tools.json` agent tool schemas.
-- **`scripts/`**: Lifecycle automation — `npm run status`, `spec:status`, `spec:context`, `spec:verify`, `tokens:sync`, `qa`.
+- **`scripts/`**: Lifecycle automation — `npm run status`, `spec:status`, `spec:context`, `spec:verify`, `qa`.
 - **`.ai/context/`**: Generated Speckit context bundles (gitignored; rebuild with `npm run spec:context`).
 
 ## AI Instructions

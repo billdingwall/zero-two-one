@@ -22,11 +22,10 @@ Documentation defining the overall project workflow, personas involved
 
 ## `skills/`
 AI prompts, skills, and tool definitions used for generating project artifacts and driving Speckit implementation.
-- `tools.json`: Agent tool schemas (`fetch_speckit_context`, `verify_spec_compliance`, `sync_design_tokens`, `set_spec_status`).
+- `tools.json`: Agent tool schemas (`fetch_speckit_context`, `verify_spec_compliance`, `set_spec_status`).
 - `fetch-speckit-context.md`: Pull the active feature's Spec Kit artifacts into AI-readable context bundles.
 - `verify-spec-compliance.md`: Audit spec completeness and code adherence to spec definitions.
-- `sync-design-tokens.md`: Sync Figma token exports into the token architecture.
-- `generate-frontend-component.md`: Scaffold UI components against approved specs and tokens.
+- `generate-frontend-component.md`: Scaffold UI components against approved specs and the design system.
 - `generate-tasks.md`: Prompt for generating tasks.
 - `generate-tdd.md`: Prompt for generating Technical Design Documents.
 - `check-framework-compliance.md`: Diagnostic review against framework best practices.
@@ -36,7 +35,6 @@ Lifecycle automation (Node built-ins only, wired to npm scripts).
 - `workflow-status.js`: Detects the current lifecycle phase.
 - `run-qa.sh`: Phase-appropriate QA suite.
 - `speckit/`: Spec status management, context bundle generation, compliance verification.
-- `design/`: Figma-to-code design token synchronization.
 
 ## `hooks/`
 Git hooks installed by `zero-two-one-init`.
@@ -56,7 +54,6 @@ The core documentation that defines the product.
 - `03-ROADMAP.md`: Phased plan and milestone gates.
 - `04-PROJECT-TRACKING.md`: Planned backlog and project tracker.
 - `_design/`: Holds design assets.
-  - `tokens/`: Design token architecture — `tokens.json` (source of truth) + generated `tokens.css`.
 - `_notes/`: Unstructured research, analysis and background context.
 - `_refinement/`: Tracks the refinement loop cycles.
   - `OVERVIEW.md`: Instructions for refinement.

@@ -10,7 +10,7 @@
  *      specs/, prototype/, scripts/, hooks/, .github/, and the guiding files
  *      (CLAUDE.md, AI_CODING_GUIDELINES.md, LIFECYCLE_WORKFLOW.md, README).
  *   2. AI-readable artifact directories: .ai/context/ (Speckit context
- *      bundles) and requirements/_design/tokens/ (design token architecture).
+ *      bundles).
  *   3. The refinement gate: installs hooks/pre-commit into .git/hooks.
  *   4. npm scripts for the lifecycle tooling in the target package.json.
  *   5. A Spec Kit readiness check (uv / specify CLI) with setup guidance.
@@ -80,7 +80,6 @@ for (const file of filesToCopy) {
 // ---------------------------------------------------------------------------
 const aiDirs = [
   path.join(targetDir, '.ai', 'context'), // generated Speckit context bundles
-  path.join(targetDir, 'requirements', '_design', 'tokens'), // design token architecture
 ];
 for (const dir of aiDirs) {
   fs.mkdirSync(dir, { recursive: true });
@@ -126,7 +125,6 @@ const lifecycleScripts = {
   'spec:status': 'node scripts/speckit/spec-status.js',
   'spec:context': 'node scripts/speckit/fetch-speckit-context.js',
   'spec:verify': 'node scripts/speckit/verify-spec-compliance.js',
-  'tokens:sync': 'node scripts/design/sync-design-tokens.js',
 };
 
 const pkgPath = path.join(targetDir, 'package.json');

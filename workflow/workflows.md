@@ -51,14 +51,13 @@ zero-two-one/
 │   │   ├── r{n}-review.md         # Raw feedback (or user-direction note) per round
 │   │   └── r{n}-update-{doc}.md   # Formatted update plan per target doc per round
 │   ├── _design/                   # Design mocks, icons, images, design system
-│   │   └── tokens/                # tokens.json (source of truth) + tokens.css (generated)
 │   └── _notes/                    # Loose notes and domain research (kebab-case names)
 ├── prototype/                     # Static HTML/CSS/JS prototype for design review
 ├── specs/                         # Feature-level Spec Kit artifacts (NNN-feature-name)
 ├── .ai/context/                   # Generated Speckit context bundles (gitignored)
 ├── templates/                     # Templates for project documentation
 ├── skills/                        # AI skills + tools.json agent tool schemas
-├── scripts/                       # Lifecycle automation (speckit/, design/, QA)
+├── scripts/                       # Lifecycle automation (speckit/, QA)
 ├── hooks/                         # Git hooks (pre-commit refinement gate)
 ├── workflow/                      # This documentation + personas + manifest
 ├── CLAUDE.md                      # AI assistant context
@@ -105,19 +104,12 @@ zero-two-one/
 
 ### Process
 
-1. **Design system** — establish UI guidelines and the token architecture. Design tokens live at `requirements/_design/tokens/tokens.json` (W3C format, source of truth) with `tokens.css` generated from it.
-2. **Token sync** — when Figma is the design source, export tokens (Figma Variables / Design Tokens plugin) and run:
-   ```sh
-   npm run tokens:sync -- --input figma-export.json --dry-run   # review the diff
-   npm run tokens:sync -- --input figma-export.json             # apply
-   ```
-   Token *names* are the design system's public API: the sync updates values in place, adds new tokens, and only reports (never silently deletes) orphans. This is what keeps Figma and code from drifting.
-3. **Prototype** — build a static HTML/CSS/JS prototype in `prototype/` that references `tokens.css` exclusively (no hard-coded style values). The prototype is not Speckit-managed; it is maintained by the agent directly from the PRD + TDD so it always reflects the current documents.
-4. **Design assets** — mocks, icons, and imagery land in `requirements/_design/`.
+1. **Design system** — establish UI guidelines and shared style foundations in `requirements/_design/`. How design values are sourced and synchronized (e.g. from a design tool) is managed outside this framework — record the chosen approach in the TDD.
+2. **Prototype** — build a static HTML/CSS/JS prototype in `prototype/` that applies the design system consistently (no ad-hoc style values). The prototype is not Speckit-managed; it is maintained by the agent directly from the PRD + TDD so it always reflects the current documents.
+3. **Design assets** — mocks, icons, and imagery land in `requirements/_design/`.
 
 ### Agent & automation touchpoints
 
-- `sync_design_tokens` (skill + `scripts/design/sync-design-tokens.js`) is the only sanctioned path for Figma→code updates.
 - `npm run qa` in Phase 2 validates prototype assets exist.
 - The agent regenerates prototype screens after each refinement round so review always happens against current state.
 
@@ -160,7 +152,7 @@ next round
 3. **Synthesize** — the agent drafts `r{n}-update-{doc}.md` per affected document with a section-by-section change list. The human approves the plan **before** any document is edited.
 4. **Apply** — edit PRD → TDD → Roadmap in that order, each with its own changelog entry referencing round `r{n}`. Mark each update plan `Applied` with a date.
 5. **Constraint check** — if principles changed, amend `AI_CODING_GUIDELINES.md`.
-6. **Design & prototype** — update assets and prototype; run a token sync if the design system changed.
+6. **Design & prototype** — update assets and prototype to reflect the applied changes.
 7. **Commit** — all affected docs together in a single commit (`hooks/pre-commit` reminds when `specs/` changes may need requirement alignment).
 
 ### Why the loop is shaped this way
@@ -219,7 +211,7 @@ Manage it with `npm run spec:status -- list | get | set <spec> <status>`. **Only
 
 1. `npm run spec:context` — generate `.ai/context/NNN-feature-name.md` (single-read markdown bundle) and `.json` (status, gate state, acceptance criteria, entities, task progress). The agent loads the bundle instead of re-reading eight files.
 2. If `gate.passing` is `false` — stop and request approval.
-3. Work through `tasks.md` in dependency order, checking off tasks as they complete; use `skills/generate-frontend-component.md` for UI work (spec + tokens + existing patterns).
+3. Work through `tasks.md` in dependency order, checking off tasks as they complete; use `skills/generate-frontend-component.md` for UI work (spec + design system + existing patterns).
 4. `npm run spec:verify` after each meaningful unit — fix `FAIL` findings immediately; a stale-context `WARN` means re-run step 1.
 5. Commit per task group; the pre-commit gate re-validates automatically.
 
@@ -244,7 +236,7 @@ Manage it with `npm run spec:status -- list | get | set <spec> <status>`. **Only
 On top of the phase tier, per-feature QA in Phase 3/4:
 
 1. **Automated compliance** — `npm run spec:verify` (artifact completeness, no `[NEEDS CLARIFICATION]`, task truthfulness, context freshness).
-2. **Semantic compliance** — the agent runs `skills/verify-spec-compliance.md`: every acceptance criterion maps to observable behavior and a test; components match `data-model.md` and `contracts/`; styling uses design tokens only.
+2. **Semantic compliance** — the agent runs `skills/verify-spec-compliance.md`: every acceptance criterion maps to observable behavior and a test; components match `data-model.md` and `contracts/`; styling follows the design system in `requirements/_design/`.
 3. **Framework compliance** — `skills/check-framework-compliance.md` before merging: spec-driven, lean architecture, artifact integrity, modularity.
 4. **Human review** — PR review on the feature branch; CI should run `npm run qa && npm run spec:verify` (add this to the consuming repo's CI once a stack is chosen).
 
@@ -297,6 +289,5 @@ Any constitution violation must be documented in the plan's Complexity Tracking 
 | `npm run spec:status -- set <spec> <status>` | Advance a spec's lifecycle |
 | `npm run spec:context` | Generate `.ai/context/` bundles for the active feature |
 | `npm run spec:verify` | Full spec compliance audit (`--gate` for the fast subset, `--json` for agents) |
-| `npm run tokens:sync -- --input <file>` | Sync Figma token export into the token architecture |
 
-Agent-facing tool schemas for `fetch_speckit_context`, `verify_spec_compliance`, `sync_design_tokens`, and `set_spec_status` live in `skills/tools.json`.
+Agent-facing tool schemas for `fetch_speckit_context`, `verify_spec_compliance`, and `set_spec_status` live in `skills/tools.json`.

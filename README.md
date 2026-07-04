@@ -2,7 +2,7 @@
 
 **An agentic product framework that takes new products from point 0 (idea) to point 1 (MVP) — and helps them grow and stabilize from there.**
 
-Zero Two One is the foundational operating system for a product repository. It gives founders and product teams a structured starting point: living requirements documents, a project-level refinement loop, a Figma-synchronized design token architecture, and feature delivery through [GitHub Spec Kit](https://github.com/github/spec-kit) — all wired for AI-agent execution with human decision gates.
+Zero Two One is the foundational operating system for a product repository. It gives founders and product teams a structured starting point: living requirements documents, a project-level refinement loop, and feature delivery through [GitHub Spec Kit](https://github.com/github/spec-kit) — all wired for AI-agent execution with human decision gates.
 
 ## How it works
 
@@ -11,7 +11,7 @@ The framework runs a **4-phase lifecycle** driven by two connected workflows:
 | Phase | Focus | Workflow |
 |---|---|---|
 | 1 — Planning (Zero) | PRD, TDD, Roadmap in `requirements/` | Discovery |
-| 2 — Pre-build | Design tokens + static prototype, iterated via review rounds | Design + Refinement |
+| 2 — Pre-build | Design system + static prototype, iterated via review rounds | Design + Refinement |
 | 3 — MVP Build (One) | Features specified and implemented via Spec Kit in `specs/` | Speckit Implementation + QA + Release |
 | 4 — Growth | Feedback/analytics re-enter the refinement loop; enhancements ship via Spec Kit | All of the above, continuously |
 
@@ -48,25 +48,24 @@ Then:
 | `npm run spec:status -- set <spec> <status>` | Advance a spec through its lifecycle |
 | `npm run spec:context` | Pull the active feature's Spec Kit artifacts into AI-readable bundles (`.ai/context/`) |
 | `npm run spec:verify` | Spec compliance audit — gate status, artifact completeness, unresolved clarifications, task truthfulness (`--gate`, `--json`) |
-| `npm run tokens:sync -- --input <figma.json>` | Sync a Figma token export into `requirements/_design/tokens/` (JSON source of truth + generated CSS) |
 
 ## AI agent integration
 
-- **`skills/tools.json`** — tool schemas (Anthropic tool-use format) for `fetch_speckit_context`, `verify_spec_compliance`, `sync_design_tokens`, and `set_spec_status`, each mapped to a local CLI.
-- **`skills/*.md`** — step-by-step skills the agent follows for context fetching, compliance verification, token sync, component generation, and doc generation.
+- **`skills/tools.json`** — tool schemas (Anthropic tool-use format) for `fetch_speckit_context`, `verify_spec_compliance`, and `set_spec_status`, each mapped to a local CLI.
+- **`skills/*.md`** — step-by-step skills the agent follows for context fetching, compliance verification, component generation, and doc generation.
 - **`.ai/context/`** — generated per-feature context bundles: one markdown file an agent loads in a single read, plus a structured JSON artifact (status, gate state, acceptance criteria, data-model entities, task progress). Gitignored; rebuild with `npm run spec:context`.
 - **`CLAUDE.md` / `AI_CODING_GUIDELINES.md`** — session context and the coding constitution that governs all generated work.
 
 ## Repository structure
 
 ```
-requirements/     PRD, TDD, Roadmap, tracking + _refinement/ rounds, _design/ (tokens/), _notes/
+requirements/     PRD, TDD, Roadmap, tracking + _refinement/ rounds, _design/, _notes/
 prototype/        Static prototype for design review (Phase 2)
 specs/            Spec Kit feature artifacts (NNN-feature-name)
 .ai/context/      Generated agent context bundles (gitignored)
 workflow/         workflows.md (canonical process), overview, manifest, personas
 skills/           AI skills + tools.json agent tool schemas
-scripts/          speckit/ (status, context, verify), design/ (token sync), status, QA
+scripts/          speckit/ (status, context, verify), status, QA
 hooks/            pre-commit refinement gate (installed to .git/hooks by init)
 templates/        Document templates (PRD, TDD, roadmap, reviews, personas)
 bin/init.js       The zero-two-one-init scaffolder
@@ -98,7 +97,6 @@ No Speckit API keys are required — Spec Kit runs locally through your agent; t
 
 | Dependency | Used for |
 |---|---|
-| Figma token export (Figma Variables API or "Design Tokens" plugin, W3C format) | Input to `npm run tokens:sync` |
 | [pa11y-ci](https://github.com/pa11y/pa11y-ci) or axe | Wire into `scripts/run-qa.sh` Phase 3 accessibility checks |
 | A test runner (Jest/Vitest/etc.) | `npm test` in the consuming repo — `run-qa.sh` calls it when present |
 | React/Astro/other UI stack | Peer of the *consuming* product only; chosen in your TDD, not imposed by the framework |
