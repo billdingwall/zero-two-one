@@ -52,7 +52,7 @@ The core documentation that defines the product.
 - `01-PRD.md`: Product Requirements Document (What & why — modules, scenarios, data model, IA).
 - `02-TDD.md`: Technical Design Document (Architecture overview + locked decisions).
 - `03-ROADMAP.md`: Phased plan and milestone gates.
-- `04-PROJECT-TRACKING.md`: Planned backlog and project tracker.
+- `04-BACKLOG.md`: Planned backlog and project tracker.
 - `_design/`: Holds design assets.
 - `_notes/`: Unstructured research, analysis and background context.
 - `_refinement/`: Tracks the refinement loop cycles.
@@ -67,7 +67,7 @@ Templates for creating standardized project documentation.
 - `01-PRD-Template.md`: Template for PRD.
 - `02-TDD-Template.md`: Template for TDD.
 - `03-ROADMAP.md`: Template for Roadmap.
-- `04-PROJECT-TRACKING.md`: Template for Project Tracking.
+- `04-BACKLOG.md`: Template for Project Backlog.
 - `05-REVIEW-Template.md`: Template for Refinement Reviews.
 - `06-USER-PERSONA-Template.md`: Template for User Persona.
 - `07-STAKEHOLDER-PERSONA-Template.md`: Template for Stakeholder Persona.

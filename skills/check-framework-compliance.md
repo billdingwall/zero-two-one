@@ -7,7 +7,7 @@ A diagnostic tool that reviews a specific file, directory, or the entire reposit
 Can be run at any phase, but highly recommended before merging feature branches.
 
 **Execution Steps for AI Agent:**
-1. **Load Guidelines:** Read `AI_CODING_GUIDELINES.md`, `CLAUDE.md`, and any files in `requirements/`.
+1. **Load Guidelines:** Read `CODE.md`, `CLAUDE.md`, and any files in `requirements/`.
 2. **Scan Target:** Review the provided code or specification files provided by the user.
 3. **Evaluate:**
    - **Spec-Driven:** Does the code have a corresponding approved spec in `specs/`?

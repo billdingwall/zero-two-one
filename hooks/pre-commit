@@ -57,8 +57,8 @@ if echo "$branch" | grep -Eq '^[0-9]{3}-'; then
 fi
 
 # 4. Reminder about the coding guidelines constitution.
-if [ -f "AI_CODING_GUIDELINES.md" ]; then
-    echo "Reminder: ensure your changes align with 'AI_CODING_GUIDELINES.md'."
+if [ -f "CODE.md" ]; then
+    echo "Reminder: ensure your changes align with 'CODE.md'."
 fi
 
 echo "Pre-commit validation passed."

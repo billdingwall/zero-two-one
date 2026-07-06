@@ -60,7 +60,7 @@ Then:
 - **`skills/tools.json`** — tool schemas (Anthropic tool-use format) for `fetch_speckit_context`, `verify_spec_compliance`, and `set_spec_status`, each mapped to a local CLI.
 - **`skills/*.md`** — step-by-step skills the agent follows for context fetching, compliance verification, component generation, and doc generation.
 - **`.ai/context/`** — generated per-feature context bundles: one markdown file an agent loads in a single read, plus a structured JSON artifact (status, gate state, acceptance criteria, data-model entities, task progress). Gitignored; rebuild with `npm run spec:context`.
-- **`CLAUDE.md` / `AI_CODING_GUIDELINES.md`** — session context and the coding constitution that governs all generated work.
+- **`CLAUDE.md` / `CODE.md`** — session context and the coding constitution that governs all generated work.
 
 ## Repository structure
 

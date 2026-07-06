@@ -42,7 +42,7 @@ const dirsToCopy = [
   'hooks',
 ];
 
-const filesToCopy = ['CLAUDE.md', 'README.md', 'AI_CODING_GUIDELINES.md', 'LIFECYCLE_WORKFLOW.md'];
+const filesToCopy = ['CLAUDE.md', 'README.md', 'CODE.md', 'PRODUCT.md'];
 
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
