@@ -21,7 +21,7 @@
 
 ## Open Questions Raised
 
-<!-- Anything that should land in project-management.md's Open Questions & Blockers register instead of being resolved here -->
+<!-- Anything that should land in 05-BACKLOG.md's Open Questions & Blockers register instead of being resolved here -->
 
 ## Outcome
 

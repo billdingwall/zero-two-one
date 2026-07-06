@@ -17,7 +17,7 @@ Your primary role as an AI assistant is to help the user navigate these phases b
 
 ## Documentation Structure
 
-- **`requirements/`**: Contains the core documentation that defines the product (PRD, Technical Design, Roadmap).
+- **`requirements/`**: Contains the core documentation that defines the product (PRD, EDD, Technical Design, Roadmap).
 - **`requirements/_refinement/`**: Tracks the refinement loop cycles during the Pre-build and Growth phases.
 - **`requirements/_notes/`**: Holds unstructured research and background context.
 - **`requirements/_design/`**: Holds design assets.

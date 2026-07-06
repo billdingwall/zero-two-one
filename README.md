@@ -65,15 +65,15 @@ Then:
 ## Repository structure
 
 ```
-requirements/     PRD, TDD, Roadmap, tracking + _refinement/ rounds, _design/, _notes/
+requirements/     PRD, EDD, TDD, Roadmap, Backlog + _refinement/ rounds, _design/, _notes/
 prototype/        Static prototype for design review (Phase 2)
 specs/            Spec Kit feature artifacts (NNN-feature-name)
 .ai/context/      Generated agent context bundles (gitignored)
-workflow/         workflows.md (canonical process), overview, manifest, personas
+workflow/         workflows.md (canonical manifest & process), specific-workflows/, _personas/
 skills/           AI skills + tools.json agent tool schemas
 scripts/          speckit/ (status, context, verify), status, QA
 hooks/            pre-commit refinement gate (installed to .git/hooks by init)
-templates/        Document templates (PRD, TDD, roadmap, reviews, personas)
+templates/        Document templates (PRD, EDD, TDD, roadmap, reviews, personas)
 bin/init.js       The zero-two-one-init scaffolder
 ```
 

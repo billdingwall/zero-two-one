@@ -1,9 +1,10 @@
 # Product Roadmap
 
 ## Phases
-- **Phase 1**: Planning & Pre-build
-- **Phase 2**: MVP Build
-- **Phase 3**: Growth
+- **Phase 1**: Planning (Zero)
+- **Phase 2**: Pre-build (Refinement)
+- **Phase 3**: MVP Build (One)
+- **Phase 4**: Growth
 
 ## Milestones & Gates
 - 

@@ -5,6 +5,7 @@ Templates for creating standardized project documentation.
 ## Manifest
 
 - `01-PRD-Template.md`: Template for PRD.
+- `02-EDD-Template.md`: Template for EDD.
 - `03-TDD-Template.md`: Template for TDD.
 - `04-ROADMAP.md`: Template for Roadmap.
 - `05-BACKLOG.md`: Template for Project Backlog.

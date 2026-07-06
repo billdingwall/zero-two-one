@@ -12,7 +12,7 @@ This document outlines the coding standards, behavior constraints, and generatio
 * **Artifact Integrity:** Do not directly edit build artifacts (e.g., in `dist/` or `build/`). Always trace back to the source files, modify them, and run the build process.
 
 ## 3. Workflow Constraints
-* **Refinement Loop:** When updating project-level requirements, follow the refinement loop (Review -> Synthesize -> Update). Create `r{n}-review.md` and `r{n}-update-{doc}.md` in `requirements/_r{n}/` directories. Deliverables through GitHub Speckit should be tracked and versioned in the `specs/` directory following the naming convention `specs/NNN-feature-name/`.
+* **Refinement Loop:** When updating project-level requirements, follow the refinement loop (Review -> Synthesize -> Update). Create `r{n}-review.md` and `r{n}-update-{doc}.md` in `requirements/_refinement/`. Deliverables through GitHub Speckit should be tracked and versioned in the `specs/` directory following the naming convention `specs/NNN-feature-name/`.
 * **Pre-commit:** Always verify changes through testing and linting before submitting code.
 
 ## 4. Communication

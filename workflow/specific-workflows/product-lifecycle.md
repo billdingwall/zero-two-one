@@ -4,7 +4,7 @@ The Zero Two One framework operates across a 4-phase lifecycle, transitioning a 
 
 ## Phase 1: Planning (Zero)
 **Goal:** Turn an idea into an agreed written definition of the product.
-- **Key Artifacts:** `01-PRD.md`, `03-TDD.md`, `04-ROADMAP.md` are drafted.
+- **Key Artifacts:** `01-PRD.md`, `03-TDD.md`, `04-ROADMAP.md` are drafted. *(Note: `02-EDD.md` is introduced in Phase 2.)*
 - **Workflow:** Discovery. Raw research is collected into `requirements/_notes/`, which informs the drafting of the core documents.
 - **Exit Gate:** PRD, TDD, and Roadmap are complete.
 

@@ -18,7 +18,7 @@ echo "Detected Lifecycle Phase: $PHASE"
 if [ "$PHASE" = "1" ] || [ "$PHASE" = "1.5" ]; then
     echo "Phase 1 (Planning): Running Documentation Validation..."
     # Check if PRD and TDD exist and aren't empty
-    if [ ! -f "requirements/01-PRD.md" ] || [ ! -f "requirements/02-TDD.md" ]; then
+    if [ ! -f "requirements/01-PRD.md" ] || [ ! -f "requirements/03-TDD.md" ]; then
         echo "FAIL: Core requirements documents are missing."
         exit 1
     fi
