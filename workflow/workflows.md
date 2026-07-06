@@ -1,54 +1,109 @@
-# Zero Two One Workflows
+# Zero Two One Manifest & Workflows
 
-> The central workflow manifest for this framework. It acts as an index to the modular workflows that govern **Discovery, Design, Refinement, Speckit Implementation, QA, and Release** across the product lifecycle.
-
----
-
-## 1. Guiding & Key Documents
-
-### Guiding Docs
-- `CLAUDE.md`: AI assistant context and high-level project instructions.
-- `CODE.md`: Basic coding principles and tech stack (informs constitution).
-- `PRODUCT.md`: Formalizes the step-by-step lifecycle workflow.
-- `DESIGN.md`: Machine-readable design tokens, palettes, and typography (can be replaced by a Design System).
-
-### Key Docs
-- `README.md`: Project status summary (Lifecycle phase, Roadmap Phase, specs, feedback).
-- `requirements/01-PRD.md`: Product Requirements Document (What & Why).
-- `requirements/02-EDD.md`: Experience Design Document (How - Experience).
-- `requirements/03-TDD.md`: Technical Design Document (How - Technical).
-- `requirements/04-ROADMAP.md`: Phased plan with milestone gates.
-- `requirements/05-BACKLOG.md`: Captures and prioritizes tasks, features, bugs across the lifecycle.
-
-> **Living Documents Paradigm:** The `01-PRD.md`, `02-EDD.md`, and `03-TDD.md` are **living documents** throughout the entire lifecycle. There is no "Lock" phase. They are continuously managed and updated via the Refinement Loop, with changes tracked in their respective changelogs.
+> The central manifest for this framework. It outlines the project's folder and document structure, and acts as an index to the modular workflows that govern **Discovery, Design, Refinement, Speckit Implementation, QA, and Release** across the product lifecycle.
 
 ---
 
-## 2. Dependencies
+## 1. Project Architecture
 
-The framework heavily relies on the following tools to operationalize these workflows:
-- **Claude Code**: Required dependency. The primary AI agent executing the workflows.
-- **GitHub SpecKit**: Required dependency. Provides the specification workflow pipelines and context bundling.
+The repository is structured into distinct domains that separate requirements, implementation, and agentic workflows.
+
+```mermaid
+graph TD
+    Root[Repository Root] --> Req[requirements/]
+    Root --> WF[workflow/]
+    Root --> SK[skills/]
+    Root --> Scripts[scripts/]
+    Root --> Proto[prototype/]
+    Root --> Specs[specs/]
+    
+    Req --> KeyDocs[Living Key Docs]
+    Req --> Refine[_refinement/]
+    
+    WF --> SpecWF[specific-workflows/]
+    WF --> Personas[_personas/]
+    
+    SK --> ContextBundles[Agent Skills]
+    Specs --> Impl[Feature Implementation]
+```
+
+---
+
+## 2. Document Manifest
+
+### Root Directory
+| File | Purpose |
+|---|---|
+| `CLAUDE.md` | AI Assistant Instructions and Project Guidelines. |
+| `CODE.md` | Basic coding principles and tech stack (informs constitution). |
+| `PRODUCT.md` | Formalizes the step-by-step lifecycle workflow. |
+| `DESIGN.md` | Machine-readable design tokens, palettes, and typography. |
+| `README.md` | Project status summary and entry point. |
+
+### `requirements/`
+The core documentation that defines the product. These are **living documents** throughout the entire lifecycle.
+
+| File/Folder | Purpose |
+|---|---|
+| `01-PRD.md` | Product Requirements Document (What & why — modules, scenarios, data model). |
+| `02-EDD.md` | Experience Design Document (How - Experience). |
+| `03-TDD.md` | Technical Design Document (Architecture overview + locked decisions). |
+| `04-ROADMAP.md` | Phased plan and milestone gates. |
+| `05-BACKLOG.md` | Planned backlog and project tracker. |
+| `_design/` | Holds design assets. |
+| `_notes/` | Unstructured research, analysis and background context. |
+| `_refinement/` | Tracks the refinement loop cycles (`r{x}-review.md`). |
+
+### `workflow/`
+Documentation defining the overall project workflow and personas involved.
+
+| File/Folder | Purpose |
+|---|---|
+| `workflows.md` | This file. Canonical expanded workflow reference and project manifest. |
+| `specific-workflows/` | Sub-folder for specific, modular workflows. |
+| `_personas/` | Personas for users, stakeholders, and contributors. |
+
+### `skills/` & `scripts/`
+AI prompts, skills, and tools used for generating project artifacts and driving Speckit implementation.
+
+| File/Folder | Purpose |
+|---|---|
+| `skills/tools.json` | Agent tool schemas (`fetch_speckit_context`, `verify_spec_compliance`, etc.). |
+| `skills/*.md` | Specific prompts (e.g., `generate-frontend-component.md`, `check-framework-compliance.md`). |
+| `scripts/workflow-status.js` | Detects the current lifecycle phase. |
+| `scripts/speckit/` | Spec status management, context bundle generation, compliance verification. |
+| `hooks/pre-commit` | The refinement gate — blocks implementation commits on feature branches. |
+
+### Other Directories
+| Folder | Purpose |
+|---|---|
+| `.github/` | GitHub-specific configurations and templates (`ISSUE_TEMPLATE/`). |
+| `.ai/context/` | Generated AI artifacts (gitignored) like Speckit context bundles (`NNN-feature-name.md`). |
+| `prototype/` | One cohesive static prototype that aligns with the PRD and TDD. |
+| `specs/` | Canonical SpecKit specs, feature-level implementation details, and validation rules. |
+| `templates/` | Templates for creating standardized project documentation (`01-PRD-Template.md`, etc.). |
 
 ---
 
 ## 3. Modular Workflows
 
-The framework's operations are broken down into the following specific workflows:
+The framework's operations are broken down into specific workflows:
 
 ### Core Workflows
 - **[Product Lifecycle (PLC)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/product-lifecycle.md):** The overarching 4-phase lifecycle of the product.
-- **[The Refinement Loop (RLP)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/refinement-loop.md):** The project-level change-control loop for maintaining living documents and the backlog. Note: During reviews, inline `CHANGE:` notes can be used directly in documents.
+- **[The Refinement Loop (RLP)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/refinement-loop.md):** The project-level change-control loop for maintaining living documents and the backlog.
 - **[Spec-Driven Delivery (SSD)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/spec-driven-delivery.md):** The tactical delivery mechanism utilizing GitHub Spec Kit and the Refinement Gate.
 
 ### Transitional Flows
 - **[Key Docs > Prototype](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/key-docs-to-prototype.md):** How the living documents drive the initial prototype (Phases 1 & 2).
 - **[Key Docs > Roadmap > Backlog > SSD](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/key-docs-to-ssd.md):** How high-level definitions mechanically translate into actionable code.
-- **[Review > Backlog > SSD](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/review-to-ssd.md):** How user feedback and analytics continuously cycle into the development pipeline (Phase 4).
+- **[Review > Backlog > SSD](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/review-to-ssd.md):** How user feedback and analytics continuously cycle into the development pipeline.
 
 ---
 
-## 4. Automation & Scripts
+## 4. Dependencies & Automation
+
+The framework heavily relies on **Claude Code** and **GitHub SpecKit** to operationalize these workflows.
 
 | Command | Purpose |
 |---|---|
