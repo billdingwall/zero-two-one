@@ -6,8 +6,8 @@ Zero Two One is the foundational operating system for a product repository. It g
 
 This README serves as the high-level entry point into the product documentation ecosystem, which branches into key core documents:
 - **[PRD (What & Why)](requirements/01-PRD.md)**: Product Requirements Document focusing on business logic and feature goals.
-- **[TDD (How - Technical)](requirements/02-TDD.md)**: Technical Design Document focusing on system architecture.
-- **[EDD (How - Experience)](requirements/EDD.md)**: Experience Design Document focusing on overall UX strategy and interaction architecture.
+- **[TDD (How - Technical)](requirements/03-TDD.md)**: Technical Design Document focusing on system architecture.
+- **[EDD (How - Experience)](requirements/02-EDD.md)**: Experience Design Document focusing on overall UX strategy and interaction architecture.
 - **[DESIGN.md (Design Tokens)](DESIGN.md)**: A machine-readable guiding document located in the root, defining the design tokens, color palettes, and typography for UI consistency.
 
 ## How it works
@@ -40,7 +40,7 @@ specify init --here --ai claude
 
 Then:
 
-1. Fill in `requirements/01-PRD.md`, `02-TDD.md`, and `03-ROADMAP.md` (your AI assistant can drive this from `templates/`).
+1. Fill in `requirements/01-PRD.md`, `03-TDD.md`, and `04-ROADMAP.md` (your AI assistant can drive this from `templates/`).
 2. Ask your assistant to record the current lifecycle phase in its memory, and update `CLAUDE.md` + this README with project specifics.
 3. Check where you stand any time: `npm run status`.
 

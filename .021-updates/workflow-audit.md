@@ -20,10 +20,10 @@ To establish a shared understanding, below is the current state of the framework
 | **Guiding** | `DESIGN.md`                  | Machine-readable design tokens, palettes, and typography. |
 | **Key Doc** | `README.md`                  | Project status summary (Lifecycle phase, Roadmap Phase, specs, feedback). |
 | **Key Doc** | `requirements/01-PRD.md`     | Product Requirements Document (What & Why).               |
-| **Key Doc** | `requirements/EDD.md`        | Experience Design Document (How - Experience).            |
-| **Key Doc** | `requirements/02-TDD.md`     | Technical Design Document (How - Technical).              |
-| **Key Doc** | `requirements/03-ROADMAP.md` | Phased plan with milestone gates.                         |
-| **Key Doc** | `requirements/04-BACKLOG.md` | Captures and prioritizes tasks, features, bugs across the lifecycle. |
+| **Key Doc** | `requirements/02-EDD.md`        | Experience Design Document (How - Experience).            |
+| **Key Doc** | `requirements/03-TDD.md`     | Technical Design Document (How - Technical).              |
+| **Key Doc** | `requirements/04-ROADMAP.md` | Phased plan with milestone gates.                         |
+| **Key Doc** | `requirements/05-BACKLOG.md` | Captures and prioritizes tasks, features, bugs across the lifecycle. |
 
 *Note: The deprecated `docs/` folder has been removed, as its contents were migrated to `workflow/`.*
 
@@ -59,9 +59,9 @@ graph TD
     subgraph Phase 1 & 2: Planning & Pre-Build
         A[User Needs & Research] --> B(Refinement Loop)
         B -->|Updates| C[Living 01-PRD.md]
-        B -->|Updates| D[Living EDD.md]
-        B -->|Updates| E[Living 02-TDD.md]
-        B -->|Prioritizes| K[04-BACKLOG.md]
+        B -->|Updates| D[Living 02-EDD.md]
+        B -->|Updates| E[Living 03-TDD.md]
+        B -->|Prioritizes| K[05-BACKLOG.md]
         C & D & E --> F[Prototype & Roadmap]
     end
     
@@ -81,7 +81,7 @@ graph TD
     subgraph Phase 4: Growth
         A[User Analytics & Feedback] --> B(Refinement Loop)
         B -->|Updates| D[Living Core Docs]
-        B -->|Generates| C[04-BACKLOG.md Items]
+        B -->|Generates| C[05-BACKLOG.md Items]
         
         D -.->|Provides Context| C
         
@@ -102,7 +102,7 @@ The team reviewed the current repository state against the intended workflow mec
 **Focus:** Alignment, lifecycle gates, backlog prioritization, and requirements tracing.
 
 * **What works well:** The strict "Refinement Gate" preventing code without approved specs ensures engineering doesn't drift from product intent. Keeping PRD as a living document prevents artificial documentation freeze.
-* **Inconsistencies & Gaps:** The transition from `04-PROJECT-TRACKING.md` to a persistent `04-BACKLOG.md` needs formalization. The backlog must act as the intake engine throughout the entire lifecycle.
+* **Inconsistencies & Gaps:** The transition from `04-PROJECT-TRACKING.md` to a persistent `05-BACKLOG.md` needs formalization. The backlog must act as the intake engine throughout the entire lifecycle.
 * **Conflicts:** In the review process, there's no standardized way to add CHANGE notes directly to a document to incorporate them into the current review round seamlessly.
 
 ### 💻 Principal Fullstack Engineer
@@ -115,7 +115,7 @@ The team reviewed the current repository state against the intended workflow mec
 ### 🎨 Principal UX Designer
 **Focus:** Design systems, prototype fidelity, UX strategy, and user feedback integration.
 
-* **What works well:** Building the static prototype *before* Speckit Implementation aligns stakeholders visually. The `EDD.md` remains living, allowing global UX patterns to evolve post-MVP.
+* **What works well:** Building the static prototype *before* Speckit Implementation aligns stakeholders visually. The `02-EDD.md` remains living, allowing global UX patterns to evolve post-MVP.
 * **Inconsistencies & Gaps:** We need to explicitly state whether a formal design system will replace `DESIGN.md` content, and clarify prototype maintenance post-MVP.
 
 ---
@@ -132,7 +132,7 @@ Based on the audit, here are the tiered recommendations to upgrade the framework
    * Formalize `CLAUDE.md`, `CODE.md`, `PRODUCT.md`, and `DESIGN.md` as the core Guiding Docs.
    * Elevate `README.md` to a Key Doc detailing project status.
 2. **Formalize the Universal Backlog:**
-   * Rename `requirements/04-PROJECT-TRACKING.md` to `requirements/04-BACKLOG.md` to capture and prioritize tasks, features, and bugs continuously across all lifecycle phases.
+   * Rename `requirements/04-PROJECT-TRACKING.md` to `requirements/05-BACKLOG.md` to capture and prioritize tasks, features, and bugs continuously across all lifecycle phases.
 3. **Standardize CHANGE Notes:**
    * Introduce a standardized process for the team to add CHANGE notes directly to a document to ensure those changes are integrated into the current review round.
 4. **Remove the "Lock" Concept:**
@@ -143,7 +143,7 @@ Based on the audit, here are the tiered recommendations to upgrade the framework
 1. **Dependency Enforcement:**
    * Update documentation and initializers to make Claude Code and GitHub SpecKit required dependencies.
 2. **Context Resolution Updates:**
-   * Modify the `.ai/context/` generator to ensure it correctly pulls from the newly renamed `CODE.md`, `PRODUCT.md`, and `04-BACKLOG.md`.
+   * Modify the `.ai/context/` generator to ensure it correctly pulls from the newly renamed `CODE.md`, `PRODUCT.md`, and `05-BACKLOG.md`.
 
 ### 🟢 Low Priority
 
@@ -160,4 +160,4 @@ When initializing this updated framework, consider the origin state of the proje
 * **Smooth Onboarding:** The clear separation of Guiding Docs vs Key Docs makes it easy to set the AI context immediately.
 
 ### For Existing Projects (Mid-Flight)
-* **Adoption Friction:** We must generate an "Initialization Spec" to help existing projects draft their initial living `01-PRD.md`, `02-TDD.md`, and `04-BACKLOG.md` based on their current codebase, effectively bootstrapping them into the Refinement Loop.
+* **Adoption Friction:** We must generate an "Initialization Spec" to help existing projects draft their initial living `01-PRD.md`, `03-TDD.md`, and `05-BACKLOG.md` based on their current codebase, effectively bootstrapping them into the Refinement Loop.

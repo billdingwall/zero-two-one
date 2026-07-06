@@ -171,6 +171,6 @@ console.log(`  specify   ${has('specify') ? '✅' : '⚠️  Spec Kit CLI missin
 console.log('\n✅ Framework initialized successfully!');
 console.log('\nNext Steps:');
 console.log('1. Review README.md and workflow/workflows.md.');
-console.log('2. Fill in requirements/01-PRD.md, 02-TDD.md, 03-ROADMAP.md (Phase 1: Planning).');
+console.log('2. Fill in requirements/01-PRD.md, 03-TDD.md, 04-ROADMAP.md (Phase 1: Planning).');
 console.log('3. Install Spec Kit slash commands for your agent: specify init --here --ai claude');
 console.log('4. Ask your AI assistant to record the current lifecycle phase in its memory.');

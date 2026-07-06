@@ -7,8 +7,8 @@ This document formalizes the step-by-step workflow for taking a product from an 
 ### 1. Planning (Zero)
 1. **Initialize Framework:** Run `npx init <package-name>` in an empty repo.
 2. **Define Vision:** Fill out `requirements/01-PRD.md` with problem statement, target audience, and scope.
-3. **Draft Architecture:** Complete `requirements/02-TDD.md` with technical decisions and data models.
-4. **Set Roadmap:** Outline initial milestones in `requirements/03-ROADMAP.md`.
+3. **Draft Architecture:** Complete `requirements/03-TDD.md` with technical decisions and data models.
+4. **Set Roadmap:** Outline initial milestones in `requirements/04-ROADMAP.md`.
 5. **Update State:** Have the AI assistant record the transition to Phase 2 in its memory.
 
 ### 2. Pre-build (Refinement)

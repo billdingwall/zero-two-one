@@ -15,12 +15,12 @@
 ### Key Docs
 - `README.md`: Project status summary (Lifecycle phase, Roadmap Phase, specs, feedback).
 - `requirements/01-PRD.md`: Product Requirements Document (What & Why).
-- `requirements/EDD.md`: Experience Design Document (How - Experience).
-- `requirements/02-TDD.md`: Technical Design Document (How - Technical).
-- `requirements/03-ROADMAP.md`: Phased plan with milestone gates.
-- `requirements/04-BACKLOG.md`: Captures and prioritizes tasks, features, bugs across the lifecycle.
+- `requirements/02-EDD.md`: Experience Design Document (How - Experience).
+- `requirements/03-TDD.md`: Technical Design Document (How - Technical).
+- `requirements/04-ROADMAP.md`: Phased plan with milestone gates.
+- `requirements/05-BACKLOG.md`: Captures and prioritizes tasks, features, bugs across the lifecycle.
 
-> **Living Documents Paradigm:** The `01-PRD.md`, `EDD.md`, and `02-TDD.md` are **living documents** throughout the entire lifecycle. There is no "Lock" phase. They are continuously managed and updated via the Refinement Loop, with changes tracked in their respective changelogs.
+> **Living Documents Paradigm:** The `01-PRD.md`, `02-EDD.md`, and `03-TDD.md` are **living documents** throughout the entire lifecycle. There is no "Lock" phase. They are continuously managed and updated via the Refinement Loop, with changes tracked in their respective changelogs.
 
 ---
 

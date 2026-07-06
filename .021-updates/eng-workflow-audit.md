@@ -10,7 +10,7 @@ The framework's technical backbone relies on AI-driven artifact generation gated
 ### Key Technical Documents & Tools
 | Component | Purpose | Ownership |
 |---|---|---|
-| `02-TDD.md` | Technical Design Document (Architecture, Data Models, Endpoints). | Engineering |
+| `03-TDD.md` | Technical Design Document (Architecture, Data Models, Endpoints). | Engineering |
 | `CODE.md` | Basic coding principles and tech stack (informs constitution). | Engineering |
 | `PRODUCT.md` | Formalizes the lifecycle workflow. | Cross-functional |
 | `scripts/` & `hooks/` | QA automation, context fetching, and the pre-commit gate. | Engineering |
@@ -21,7 +21,7 @@ The framework's technical backbone relies on AI-driven artifact generation gated
 flowchart TD
     subgraph Architecture Definition
         A[Living PRD] --> B(Refinement Loop)
-        B --> C[Draft/Update Living 02-TDD.md]
+        B --> C[Draft/Update Living 03-TDD.md]
     end
     
     subgraph Spec-Driven Delivery (GitHub SpecKit)
@@ -38,7 +38,7 @@ flowchart TD
 ## 2. Audit Findings
 
 **What Works Well:**
-*   **Living Architecture:** Since `02-TDD.md` remains a living document post-MVP, we avoid the trap of "frozen architecture." Technical debt, scaling refactors, and migrations can be properly documented and planned through the Refinement Loop.
+*   **Living Architecture:** Since `03-TDD.md` remains a living document post-MVP, we avoid the trap of "frozen architecture." Technical debt, scaling refactors, and migrations can be properly documented and planned through the Refinement Loop.
 *   **The Pre-Commit Gate:** `hooks/pre-commit` mapping branches to spec approval status is an incredibly robust way to prevent AI agents from writing unauthorized code.
 
 **Inconsistencies & Gaps:**
@@ -57,9 +57,9 @@ flowchart TD
 *   **Directory Cleanup:** Remove the legacy `docs/` folder entirely, as its contents have migrated to the `workflow/` directory.
 
 ### Low Priority
-*   **Automated Schema Extraction:** Implement a script in `scripts/qa.sh` that validates the code's actual database schema against the living `02-TDD.md` definitions to catch drift.
+*   **Automated Schema Extraction:** Implement a script in `scripts/qa.sh` that validates the code's actual database schema against the living `03-TDD.md` definitions to catch drift.
 
 ## 4. Implementation Considerations
 
 *   **New Projects:** The workflow is perfectly suited for greenfield projects. It forces developers to update the TDD before implementation specs are written, ensuring architectural alignment.
-*   **Existing Legacy Projects:** Integrating into a legacy codebase is technically challenging. The pre-commit hooks will immediately block developers if specs aren't present. We must provide a tool to auto-generate the initial living `02-TDD.md` from an existing Prisma schema / DB dump to establish the baseline.
+*   **Existing Legacy Projects:** Integrating into a legacy codebase is technically challenging. The pre-commit hooks will immediately block developers if specs aren't present. We must provide a tool to auto-generate the initial living `03-TDD.md` from an existing Prisma schema / DB dump to establish the baseline.

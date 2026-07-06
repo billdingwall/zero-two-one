@@ -5,7 +5,7 @@
 ## The Process
 
 1. **Review (`r{n}-review.md`)**
-   Capture raw feedback or analytics into a review document (`templates/05-REVIEW-Template.md`).
+   Capture raw feedback or analytics into a review document (`templates/06-REVIEW-Template.md`).
    *Note: Inline `CHANGE:` notes can also be added directly to living documents during this phase to automatically queue them for the current round.*
 
 2. **Synthesize (`r{n}-update-{doc}.md`)**
@@ -15,8 +15,8 @@
    Apply updates in dependency order and log each in the document's changelog:
    - **PRD > EDD:** Update the PRD, then update the EDD to support the new business logic.
    - **PRD + EDD > TDD:** Update the TDD to architecturally support the new features and UX.
-   - **PRD + EDD + TDD > Roadmap:** Re-sequence `03-ROADMAP.md`.
-   - **Roadmap > Backlog:** Update `04-BACKLOG.md` with new features, bugs, or enhancement tasks.
+   - **PRD + EDD + TDD > Roadmap:** Re-sequence `04-ROADMAP.md`.
+   - **Roadmap > Backlog:** Update `05-BACKLOG.md` with new features, bugs, or enhancement tasks.
 
 4. **Constraint Check**
    If core principles changed, amend `CODE.md`.

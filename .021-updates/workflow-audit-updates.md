@@ -9,12 +9,12 @@ Based on the cross-functional workflow audits performed by the leadership team a
 These updates represent the overarching architectural changes to the framework's workflows, documentation, and tooling required to support all disciplines across the entire product lifecycle.
 
 ### Living Documents & The Refinement Loop
-*   **Remove the Phase 4 "Lock":** Eliminate the concept of locking documents in Phase 4. Explicitly state in all documentation (`PRODUCT.md`, `workflows.md`) that `01-PRD.md`, `EDD.md`, and `02-TDD.md` remain **living documents** throughout the entire lifecycle. Updates will be tracked via changelogs at the bottom of these docs.
+*   **Remove the Phase 4 "Lock":** Eliminate the concept of locking documents in Phase 4. Explicitly state in all documentation (`PRODUCT.md`, `workflows.md`) that `01-PRD.md`, `02-EDD.md`, and `03-TDD.md` remain **living documents** throughout the entire lifecycle. Updates will be tracked via changelogs at the bottom of these docs.
 *   **Standardized Inline CHANGE Notes:** Introduce a standardized process during the Refinement Loop allowing the team to add `CHANGE` notes directly into a document, ensuring those changes are processed as part of the current review round.
 
 ### Artifact Renaming & Structuring
 *   **Guiding Docs Reorganization:** Rename `AI_CODING_GUIDELINES.md` to `CODE.md` and `LIFECYCLE_WORKFLOW.md` to `PRODUCT.md`. Establish `CLAUDE.md`, `CODE.md`, `PRODUCT.md`, and `DESIGN.md` (or a Design System) as the core Guiding Docs.
-*   **The Universal Backlog:** Rename `04-PROJECT-TRACKING.md` to `04-BACKLOG.md` to capture and prioritize refinement tasks, new features, enhancements, and bugs continuously across all lifecycle phases.
+*   **The Universal Backlog:** Rename `04-PROJECT-TRACKING.md` to `05-BACKLOG.md` to capture and prioritize refinement tasks, new features, enhancements, and bugs continuously across all lifecycle phases.
 *   **Key Docs Consolidation:** Elevate `README.md` to act as the primary Key Doc dashboard (summarizing lifecycle phase, roadmap phase, active specs).
 *   **Legacy Cleanup:** Remove the `docs/` folder from the repository root entirely, as its contents have been migrated to the `workflow/` directory.
 
@@ -28,15 +28,15 @@ These updates represent the overarching architectural changes to the framework's
 **Focus:** Alignment, lifecycle gates, backlog prioritization, and requirements tracing.
 
 ### High Priority
-*   **Implement `04-BACKLOG.md`:** Establish the formal backlog document to act as the intake engine for tasks across all lifecycle phases, complementing the living PRD.
+*   **Implement `05-BACKLOG.md`:** Establish the formal backlog document to act as the intake engine for tasks across all lifecycle phases, complementing the living PRD.
 *   **Inline CHANGE Process:** Document and formalize the protocol for adding `CHANGE` notes directly to the PRD during refinement reviews.
 *   **Elevate `README.md`:** Restructure the README to provide a high-level status of the project, tracking active specs and feedback rounds.
 
 ### Medium Priority
-*   **Backlog Context Injection:** Ensure the SpecKit context builder (`scripts/speckit/fetch-speckit-context.js`) natively bundles `04-BACKLOG.md` alongside the living PRD to give the AI complete context.
+*   **Backlog Context Injection:** Ensure the SpecKit context builder (`scripts/speckit/fetch-speckit-context.js`) natively bundles `05-BACKLOG.md` alongside the living PRD to give the AI complete context.
 
 ### Low Priority
-*   **Roadmap Automation:** Enhance the framework's tooling to tightly link `03-ROADMAP.md` milestones to GitHub Milestones, updating them automatically upon SpecKit phase completions.
+*   **Roadmap Automation:** Enhance the framework's tooling to tightly link `04-ROADMAP.md` milestones to GitHub Milestones, updating them automatically upon SpecKit phase completions.
 
 ---
 
@@ -53,7 +53,7 @@ These updates represent the overarching architectural changes to the framework's
 *   **Directory Cleanup:** Fully delete the `docs/` directory and ensure no lingering references remain in scripts or `package.json`.
 
 ### Low Priority
-*   **Automated Schema Extraction:** Integrate a database schema validation step into `scripts/run-qa.sh` that compares the live database structure against the living `02-TDD.md` definitions to catch schema drift.
+*   **Automated Schema Extraction:** Integrate a database schema validation step into `scripts/run-qa.sh` that compares the live database structure against the living `03-TDD.md` definitions to catch schema drift.
 
 ---
 
@@ -63,7 +63,7 @@ These updates represent the overarching architectural changes to the framework's
 
 ### High Priority
 *   **Design System Policy:** Update the documentation to clarify how an external or more robust Design System can officially replace the content of `DESIGN.md`.
-*   **Post-MVP Prototype Deprecation Policy:** Explicitly state whether the `prototype/` directory is deprecated after Phase 3 or maintained as a visual sandbox for the living `EDD.md`.
+*   **Post-MVP Prototype Deprecation Policy:** Explicitly state whether the `prototype/` directory is deprecated after Phase 3 or maintained as a visual sandbox for the living `02-EDD.md`.
 
 ### Medium Priority
 *   **UX QA Integration:** Add visual regression or AI vision comparison steps to `scripts/run-qa.sh` to ensure the rendered components match the rules defined in `DESIGN.md`.

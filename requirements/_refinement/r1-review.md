@@ -3,7 +3,7 @@
 **Status:** Draft — in progress
 **Date:**
 **Reviewer:**
-**Related Docs:** [Product Requirements](../01-PRD.md) · [Technical Design](../02-TDD.md) · [Roadmap](../03-ROADMAP.md) · [Project Management Tracker](../04-PROJECT-TRACKING.md) · [Design](../../DESIGN.md)
+**Related Docs:** [Product Requirements](../01-PRD.md) · [Technical Design](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Project Management Tracker](../04-PROJECT-TRACKING.md) · [Design](../../DESIGN.md)
 
 ## Scope
 
