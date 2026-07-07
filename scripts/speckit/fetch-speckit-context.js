@@ -129,6 +129,19 @@ const bundleParts = [
   `- **Tasks**: ${artifact.tasks.completed}/${artifact.tasks.total} complete`,
   '',
 ];
+
+const projectContextFiles = [
+  path.join(root, 'CODE.md'),
+  path.join(root, 'PRODUCT.md'),
+  path.join(root, 'requirements/05-BACKLOG.md')
+];
+
+for (const p of projectContextFiles) {
+  if (fs.existsSync(p)) {
+    bundleParts.push('---', '', `## Project Context: ${rel(p)}`, '', fs.readFileSync(p, 'utf8').trim(), '');
+  }
+}
+
 for (const p of sources) {
   bundleParts.push('---', '', `## Source: ${rel(p)}`, '', fs.readFileSync(p, 'utf8').trim(), '');
 }

@@ -14,5 +14,5 @@ Run this skill during Phase 3 (MVP Build) when a new Spec has been approved in `
    - Create the component file (e.g., `Button.tsx`).
    - Create the associated stylesheet (if applicable).
    - Create a basic unit test file (e.g., `Button.test.tsx`).
-5. **Implement:** Write the code ensuring modularity and adherence to `AI_CODING_GUIDELINES.md`.
+5. **Implement:** Write the code ensuring modularity and adherence to `CODE.md`.
 6. **Verify:** Run the local test suite against the new component to ensure it compiles and passes basic checks.

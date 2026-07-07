@@ -8,7 +8,7 @@
  * What it provisions:
  *   1. The framework surface: requirements/, workflow/, skills/, templates/,
  *      specs/, prototype/, scripts/, hooks/, .github/, and the guiding files
- *      (CLAUDE.md, AI_CODING_GUIDELINES.md, LIFECYCLE_WORKFLOW.md, README).
+ *      (CLAUDE.md, CODE.md, PRODUCT.md, DESIGN.md, README).
  *   2. AI-readable artifact directories: .ai/context/ (Speckit context
  *      bundles).
  *   3. The refinement gate: installs hooks/pre-commit into .git/hooks.
@@ -42,7 +42,7 @@ const dirsToCopy = [
   'hooks',
 ];
 
-const filesToCopy = ['CLAUDE.md', 'README.md', 'AI_CODING_GUIDELINES.md', 'LIFECYCLE_WORKFLOW.md'];
+const filesToCopy = ['CLAUDE.md', 'README.md', 'CODE.md', 'PRODUCT.md', 'DESIGN.md'];
 
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
@@ -171,6 +171,6 @@ console.log(`  specify   ${has('specify') ? '✅' : '⚠️  Spec Kit CLI missin
 console.log('\n✅ Framework initialized successfully!');
 console.log('\nNext Steps:');
 console.log('1. Review README.md and workflow/workflows.md.');
-console.log('2. Fill in requirements/01-PRD.md, 02-TDD.md, 03-ROADMAP.md (Phase 1: Planning).');
+console.log('2. Fill in requirements/01-PRD.md, 03-TDD.md, 04-ROADMAP.md (Phase 1), then 02-EDD.md (Phase 2).');
 console.log('3. Install Spec Kit slash commands for your agent: specify init --here --ai claude');
 console.log('4. Ask your AI assistant to record the current lifecycle phase in its memory.');

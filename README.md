@@ -6,8 +6,8 @@ Zero Two One is the foundational operating system for a product repository. It g
 
 This README serves as the high-level entry point into the product documentation ecosystem, which branches into key core documents:
 - **[PRD (What & Why)](requirements/01-PRD.md)**: Product Requirements Document focusing on business logic and feature goals.
-- **[TDD (How - Technical)](requirements/02-TDD.md)**: Technical Design Document focusing on system architecture.
-- **[EDD (How - Experience)](requirements/EDD.md)**: Experience Design Document focusing on overall UX strategy and interaction architecture.
+- **[TDD (How - Technical)](requirements/03-TDD.md)**: Technical Design Document focusing on system architecture.
+- **[EDD (How - Experience)](requirements/02-EDD.md)**: Experience Design Document focusing on overall UX strategy and interaction architecture.
 - **[DESIGN.md (Design Tokens)](DESIGN.md)**: A machine-readable guiding document located in the root, defining the design tokens, color palettes, and typography for UI consistency.
 
 ## How it works
@@ -40,7 +40,7 @@ specify init --here --ai claude
 
 Then:
 
-1. Fill in `requirements/01-PRD.md`, `02-TDD.md`, and `03-ROADMAP.md` (your AI assistant can drive this from `templates/`).
+1. Fill in `requirements/01-PRD.md`, `03-TDD.md`, and `04-ROADMAP.md` (your AI assistant can drive this from `templates/`).
 2. Ask your assistant to record the current lifecycle phase in its memory, and update `CLAUDE.md` + this README with project specifics.
 3. Check where you stand any time: `npm run status`.
 
@@ -60,20 +60,20 @@ Then:
 - **`skills/tools.json`** — tool schemas (Anthropic tool-use format) for `fetch_speckit_context`, `verify_spec_compliance`, and `set_spec_status`, each mapped to a local CLI.
 - **`skills/*.md`** — step-by-step skills the agent follows for context fetching, compliance verification, component generation, and doc generation.
 - **`.ai/context/`** — generated per-feature context bundles: one markdown file an agent loads in a single read, plus a structured JSON artifact (status, gate state, acceptance criteria, data-model entities, task progress). Gitignored; rebuild with `npm run spec:context`.
-- **`CLAUDE.md` / `AI_CODING_GUIDELINES.md`** — session context and the coding constitution that governs all generated work.
+- **`CLAUDE.md` / `CODE.md`** — session context and the coding constitution that governs all generated work.
 
 ## Repository structure
 
 ```
-requirements/     PRD, TDD, Roadmap, tracking + _refinement/ rounds, _design/, _notes/
+requirements/     PRD, EDD, TDD, Roadmap, Backlog + _refinement/ rounds, _design/, _notes/
 prototype/        Static prototype for design review (Phase 2)
 specs/            Spec Kit feature artifacts (NNN-feature-name)
 .ai/context/      Generated agent context bundles (gitignored)
-workflow/         workflows.md (canonical process), overview, manifest, personas
+workflow/         workflows.md (canonical manifest & process), specific-workflows/, _personas/
 skills/           AI skills + tools.json agent tool schemas
 scripts/          speckit/ (status, context, verify), status, QA
 hooks/            pre-commit refinement gate (installed to .git/hooks by init)
-templates/        Document templates (PRD, TDD, roadmap, reviews, personas)
+templates/        Document templates (PRD, EDD, TDD, roadmap, reviews, personas)
 bin/init.js       The zero-two-one-init scaffolder
 ```
 

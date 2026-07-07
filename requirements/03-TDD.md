@@ -1,6 +1,6 @@
 # Technical Design
 
-*Note: For the expected user experience, state definitions, and design system token architecture, please refer to the [Experience Design Document (EDD)](EDD.md). All technical implementations of UI components and state management must align with the UX constraints defined in the EDD.*
+*Note: For the expected user experience, state definitions, and design system token architecture, please refer to the [Experience Design Document (EDD)](02-EDD.md). All technical implementations of UI components and state management must align with the UX constraints defined in the EDD.*
 
 ## Architecture
 - Outline the technical architecture (e.g., backend services, frontend frameworks, database choices).

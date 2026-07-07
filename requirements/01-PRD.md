@@ -1,6 +1,6 @@
 # Product Requirements
 
-*Note: For user experience guidelines, interaction architecture, and state management, please refer to the [Experience Design Document (EDD)](EDD.md).*
+*Note: For user experience guidelines, interaction architecture, and state management, please refer to the [Experience Design Document (EDD)](02-EDD.md).*
 
 ## Goals & Objective
 - Define core business objectives and target metrics for the product.
