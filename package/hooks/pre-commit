@@ -1,0 +1,65 @@
+#!/bin/sh
+# Zero Two One pre-commit hook — the enforcement point of the refinement gate.
+#
+# Rule: on a feature branch (NNN-feature-name), implementation files may not
+# be committed unless the matching spec in specs/NNN-feature-name/ is marked
+# 'Approved' or 'Ready for Dev' (or beyond). Documentation, spec, and design
+# artifacts are always allowed — the gate blocks code, not refinement.
+#
+# Emergency bypass (hotfixes, WIP stashes): ZTO_SKIP_GATE=1 git commit ...
+
+if [ "$ZTO_SKIP_GATE" = "1" ]; then
+    echo "zero-two-one: gate skipped via ZTO_SKIP_GATE=1."
+    exit 0
+fi
+
+echo "Running Zero-Two-One pre-commit validation..."
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+# 1. Spec changes should stay aligned with the project-level docs.
+if git diff --cached --name-only | grep -E '^specs/.*\.md$' > /dev/null; then
+    echo "Notice: Changes detected in 'specs/'. Ensure these align with 'requirements/01-PRD.md' and 'requirements/03-TDD.md'."
+fi
+
+# 2. Discourage direct commits to main — features flow through NNN-feature-name branches.
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+    echo "Warning: You are committing directly to $branch."
+    echo "Spec-Driven Development dictates that features are developed on 'NNN-feature-name' branches."
+    # exit 1 # uncomment to enforce
+fi
+
+# 3. Refinement gate: implementation on a feature branch requires an
+#    approved spec. "Implementation files" = anything staged outside the
+#    documentation/refinement/tooling surface and not markdown.
+if echo "$branch" | grep -Eq '^[0-9]{3}-'; then
+    impl_files=$(git diff --cached --name-only \
+        | grep -Ev '^(specs/|requirements/|workflow/|skills/|templates/|prototype/|hooks/|scripts/|bin/|\.github/|\.ai/)' \
+        | grep -Ev '\.md$' || true)
+
+    if [ -n "$impl_files" ]; then
+        if [ -f "scripts/speckit/verify-spec-compliance.js" ] && command -v node > /dev/null 2>&1; then
+            echo "Implementation changes staged on feature branch '$branch' — checking spec gate..."
+            if ! node scripts/speckit/verify-spec-compliance.js --gate; then
+                echo ""
+                echo "COMMIT BLOCKED by the refinement gate."
+                echo "The spec for this feature must be marked 'Approved' or 'Ready for Dev' before implementation code lands."
+                echo ""
+                echo "  Fix:    npm run spec:status -- set $branch Approved     (after sign-off)"
+                echo "  Check:  npm run spec:verify                             (full compliance report)"
+                echo "  Bypass: ZTO_SKIP_GATE=1 git commit ...                  (emergencies only)"
+                exit 1
+            fi
+        else
+            echo "Warning: gate tooling not found (scripts/speckit/verify-spec-compliance.js or node missing) — gate not enforced."
+        fi
+    fi
+fi
+
+# 4. Reminder about the coding guidelines constitution.
+if [ -f "CODE.md" ]; then
+    echo "Reminder: ensure your changes align with 'CODE.md'."
+fi
+
+echo "Pre-commit validation passed."
+exit 0

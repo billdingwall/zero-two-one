@@ -6,18 +6,30 @@
   "bin": {
     "zero-two-one-init": "bin/init.js"
   },
-  "scripts": {
-    "status": "node scripts/workflow-status.js",
-    "qa": "sh scripts/run-qa.sh",
-    "spec:status": "node scripts/speckit/spec-status.js",
-    "spec:context": "node scripts/speckit/fetch-speckit-context.js",
-    "spec:verify": "node scripts/speckit/verify-spec-compliance.js",
-    "test": "node scripts/speckit/spec-status.js list && node scripts/workflow-status.js",
-    "sync:package": "node scripts/sync-to-package.js",
-    "publish:package": "npm run sync:package && cd package && npm publish"
-  },
+  "files": [
+    "bin/",
+    ".ai/",
+    ".github/",
+    ".claude/",
+    "hooks/",
+    "prototype/",
+    "requirements/",
+    "scripts/",
+    "skills/",
+    "specs/",
+    "templates/",
+    "workflow/",
+    "CLAUDE.md",
+    "CODE.md",
+    "DESIGN.md",
+    "PRODUCT.md",
+    "README.md"
+  ],
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -28,7 +40,8 @@
     "speckit",
     "ai-agents",
     "product-framework",
-    "lifecycle"
+    "lifecycle",
+    "claude-code"
   ],
   "author": "",
   "license": "ISC",
