@@ -1,63 +1,26 @@
-# Experience Design Document (EDD)
+# Experience Design Document (EDD): Zero Two One
 
-This document serves as the definitive source of truth for the product's user experience. It outlines the foundational design principles, architectural structures, and interaction patterns required to ensure seamless synchronization between design intent and technical implementation.
+## 1. Overview
+Zero Two One is primarily a Developer Experience (DX) product. The "interface" is a combination of the CLI, the directory structure, and the interaction loop with an AI agent.
 
-## Target User & Core Journeys
+## 2. Core Workflows
 
-This section defines the primary user personas and the critical paths they navigate through the system.
+### Project Initialization
+- **User Action**: Runs `npx zero-two-one-init`.
+- **System Response**: Scaffolds the `requirements/`, `workflow/`, `skills/`, and `specs/` directories. Injects `.claude/commands/`. Installs the `pre-commit` hook.
+- **Experience Goal**: Instant setup. The user immediately understands where to write their requirements.
 
-| Persona | Description | Core Journey |
-| :--- | :--- | :--- |
-| **Primary User** | The main demographic interacting with the core features. | Onboarding &rarr; Core Action &rarr; Value Realization |
-| **Administrator** | Users managing system configuration and overseeing platform health. | Dashboard Overview &rarr; System Configuration &rarr; Issue Resolution |
+### AI Agent Interaction
+- **User Action**: Types `/status` (Claude Code) or runs `npm run status`.
+- **System Response**: Reports the current lifecycle phase (e.g., "Planning") and highlights missing key documents.
+- **Experience Goal**: The AI should act as a proactive project manager, guiding the user to complete the necessary prerequisites before writing code.
 
-*(To be expanded per product-specific context)*
+### Feature Implementation (Spec Kit)
+- **User Action**: The AI attempts to commit code for a new feature.
+- **System Response**: If the feature's spec in `specs/NNN-feature-name/spec.md` is not `Approved`, the `pre-commit` hook rejects the commit with a clear error message instructing the user to approve the spec first.
+- **Experience Goal**: A rigid but helpful guardrail that forces human-in-the-loop validation of AI-generated plans.
 
-## Interaction Architecture
-
-Defines how the user navigates the product, establishing consistent mental models across all surfaces.
-
-* **Navigation Paradigm:** Establish primary (e.g., top-level or sidebar) and secondary navigation structures.
-* **Layout Structures:** Utilize standardized grid systems (e.g., 12-column fluid grid) for responsive consistency.
-* **Information Hierarchy:** Prioritize content based on user goals, ensuring progressive disclosure to prevent cognitive overload.
-
-## State Management (UX Perspective)
-
-Explicit definitions for the varying states a user encounters across core views. Technical implementation (e.g., React state) must reflect these explicit UX states.
-
-| State | Definition | Expected UX Presentation |
-| :--- | :--- | :--- |
-| **Ideal/Active** | The primary, fully-populated view where the user achieves their goals. | Full data presentation with active interactive elements. |
-| **Loading** | The transition period while data or views are being fetched. | Skeleton screens or contextual spinners maintaining layout stability. |
-| **Empty** | A view containing no data (e.g., first run, cleared list). | Clear messaging with a primary Call-to-Action (CTA) to populate data. |
-| **Error** | A failure in fetching data or executing an action. | Concise, non-technical error messages with recovery actions (e.g., "Retry"). |
-| **Success** | Confirmation of a completed action. | Non-disruptive toast notifications or clear inline success indicators. |
-
-## Design System & Token Architecture
-
-Rules ensuring design decisions are scalable and AI-readable for smooth Figma-to-code synchronization.
-
-* **Design Tokens:** All semantic values (colors, spacing, typography) must be mapped to explicit design tokens (e.g., `color-brand-primary`, `spacing-md`). Avoid hardcoded values in implementation.
-* **Component Usage:** Utilize atomic design principles. Complex components must be composed of smaller, reusable foundational elements.
-* **Typography:** Adhere to a modular typographic scale to maintain rhythm and hierarchy.
-* **Theming:** Architecture must support scalable theming (e.g., light/dark modes) via token overriding at the root level.
-
-## Accessibility (a11y) Standards
-
-The product must be usable by everyone, adhering to WCAG standards.
-
-* **Keyboard Navigation:** All interactive elements must be fully focusable and navigable via keyboard (Tab/Shift+Tab, Enter/Space).
-* **ARIA Requirements:** Ensure proper ARIA roles and labels are applied to complex or custom interactive elements to support assistive technologies.
-* **Contrast Minimums:** Maintain a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text/UI components.
-
-## Micro-interactions & Animation
-
-Standardized motion principles to provide feedback without causing distraction or motion sickness.
-
-* **Easing:** Use standard easing curves (e.g., `ease-in-out` for general transitions, `ease-out` for entering elements) for natural feeling motion.
-* **Durations:** Keep animations snappy. UI transitions should typically fall between `150ms` and `300ms`.
-* **Feedback Loops:** Ensure every user action (hover, click, form submit) is met with immediate visual or tactile feedback.
-
----
-## Changelog
-- [Current Date] Initial structure implemented.
+## 3. Design Principles
+1. **Text as UI**: Markdown files are the primary interface. They must be highly readable by both humans and LLMs.
+2. **Invisible Enforcement**: The rules (like the refinement gate) should be invisible until violated, at which point they provide exact instructions for resolution.
+3. **Agent-First**: Context files (`CLAUDE.md`, `.ai/context/`) must prioritize LLM token efficiency and semantic clarity.

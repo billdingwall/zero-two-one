@@ -36,7 +36,6 @@ const dirsToCopy = [
   'bin',
   'hooks',
   'prototype',
-  'requirements',
   'scripts',
   'skills',
   'specs',
@@ -46,10 +45,6 @@ const dirsToCopy = [
 
 /** Guiding files to sync (starting-point templates) */
 const filesToCopy = [
-  'CLAUDE.md',
-  'CODE.md',
-  'DESIGN.md',
-  'PRODUCT.md',
   'README.md',
   '.gitignore',
 ];

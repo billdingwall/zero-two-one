@@ -1,19 +1,21 @@
-# Technical Design
+# Technical Design Document (TDD): Zero Two One
 
-*Note: For the expected user experience, state definitions, and design system token architecture, please refer to the [Experience Design Document (EDD)](02-EDD.md). All technical implementations of UI components and state management must align with the UX constraints defined in the EDD.*
+## 1. System Architecture
 
-## Architecture
-- Outline the technical architecture (e.g., backend services, frontend frameworks, database choices).
-- Document data flow and synchronization logic (e.g., flat-file data syncing, API integrations).
+The framework consists of three main technical components:
+1. **The CLI Scaffolder (`bin/init.js`)**: A zero-dependency Node.js script that constructs the user workspace from clean templates.
+2. **The Refinement Gate (`hooks/pre-commit`)**: A bash script installed into `.git/hooks/` that parses Markdown frontmatter in `specs/` to determine approval status.
+3. **Lifecycle Tooling (`scripts/`)**: Node.js scripts for fetching context, verifying compliance, and determining project status.
 
-## Core Decisions (Locked)
-- Record architectural decisions that are considered final and not subject to change during the current phase.
+## 2. Data Models
+State is managed entirely in text files (Markdown frontmatter and JSON):
+- `specs/*/spec.md`: Tracks feature lifecycle status (`status: Draft | In Review | Approved | Ready for Dev | In Progress | Done`).
+- `.ai/context/*.json`: Derived artifacts combining spec criteria and gate state for AI consumption.
 
-## Technical Constraints
-- Document any performance, security, or platform-specific constraints.
-- Define implementation details for supporting the UX states (Loading, Empty, Error, Success) defined in the EDD (e.g., React island hydration strategies, fallback mechanisms).
+## 3. Technical Constraints & Decisions
+- **Zero Runtime Dependencies**: The framework must run on built-in Node.js modules (`fs`, `path`, `child_process`) and standard POSIX shell utilities. We do not want to bloat the user's `node_modules` with framework tooling.
+- **Dual-Workspace Dogfooding**: The repository maintains a boundary between internal development (root) and the distributable template (`package/`). A sync script (`scripts/sync-to-package.js`) bridges them.
 
----
-## Changelog
-- [Date] Initial draft
-- [Date] Updated to integrate with the EDD for UI and state alignment.
+## 4. Claude Code Integration
+- Uses `.claude/commands/` for custom slash commands (`/init`, `/status`).
+- Uses `tools.json` (MCP or Anthropic tool schemas) mapped to local Node scripts for verifying specs and fetching context.

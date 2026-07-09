@@ -13,16 +13,11 @@
     ".claude/",
     "hooks/",
     "prototype/",
-    "requirements/",
     "scripts/",
     "skills/",
     "specs/",
     "templates/",
     "workflow/",
-    "CLAUDE.md",
-    "CODE.md",
-    "DESIGN.md",
-    "PRODUCT.md",
     "README.md"
   ],
   "engines": {

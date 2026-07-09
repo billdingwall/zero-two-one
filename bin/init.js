@@ -32,7 +32,6 @@ console.log(`Initializing Zero Two One AI Framework in ${targetDir}...`);
 // ---------------------------------------------------------------------------
 const dirsToCopy = [
   'prototype',
-  'requirements',
   'skills',
   'specs',
   'templates',
@@ -42,7 +41,8 @@ const dirsToCopy = [
   'hooks',
 ];
 
-const filesToCopy = ['CLAUDE.md', 'README.md', 'CODE.md', 'PRODUCT.md', 'DESIGN.md'];
+const requirementsDocs = ['01-PRD', '02-EDD', '03-TDD', '04-ROADMAP', '05-BACKLOG'];
+const guidingFiles = ['CLAUDE', 'README', 'CODE', 'PRODUCT', 'DESIGN'];
 
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
@@ -67,11 +67,26 @@ for (const dir of dirsToCopy) {
   }
 }
 
-for (const file of filesToCopy) {
-  const src = path.join(sourceDir, file);
+// Create requirements directory structure
+const reqDir = path.join(targetDir, 'requirements');
+fs.mkdirSync(reqDir, { recursive: true });
+['', '_refinement', '_design', '_notes'].forEach(sub => {
+  fs.mkdirSync(path.join(reqDir, sub), { recursive: true });
+});
+
+for (const doc of requirementsDocs) {
+  const src = path.join(sourceDir, 'templates', `${doc}-Template.md`);
   if (fs.existsSync(src)) {
-    console.log(`Copying ${file}...`);
-    fs.copyFileSync(src, path.join(targetDir, file));
+    console.log(`Creating requirements/${doc}.md from template...`);
+    fs.copyFileSync(src, path.join(reqDir, `${doc}.md`));
+  }
+}
+
+for (const file of guidingFiles) {
+  const src = path.join(sourceDir, 'templates', `${file}-Template.md`);
+  if (fs.existsSync(src)) {
+    console.log(`Creating ${file}.md from template...`);
+    fs.copyFileSync(src, path.join(targetDir, `${file}.md`));
   }
 }
 
