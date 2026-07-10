@@ -8,7 +8,7 @@ This document outlines the coding standards, behavior constraints, and generatio
 
 ## 2. Code Generation Rules
 * **Modularity:** Keep functions small and single-purpose.
-* **Comments & Documentation:** Explain *why* a complex decision was made, not *what* the code does (the code should be self-evident). Ensure all new files or directories have an `OVERVIEW.md` if they are structurally significant.
+* **Comments & Documentation:** Explain *why* a complex decision was made, not *what* the code does (the code should be self-evident). Ensure all new files or directories have an `_INDEX.md` if they are structurally significant.
 * **Artifact Integrity:** Do not directly edit build artifacts (e.g., in `dist/` or `build/`). Always trace back to the source files, modify them, and run the build process.
 
 ## 3. Workflow Constraints

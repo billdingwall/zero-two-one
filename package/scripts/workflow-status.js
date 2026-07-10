@@ -27,13 +27,13 @@ function getWorkflowStatus() {
   let hasPrototype = false;
   if (fs.existsSync(prototypeDir)) {
       const protoFiles = fs.readdirSync(prototypeDir);
-      hasPrototype = protoFiles.length > 1 || (protoFiles.length === 1 && protoFiles[0] !== 'OVERVIEW.md');
+      hasPrototype = protoFiles.length > 1 || (protoFiles.length === 1 && protoFiles[0] !== '_INDEX.md');
   }
 
   let hasSpecs = false;
   if (fs.existsSync(specsDir)) {
       const specFiles = fs.readdirSync(specsDir);
-      hasSpecs = specFiles.some(file => file.endsWith('.md') && file !== 'OVERVIEW.md');
+      hasSpecs = specFiles.some(file => file.endsWith('.md') && file !== '_INDEX.md');
   }
 
   if (hasSpecs) {
