@@ -8,9 +8,16 @@ Directory tracking the refinement loop cycles.
 - `r{x}-review.md`: Refinement round review files (when created).
 - `r{x}-update-{doc}.md`: Per-document synthesis plans for a round; the human approves these before living docs are edited.
 
-## Current Round
+## Current Round: r3 — pluggable tool stack (assistants, SSD engines, design systems)
 
-None open. Next up: **r3 — tool-agnostic init/migration** (Kiro, Google Antigravity), pre-scoped in [r2-review.md](r2-review.md) Open Questions and tagged on the v2 backlog.
+Synthesis plans awaiting approval. Research basis: [_notes/r3-tool-research.md](../_notes/r3-tool-research.md) (Antigravity, Kiro IDE/CLI, Material 3).
+
+- [r3-review.md](r3-review.md) — adapter findings, layer-invariant audit, design-system role.
+- [r3-update-prd.md](r3-update-prd.md) — pluggable tool stack as Core Feature 7.
+- [r3-update-tdd.md](r3-update-tdd.md) — §9 adapter contracts (assistant/SSD/design); §4 retitle; manifest `design` key.
+- [r3-update-roadmap.md](r3-update-roadmap.md) — adapter-shaped Init v2 in MVP; implementation stays post-MVP (recommended).
+- [r3-update-backlog.md](r3-update-backlog.md) — Adapters (r3) task group; cross-stack acceptance matrix.
+- [r3-update-workflows.md](r3-update-workflows.md) — de-bind layers 2–3; new design-system-selection workflow.
 
 ## Closed Rounds
 
