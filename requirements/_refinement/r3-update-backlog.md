@@ -24,11 +24,11 @@ Replacing the current tagged bullets with contract-referenced tasks:
 - [ ] Generalize `CLAUDE-Template.md` → `ASSISTANT-Template.md`; `AGENTS.md` as neutral default output; `claude` stack renders `CLAUDE.md` (behavior unchanged).
 
 **`antigravity` stack (TDD §9.2/9.3 — pairs with GitHub Spec Kit):**
-- [ ] `AGENTS.md` rendering; `skills/*.md` → `.agents/skills/<name>/SKILL.md` packaging; MCP registration guidance (`~/.gemini/config/mcp_config.json`).
-- [ ] Spec Kit pairing validation: gate, `spec:context`, `spec:verify` run unchanged with Antigravity driving (Antigravity artifacts are session-only; Spec Kit holds the durable state).
+- [ ] `AGENTS.md` rendering; `skills/*.md` → `.agents/skills/021-<name>/SKILL.md` packaging; MCP registration guidance (`~/.gemini/config/mcp_config.json`).
+- [ ] Spec Kit pairing validation: gate, `021-spec:context`, `021-spec:verify` run unchanged with Antigravity driving (Antigravity artifacts are session-only; Spec Kit holds the durable state).
 
 **`kiro` stack (TDD §9.2/9.3 — assistant + SSD in one):**
-- [ ] Steering rendering (`.kiro/steering/{product,tech,structure}.md` + frontmatter inclusion modes); `.kiro/agents/zero-two-one.json` CLI agent (prompt/resources → guiding + key docs; lifecycle hooks).
+- [ ] Steering rendering (`.kiro/steering/021-{product,tech,structure}.md` + frontmatter inclusion modes); `.kiro/agents/021.json` CLI agent (prompt/resources → guiding + key docs; lifecycle hooks).
 - [ ] `kiro-specs` engine binding: `status:` frontmatter injection in `.kiro/specs/<feature>/requirements.md`; task progress from `tasks.md` checkboxes.
 - [ ] Engine-dispatch layer in `scripts/speckit/*` (read engine from manifest; resolve spec paths and state per engine); gate + `spec:context`/`spec:verify` parity test against the Spec Kit baseline.
 
@@ -40,7 +40,7 @@ Replacing the current tagged bullets with contract-referenced tasks:
 **Init integration (TDD §7/§8):**
 - [ ] Stack interview question + `--stack`/`--design` flags; manifest `tools.stack` + `tools.design` keys (assistant/ssd derived).
 - [ ] Migrate-mode stack detection (`.claude/` → claude; `.agents/`/`AGENTS.md` → antigravity; `.kiro/` → kiro; `.specify/` confirms Spec Kit); conflict handling via interview.
-- [ ] Acceptance matrix: init/migrate on **3 stacks × {none, material-3}** — gate green and `npm run status`/`qa` working in all six cells.
+- [ ] Acceptance matrix: init/migrate on **3 stacks × {none, material-3}** — gate green and `npm run 021-status`/`021-qa` working in all six cells; no framework file lands outside the `021-` namespace in shared directories.
 
 ### 3. Watch item under `## Open Questions & Blockers`
 

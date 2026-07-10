@@ -3,7 +3,7 @@
 **Status:** Proposed — awaiting human approval
 **Date:** 2026-07-10
 **Round:** r3
-**Findings addressed:** 4.2, 5 (invariant audit), 6 (proposal drift)
+**Findings addressed:** 4.2, 5 (invariant audit), 6 (proposal drift), 8 (command namespace sweep)
 **Target docs:** `workflow/workflows.md`, `workflow/specific-workflows/spec-driven-delivery.md`, `workflow/specific-workflows/key-docs-to-ssd.md`, `workflow/specific-workflows/init-and-migration.md`, `workflow/specific-workflows/design-system-selection.md` (new), `templates/DESIGN-Template.md`, `.021-updates/framework-architecture-proposal.md`
 
 ## Intent
@@ -19,6 +19,13 @@ Three jobs: (a) cure the layer-2/3 invariant violations found in the audit — p
 - `key-docs-to-ssd.md`: "SpecKit branches" → "SSD feature branches (`NNN-feature-name`)".
 - `init-and-migration.md`: add the stack question (interview/`--stack` flag) + design question; adapter-aware surface table per stack; migrate-mode detection list gains `.kiro/`, `.agents/`, `AGENTS.md`.
 - Rule of thumb added to `workflows.md`: process docs may name a default in parentheses; only the manifest and TDD §9 bind tools normatively.
+
+### 1b. `021-` command rename sweep (finding 8 — mechanical, applied at r3 apply time)
+
+- Rename npm scripts in root + package `package.json` and `bin/init.js` `lifecycleScripts`: `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify`.
+- Rename `package/.claude/commands/{init,status}.md` → `021-init.md`, `021-status.md` (fixes the shadowing of Claude Code's built-in `/init`).
+- Sweep every `npm run <cmd>` / `/init` / `/status` reference: `workflows.md` §4 command table, `CLAUDE.md` (root + template), `hooks/pre-commit` fix-hint text, `README.md`, `init-and-migration.md`, skills prompts, `.021-updates/init-installation-overview.md`.
+- Scripts/hooks/bin are gate-exempt tooling surface, so the rename lands with the round; the r2 merge rule stays as the safety net and becomes collision-improbable with namespaced names.
 
 ### 2. New `workflow/specific-workflows/design-system-selection.md` (finding 4.2)
 

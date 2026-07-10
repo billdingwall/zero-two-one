@@ -22,6 +22,8 @@ Pre-scoped by r2's open questions, expanded per user direction: make init/migrat
 
 The design system is an **independent role** (any stack × `none` / `material-3`). This round designs the adapter contracts; implementation timing is an open question below.
 
+**Stakeholder direction (this round, addition):** all framework commands — terminal (npm scripts) and coding-assistant namespace (slash commands, skills, agents, steering files) — are **namespaced with `021-`** to avoid conflicts with user projects and tool built-ins.
+
 ## Findings
 
 ### 1. The assistant-instructions doc is a universal primitive, but ours is hard-bound
@@ -49,6 +51,9 @@ Per the pre-r3 prerequisite audit: `workflow/workflows.md` §4 states the framew
 ### 7. The manifest `tools` block lacks stack + design expression
 r2 shipped `tools: { assistant, ssd }`. Needed: a `stack` concept (assistant implies SSD) and a `design` key. Additive change — keep `assistant`/`ssd` fields (derived from the stack) so r2 consumers don't break.
 
+### 8. Framework command names are conflict-prone (stakeholder direction)
+Concrete collisions exist today: the framework's `/init` slash command shadows **Claude Code's built-in `/init`** command; the npm scripts `status` and `qa` are common names in user `package.json` files — and under r2's merge rule (add only if name not taken), a collision means the framework script **silently never gets wired**; Kiro's default steering filenames (`product.md`, `tech.md`, `structure.md`) would clobber a Kiro user's existing steering on migrate. Every stack's command surface needs a collision-proof namespace.
+
 ## Proposed Changes
 
 1.1 Introduce an **adapter architecture** (TDD §9): a tool-neutral source layer (`templates/ASSISTANT-Template.md` as the canonical instruction source; existing `skills/*.md`; key docs) plus per-stack **renderers** — `claude` (→ `CLAUDE.md` + `.claude/commands/`), `antigravity` (→ `AGENTS.md` + `.agents/skills/*/SKILL.md` packages + MCP registration), `kiro` (→ `.kiro/steering/{product,tech,structure}.md` with frontmatter + `.kiro/agents/zero-two-one.json` CLI agent).
@@ -65,7 +70,14 @@ r2 shipped `tools: { assistant, ssd }`. Needed: a `stack` concept (assistant imp
 
 5.1 **De-bind layers 2–3** (finding 5): sweep `workflows.md`, `spec-driven-delivery.md`, `key-docs-to-ssd.md`, `init-and-migration.md`, and TDD section titles to role/stack-based language with defaults noted once; concrete bindings live only in `.zero-two-one.json` and TDD §9.
 
-6.1 **Reconcile the architecture proposal** (finding 6): correct the Kiro steering model and manifest filename, replace the independent assistant/SSD interview with the stack question, add Antigravity, and mark the adopted sections as canonical-in-TDD-§9 so the internal doc stops drifting.
+6.1 **Reconcile the architecture proposal** (finding 6): correct the Kiro steering model and manifest filename, replace the independent assistant/SSD interview with the stack question, add Antigravity, note the `021-` command namespace, and mark the adopted sections as canonical-in-TDD-§9 so the internal doc stops drifting.
+
+8.1 **Namespace the framework command surface with `021-`** (finding 8), across all stacks:
+- npm scripts: `status`/`qa`/`spec:status`/`spec:context`/`spec:verify` → `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify` (the `zero-two-one-init` bin name is already unique and unchanged).
+- `claude` stack: `.claude/commands/021-init.md`, `.claude/commands/021-status.md` → `/021-init`, `/021-status` (also resolves the built-in `/init` shadowing).
+- `antigravity` stack: skill packages named `.agents/skills/021-<name>/`.
+- `kiro` stack: steering rendered as `.kiro/steering/021-{product,tech,structure}.md`; CLI agent `.kiro/agents/021.json` (invoked as `021`).
+- The rename is mechanical and cheap — apply it to the dogfooding repo and package at r3 apply time (scripts/commands are gate-exempt tooling surface), so docs and reality don't drift; init-time collision handling remains as the r2 merge rule, now with collision-improbable names.
 
 ## Open Questions Raised
 

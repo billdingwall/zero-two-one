@@ -12,9 +12,10 @@ Record r3 as designed, keep implementation sequencing honest. Recommended positi
 
 ## Proposed Edits
 
-### 1. Phase 3 (MVP Build) — one addition
+### 1. Phase 3 (MVP Build) — two additions
 
 - [ ] Build Init v2 **adapter-shaped**: instruction/skill/command rendering and SSD paths resolved through the stack adapter interface (TDD §9), even though only the `claude` stack and `none` design binding ship in MVP.
+- [x] `021-` command namespace rename (npm scripts, `/021-init`, `/021-status`) — applied with the r3 round (finding 8; mechanical, gate-exempt tooling surface).
 
 ### 2. Update the "Upcoming rounds" note
 

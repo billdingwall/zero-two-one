@@ -3,7 +3,7 @@
 **Status:** Proposed — awaiting human approval
 **Date:** 2026-07-10
 **Round:** r3
-**Findings addressed:** 1, 2, 3, 4, 7 (product surface)
+**Findings addressed:** 1, 2, 3, 4, 7, 8 (product surface)
 **Target doc:** [../01-PRD.md](../01-PRD.md)
 
 ## Intent
@@ -18,12 +18,13 @@ The framework runs on one of three named stacks (recorded as `stack` in `.zero-t
 
 | Stack | AI Assistant | SSD Engine |
 |---|---|---|
-| `claude` (default) | Claude Code (`CLAUDE.md` + `.claude/commands/`) | GitHub Spec Kit |
-| `antigravity` | Google Antigravity (`AGENTS.md` + `.agents/skills/`) | GitHub Spec Kit |
-| `kiro` | Kiro IDE/CLI (steering files + CLI agent) | Kiro specs (`.kiro/specs/`) |
+| `claude` (default) | Claude Code (`CLAUDE.md` + `/021-*` commands) | GitHub Spec Kit |
+| `antigravity` | Google Antigravity (`AGENTS.md` + `021-*` skills) | GitHub Spec Kit |
+| `kiro` | Kiro IDE/CLI (`021-*` steering + `021` CLI agent) | Kiro specs (`.kiro/specs/`) |
 
 - The refinement gate works identically across stacks via the SSD state contract (TDD §9.3).
 - **Design system** (independent of stack): default bespoke `DESIGN.md`; first pluggable option Google Material 3 (token-mapped theming with Theme Builder exports).
+- **`021-` command namespace** (finding 8): every framework command — npm scripts (`021-status`, `021-qa`, `021-spec:*`) and assistant-side commands/skills/steering — is namespaced to avoid conflicts with user projects and tool built-ins (e.g. Claude Code's own `/init`).
 
 ### 2. Amend Core Feature 1 (init modes)
 

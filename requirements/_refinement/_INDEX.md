@@ -10,7 +10,7 @@ Directory tracking the refinement loop cycles.
 
 ## Current Round: r3 — supported tool stacks + pluggable design system
 
-Synthesis plans awaiting approval. Three named stacks (stakeholder direction): `claude` = Claude Code + Spec Kit · `antigravity` = Antigravity + Spec Kit · `kiro` = Kiro assistant + Kiro specs; design system chosen independently (`none` / `material-3`). Research basis: [_notes/r3-tool-research.md](../_notes/r3-tool-research.md).
+Synthesis plans awaiting approval. Three named stacks (stakeholder direction): `claude` = Claude Code + Spec Kit · `antigravity` = Antigravity + Spec Kit · `kiro` = Kiro assistant + Kiro specs; design system chosen independently (`none` / `material-3`); all framework commands namespaced `021-` (npm scripts, slash commands, skills, steering, agents). Research basis: [_notes/r3-tool-research.md](../_notes/r3-tool-research.md).
 
 - [r3-review.md](r3-review.md) — stack model, adapter findings, layer-invariant audit, architecture-proposal drift review.
 - [r3-update-prd.md](r3-update-prd.md) — supported stacks as Core Feature 7.

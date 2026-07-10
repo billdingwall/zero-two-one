@@ -3,7 +3,7 @@
 **Status:** Proposed — awaiting human approval
 **Date:** 2026-07-10
 **Round:** r3
-**Findings addressed:** 1, 2, 3, 4, 5 (TDD §4 title), 7
+**Findings addressed:** 1, 2, 3, 4, 5 (TDD §4 title), 7, 8 (command namespace)
 **Target doc:** [../03-TDD.md](../03-TDD.md)
 **Research basis:** [_notes/r3-tool-research.md](../_notes/r3-tool-research.md)
 
@@ -23,13 +23,15 @@ Current §4 ("Claude Code Integration") becomes the `claude` stack's binding ins
 
 **9.2 Supported stacks.** A stack binds the assistant and SSD roles together; free pairing is out of scope (stakeholder direction, r3 finding 3):
 
-| Stack | Instructions | Skills/commands | SSD engine |
-|---|---|---|---|
-| `claude` (default) | `CLAUDE.md` | `skills/*.md` as-is; `.claude/commands/` | `github-speckit` |
-| `antigravity` | `AGENTS.md` (project root; `GEMINI.md` honored) | `.agents/skills/<name>/SKILL.md` (+ `scripts/`, `references/`, `assets/`); MCP via `~/.gemini/config/mcp_config.json`; artifact-review gate noted | `github-speckit` |
-| `kiro` | `.kiro/steering/{product,tech,structure}.md` with YAML frontmatter inclusion modes (`always` for product/tech; `fileMatch` where scoped) | `skill://` resources; `.kiro/agents/zero-two-one.json` CLI agent (`prompt: file://` → guiding docs, `resources` globs → key docs, lifecycle `hooks`) | `kiro-specs` |
+All command surfaces are **`021-` namespaced** (finding 8) to avoid collisions with user projects and tool built-ins:
 
-Steering mapping for `kiro`: `PRODUCT.md` → `product.md`; `CODE.md` + TDD constraints → `tech.md`; `workflows.md` structure summary → `structure.md` (idiomatic three-file split — confirm vs single-file at approval).
+| Stack | Instructions | Skills/commands (021-namespaced) | SSD engine |
+|---|---|---|---|
+| `claude` (default) | `CLAUDE.md` | `skills/*.md` as-is; `.claude/commands/021-init.md`, `021-status.md` → `/021-init`, `/021-status` | `github-speckit` |
+| `antigravity` | `AGENTS.md` (project root; `GEMINI.md` honored) | `.agents/skills/021-<name>/SKILL.md` (+ `scripts/`, `references/`, `assets/`); MCP via `~/.gemini/config/mcp_config.json`; artifact-review gate noted | `github-speckit` |
+| `kiro` | `.kiro/steering/021-{product,tech,structure}.md` with YAML frontmatter inclusion modes (`always` for product/tech; `fileMatch` where scoped) | `skill://` resources; `.kiro/agents/021.json` CLI agent, invoked as `021` (`prompt: file://` → guiding docs, `resources` globs → key docs, lifecycle `hooks`) | `kiro-specs` |
+
+Steering mapping for `kiro`: `PRODUCT.md` → `021-product.md`; `CODE.md` + TDD constraints → `021-tech.md`; `workflows.md` structure summary → `021-structure.md` (idiomatic three-file split with namespaced filenames so existing user steering is never clobbered — confirm vs single-file at approval).
 
 **9.3 SSD engine contract.** Every engine must expose: (a) **durable committed spec state** readable by the gate, (b) a context source for `spec:context`, (c) a verify surface for `spec:verify`. Two bindings:
 - `github-speckit`: `specs/NNN-*/spec.md` `status:` frontmatter — native. Serves the `claude` **and** `antigravity` stacks (Antigravity's task lists / implementation plans / walkthroughs are session artifacts, not durable spec state — Spec Kit holds the gate-readable state while Antigravity drives).
@@ -58,7 +60,11 @@ Existing tool surfaces propose the matching stack: `.claude/` → `claude`; `.ag
 
 ### 5. Amend §6 ownership table
 
-Framework-owned paths become stack-resolved (`.claude/commands/` for `claude`; `.agents/skills/` for `antigravity`; `.kiro/steering/` + `.kiro/agents/` for `kiro`). Ownership semantics unchanged.
+Framework-owned paths become stack-resolved and 021-scoped (`.claude/commands/021-*` for `claude`; `.agents/skills/021-*` for `antigravity`; `.kiro/steering/021-*` + `.kiro/agents/021.json` for `kiro`) — the framework only ever owns files inside its namespace, so user files in the same directories are untouchable by definition. Ownership semantics unchanged.
+
+### 6. Command namespace (finding 8) — applies at r3 apply time
+
+Lifecycle npm scripts rename to the `021-` namespace: `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify` (`zero-two-one-init` bin unchanged — already unique). `bin/init.js` `lifecycleScripts`, the dogfooding repo's own `package.json` (root + package), `.claude/commands/` filenames, and all doc references update together. This also resolves the `/init` shadowing of Claude Code's built-in command, and makes r2's add-only-if-name-free merge rule collision-improbable in practice.
 
 ## Constraints
 
