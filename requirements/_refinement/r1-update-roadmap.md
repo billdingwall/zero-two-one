@@ -1,6 +1,6 @@
 # r1 Update Plan: 04-ROADMAP.md
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r1
 **Findings addressed:** 4 (4.1)

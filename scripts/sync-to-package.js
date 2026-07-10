@@ -65,6 +65,14 @@ const rootExclusions = new Set([
   '.DS_Store',
 ]);
 
+/**
+ * Dev-only scripts that must not ship in package/scripts/ (see the
+ * Package Manifest in requirements/03-TDD.md §5).
+ */
+const scriptExclusions = new Set([
+  'sync-to-package.js',
+]);
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -72,12 +80,13 @@ const rootExclusions = new Set([
 /**
  * Recursively copy a directory, skipping excluded entries.
  */
-function copyDir(src, dest) {
+function copyDir(src, dest, exclusions = null) {
   if (!fs.existsSync(src)) return;
   fs.mkdirSync(dest, { recursive: true });
 
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
     if (entry.name === '.DS_Store') continue;
+    if (exclusions && exclusions.has(entry.name)) continue;
 
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
@@ -123,7 +132,7 @@ for (const dir of dirsToCopy) {
   removeDir(dest);
 
   console.log(`  📁 ${dir}/`);
-  copyDir(src, dest);
+  copyDir(src, dest, dir === 'scripts' ? scriptExclusions : null);
 }
 
 // Sync guiding files

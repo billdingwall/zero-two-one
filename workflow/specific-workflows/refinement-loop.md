@@ -21,6 +21,10 @@
 4. **Constraint Check**
    If core principles changed, amend `CODE.md`.
 
+   *Template maintenance:* whenever a guiding or key doc is added, renamed, or removed in a round, sweep `templates/` for affected references (especially "Related Docs" lines) and update them in the same round.
+
+   *Growth-phase note:* once the product is in the Growth phase, the cascade in step 3 reads **Roadmap > Releases > Backlog** — reviews feed the backlog, and releases pull from it (see [mvp-to-growth-transition.md](mvp-to-growth-transition.md)).
+
 5. **Design & Prototype Update**
    Update `DESIGN.md` (or the Design System) and the `prototype/` to reflect the applied changes.
 

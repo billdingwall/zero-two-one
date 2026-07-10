@@ -4,6 +4,7 @@
 - **Date:** [YYYY-MM-DD]
 - **Status:** [Draft / Applied]
 - **Round:** [Number]
+- **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Backlog](../05-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
 
 ## Project Updates
 *Direct changes to the project requirements, design, roadmap, etc.*

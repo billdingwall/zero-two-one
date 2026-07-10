@@ -1,6 +1,6 @@
 # r1 Update Plan: Workflows, Templates & Sync Tooling
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r1
 **Findings addressed:** 1.1, 2.1, 2.2, 4.1, 4.2

@@ -1,6 +1,6 @@
 # Refinement Round: r1
 
-**Status:** Draft — review captured, synthesis in progress
+**Status:** Applied
 **Date:** 2026-07-10
 **Reviewer:** William Dingwall (billdingwall)
 **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Backlog](../05-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
@@ -54,3 +54,15 @@ not at the moment. Add an audit of the framework and project workflows to the .0
 <!-- Filled in once the round's changes are applied: which docs were edited, version bumps, date closed -->
 
 This review round is focused on getting this project to MVP and adding v2 items for the growth phase.
+
+**Closed:** 2026-07-10. Changes applied per the four synthesis plans (`r1-update-{tdd,roadmap,backlog,workflows}.md`):
+
+- `03-TDD.md` — added §5 Package Manifest; bound the sync script to it (findings 1.1, 1.2, 2.2).
+- `04-ROADMAP.md` — restructured into Releases (Growth) + frozen MVP Roadmap; Phase 4 bullets moved to backlog (finding 4.1).
+- `05-BACKLOG.md` — populated: MVP tasks, v2/Growth items (design system, pluggable SSD tool, pluggable assistant, config flow — out of MVP scope per finding 3.4), open-questions register (findings 3, 4.2).
+- `scripts/sync-to-package.js` — self-exclusion via `scriptExclusions`; removed from `package/scripts/` (finding 1.1).
+- `templates/06-REVIEW-Template.md` — Related Docs line restored with current guiding + key docs (finding 2.1).
+- `templates/04-ROADMAP-Template.md`, `templates/05-BACKLOG-Template.md` — restructured to match the new living-doc shapes (finding 2.1).
+- `workflow/specific-workflows/mvp-to-growth-transition.md` — new transition workflow, linked from `workflows.md`, `product-lifecycle.md`, and `refinement-loop.md` (findings 4.1, 4.2).
+- `CODE.md` — constraint check: no principle changes required.
+- Framework layering + tool-agnosticism recorded in `.021-updates/framework-architecture-proposal.md` (findings 3.1–3.3); v2 execution deferred to the backlog.

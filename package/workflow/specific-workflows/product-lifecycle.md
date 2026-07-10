@@ -24,4 +24,5 @@ The Zero Two One framework operates across a 4-phase lifecycle, transitioning a 
 **Goal:** Continuously improve the product based on user analytics and feedback.
 - **Key Artifacts:** Living Core Docs (`01-PRD.md`, `02-EDD.md`, `03-TDD.md`), `05-BACKLOG.md`.
 - **Workflow:** Refinement Loop + Spec-Driven Delivery.
-- **Mechanics:** User feedback triggers refinement rounds that update the living documents and populate the `05-BACKLOG.md`. The backlog items then feed into Spec-Driven Delivery for continuous implementation.
+- **Entry:** The switch from Phase 3 follows the [MVP → Growth Transition](mvp-to-growth-transition.md): the MVP roadmap freezes as history, the Releases section activates, and backlog prioritization switches to user value.
+- **Mechanics:** User feedback triggers refinement rounds that update the living documents and populate the `05-BACKLOG.md`. Releases pull backlog items at the team's discretion, which then feed into Spec-Driven Delivery for continuous implementation.

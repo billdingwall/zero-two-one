@@ -1,21 +1,37 @@
 # Project Roadmap: Zero Two One
 
-## Phase 1: Planning (Completed)
-- Define the 4-phase lifecycle concept.
-- Establish the `requirements/` and `workflow/` directory structures.
+## Releases (Growth)
 
-## Phase 2: Pre-build (Current)
-- Implement the `npx zero-two-one-init` CLI scaffolder.
-- Build the `pre-commit` refinement gate bash script.
-- **Decouple the architecture**: Establish the `package/` boundary for clean NPM publishing and dogfooding (Done).
-- Finalize Claude Code integrations (`/init`, `/status`).
+*This section activates when the product enters the Growth phase (see the [MVP → Growth transition workflow](../workflow/specific-workflows/mvp-to-growth-transition.md)). Releases are defined at the team's discretion by pulling items from [05-BACKLOG.md](05-BACKLOG.md), prioritized by **user value** as defined from user feedback. Until then, this section stays empty and the MVP Roadmap below drives all work.*
 
-## Phase 3: MVP Build (Next)
-- Publish `zero-two-one` v1.1.x to the NPM registry.
-- Test the framework end-to-end on a brand new, empty repository using Claude Code.
-- Implement automated testing for the `init.js` script and `pre-commit` hook.
+<!-- ### Release v1.x — <theme>
+**Goal:**
+**Pulled backlog items:**
+- -->
 
-## Phase 4: Growth (Future)
-- Add support for MCP (Model Context Protocol) servers natively within the framework.
-- Create more specific templates (e.g., Database Schema template, API Design template).
-- Integrate with issue trackers (Linear, Jira) to sync spec statuses.
+## MVP Roadmap (Phases 1–3)
+
+*Frozen as a historical record once the Growth phase begins — completed items get checked, no new scope is added here.*
+
+### Phase 1: Planning (Completed)
+- [x] Define the 4-phase lifecycle concept.
+- [x] Establish the `requirements/` and `workflow/` directory structures.
+
+### Phase 2: Pre-build (Current)
+- [x] Implement the `npx zero-two-one-init` CLI scaffolder.
+- [x] Build the `pre-commit` refinement gate bash script.
+- [x] **Decouple the architecture**: Establish the `package/` boundary for clean NPM publishing and dogfooding.
+- [x] Rename directory indexes to `_INDEX.md` and align package templates to the `-Template.md` convention.
+- [ ] Finalize Claude Code integrations (`/init`, `/status`).
+
+### Phase 3: MVP Build (Next)
+- [ ] Publish `zero-two-one` v1.1.x to the NPM registry.
+- [ ] Test the framework end-to-end on a brand new, empty repository using Claude Code.
+- [ ] Implement automated testing for the `init.js` script and `pre-commit` hook.
+
+## Transition Note
+
+When the Phase 3 exit gate passes (MVP launched, QA green), the roadmap changes shape: the MVP Roadmap above freezes as history and the Releases section takes over, pulling from the backlog. Mechanics are defined in [mvp-to-growth-transition.md](../workflow/specific-workflows/mvp-to-growth-transition.md). Growth-phase feature ideas live in [05-BACKLOG.md](05-BACKLOG.md) — not here — until pulled into a release.
+
+## Changelog
+- **2026-07-10 (r1):** Restructured into Releases (Growth) + MVP Roadmap sections; moved former Phase 4 feature bullets to the backlog; added transition note. Per [_refinement/r1-update-roadmap.md](_refinement/r1-update-roadmap.md).

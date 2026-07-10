@@ -1,6 +1,6 @@
 # r1 Update Plan: 05-BACKLOG.md
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r1
 **Findings addressed:** 3 (3.1–3.4 backlog items), 4.2

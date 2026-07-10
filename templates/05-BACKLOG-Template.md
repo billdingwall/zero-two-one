@@ -1,25 +1,32 @@
-# Project Tracking: Epic / Task Breakdown
+# Project Backlog: [Project Name]
 
-**Epic Title:** [Name of Epic]
-**Linked PRD:** [Link]
-**Linked TDD:** [Link]
+## Current Phase: [Planning / Pre-build / MVP Build / Growth]
 
-## 1. Discovery & Design
-*Focus on research, UX/UI creation, and validation.*
-- [ ] **Task 1.1:** Finalize user flow diagrams.
-- [ ] **Task 1.2:** Design high-fidelity screens in Figma.
-- [ ] **Task 1.3:** Design QA against design system tokens (Typography, Spacing, Colors).
+*Backlog ordering is roadmap-driven until the Growth phase. From Growth onward, **user value** — defined from user feedback collected in refinement rounds — is the primary prioritization signal. See `workflow/specific-workflows/mvp-to-growth-transition.md`.*
 
-## 2. Implementation
-*Focus on front-end and back-end development.*
-- [ ] **Task 2.1:** Implement UI components based on Figma handoff.
-- [ ] **Task 2.2:** Set up database schema (SQLite/Flat-file) per TDD.
-- [ ] **Task 2.3:** Integrate frontend components with data layer (API/file reads).
+## MVP Backlog
 
-## 3. Definition of Done (DoD)
-*Strict criteria that must be met before this Epic is considered complete.*
-- [ ] Code is reviewed and merged into the main branch.
-- [ ] Design QA is signed off by the Product Designer.
-- [ ] Automated tests (if applicable) pass successfully.
-- [ ] Feature works completely offline or handles edge cases cleanly (if applicable).
-- [ ] End-to-end user flow is verified in a staging/production-like environment.
+*Tasks that support delivery of the MVP Roadmap in `04-ROADMAP.md`.*
+
+- [ ] **Task:** (Link to roadmap milestone or spec)
+
+## v2 / Growth Backlog
+
+*Not MVP scope. Pulled into releases at the team's discretion once the Growth phase begins, ordered by user value.*
+
+1. **Feature:** (What & why; link to the refinement round that raised it)
+
+## Open Questions & Blockers
+
+*Unresolved questions from refinement rounds land here instead of blocking a round.*
+
+- **Question:** (Origin round; what unblocks it)
+
+## Refinement Cycles
+
+*One line per round, linking to `requirements/_refinement/r{n}-review.md`.*
+
+- **r1** (YYYY-MM-DD): (scope summary)
+
+## Changelog
+-
