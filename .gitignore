@@ -3,3 +3,4 @@
 !.ai/context/.gitkeep
 node_modules/
 package/node_modules/
+.DS_Store
