@@ -11,7 +11,7 @@ Zero Two One is primarily a Developer Experience (DX) product. The "interface" i
 - **Experience Goal**: Instant setup. The user immediately understands where to write their requirements.
 
 ### AI Agent Interaction
-- **User Action**: Types `/status` (Claude Code) or runs `npm run status`.
+- **User Action**: Types `/021-status` (Claude Code) or runs `npm run 021-status`.
 - **System Response**: Reports the current lifecycle phase (e.g., "Planning") and highlights missing key documents.
 - **Experience Goal**: The AI should act as a proactive project manager, guiding the user to complete the necessary prerequisites before writing code.
 

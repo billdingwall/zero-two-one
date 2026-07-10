@@ -45,8 +45,8 @@ if echo "$branch" | grep -Eq '^[0-9]{3}-'; then
                 echo "COMMIT BLOCKED by the refinement gate."
                 echo "The spec for this feature must be marked 'Approved' or 'Ready for Dev' before implementation code lands."
                 echo ""
-                echo "  Fix:    npm run spec:status -- set $branch Approved     (after sign-off)"
-                echo "  Check:  npm run spec:verify                             (full compliance report)"
+                echo "  Fix:    npm run 021-spec:status -- set $branch Approved     (after sign-off)"
+                echo "  Check:  npm run 021-spec:verify                             (full compliance report)"
                 echo "  Bypass: ZTO_SKIP_GATE=1 git commit ...                  (emergencies only)"
                 exit 1
             fi

@@ -86,7 +86,7 @@ if (spec) {
         'G3',
         'FAIL',
         `Status "${status}" does not pass the implementation gate. Required: ${lib.GATE_PASSING.join(' | ')}. ` +
-          `Once the spec is signed off, run: npm run spec:status -- set ${spec} Approved`
+          `Once the spec is signed off, run: npm run 021-spec:status -- set ${spec} Approved`
       );
     }
   }
@@ -156,12 +156,12 @@ if (spec) {
       };
       walk(specDir);
       if (newest > bundleTime) {
-        add('C5', 'WARN', 'Spec artifacts changed after the .ai/context bundle was generated. Re-run: npm run spec:context');
+        add('C5', 'WARN', 'Spec artifacts changed after the .ai/context bundle was generated. Re-run: npm run 021-spec:context');
       } else {
         add('C5', 'PASS', 'Context bundle is up to date.');
       }
     } else {
-      add('C5', 'WARN', `No context bundle at .ai/context/${spec}.md. Generate one with: npm run spec:context`);
+      add('C5', 'WARN', `No context bundle at .ai/context/${spec}.md. Generate one with: npm run 021-spec:context`);
     }
   }
 }

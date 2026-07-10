@@ -106,7 +106,7 @@ for (const dir of aiDirs) {
 // Generated bundles are derived artifacts — keep them out of version control.
 const gitignorePath = path.join(targetDir, '.gitignore');
 const ignoreBlock = [
-  '# zero-two-one: generated AI context bundles (rebuild with `npm run spec:context`)',
+  '# zero-two-one: generated AI context bundles (rebuild with `npm run 021-spec:context`)',
   '.ai/context/*',
   '!.ai/context/.gitkeep',
   'node_modules/',
@@ -135,11 +135,11 @@ if (fs.existsSync(hooksDir) && fs.existsSync(hookSource)) {
 // 4. Wire lifecycle npm scripts into the target package.json
 // ---------------------------------------------------------------------------
 const lifecycleScripts = {
-  status: 'node scripts/workflow-status.js',
-  qa: 'sh scripts/run-qa.sh',
-  'spec:status': 'node scripts/speckit/spec-status.js',
-  'spec:context': 'node scripts/speckit/fetch-speckit-context.js',
-  'spec:verify': 'node scripts/speckit/verify-spec-compliance.js',
+  '021-status': 'node scripts/workflow-status.js',
+  '021-qa': 'sh scripts/run-qa.sh',
+  '021-spec:status': 'node scripts/speckit/spec-status.js',
+  '021-spec:context': 'node scripts/speckit/fetch-speckit-context.js',
+  '021-spec:verify': 'node scripts/speckit/verify-spec-compliance.js',
 };
 
 const pkgPath = path.join(targetDir, 'package.json');

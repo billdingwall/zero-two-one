@@ -1,6 +1,6 @@
 # r3 Update Plan: 04-ROADMAP.md
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r3
 **Findings addressed:** 3 (stack model sequencing); open question (implementation timing)

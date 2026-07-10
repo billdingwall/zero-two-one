@@ -1,6 +1,6 @@
 # Proposal: Framework Layering & Tool-Agnostic Architecture
 
-**Status:** Proposal — internal, not a living doc
+**Status:** Adopted (r3) — the layering, adapter contracts, design-system adapter, and existing-repo sections are now **canonical in `requirements/03-TDD.md` §§6–9**; this doc is kept as the original rationale. Reconciled 2026-07-10 per r3 finding 6 (`requirements/_refinement/r3-review.md`).
 **Origin:** r1 refinement round, finding 3 (`requirements/_refinement/r1-review.md`)
 **Date:** 2026-07-10
 
@@ -21,10 +21,11 @@ The invariant: **layers 2 and 3 never reference a concrete tool by name**; they 
 
 ## Tool Adapters
 
-### AI assistant (default: Claude Code)
+### AI assistant (default: Claude Code) — *reconciled r3*
 
-- The assistant-instructions doc becomes a role: `templates/CLAUDE-Template.md` generalizes to an `ASSISTANT-Template.md` rendered as `CLAUDE.md`, `KIRO.md`, `AGENTS.md`, etc., at init time, with tool-specific wiring (e.g. Kiro project settings pointing at `KIRO.md`) handled by the adapter.
-- Slash commands / hooks (`.claude/commands/`, `skills/tools.json`) get per-adapter equivalents; the adapter declares what it can automate and the workflow docs degrade gracefully to manual steps for anything it can't.
+- The assistant-instructions doc becomes a role: `templates/CLAUDE-Template.md` generalizes to an `ASSISTANT-Template.md` rendered per stack at init time — `CLAUDE.md` (`claude`), `AGENTS.md` (`antigravity`, also the neutral default name), or Kiro **steering files** (`.kiro/steering/021-{product,tech,structure}.md` — *not* a single `KIRO.md` as originally proposed; Kiro uses multi-file steering with frontmatter inclusion modes).
+- **Google Antigravity** (absent from the original proposal): `AGENTS.md` rules + `.agents/skills/021-*/SKILL.md` packages; assistant-only — its work artifacts are session-scoped, so it pairs with GitHub Spec Kit for SSD.
+- Slash commands / skills / agents get per-stack equivalents, all under the `021-` naming convention (`CODE.md`); the adapter declares what it can automate and the workflow docs degrade gracefully to manual steps for anything it can't.
 
 ### SSD engine (default: GitHub Spec Kit)
 
@@ -38,14 +39,13 @@ The invariant: **layers 2 and 3 never reference a concrete tool by name**; they 
 
 ## Configuration Flow (init-time interview)
 
-`bin/init.js` (or the `/init` slash command) grows a short interview *before* scaffolding:
+*Reconciled r3:* `bin/init.js` (or the `/021-init` slash command) grows a short interview *before* scaffolding:
 
-1. Which AI assistant? → picks the assistant adapter, names the instructions doc.
-2. Which SSD engine? → installs the matching gate/scripts.
-3. Design system? → seeds `DESIGN.md` accordingly or defers to Phase 2.
-4. **Existing repo?** → see below.
+1. **Which stack?** → one question binds assistant + SSD engine together (`claude` = Claude Code + Spec Kit, default · `antigravity` = Antigravity + Spec Kit · `kiro` = Kiro + Kiro specs). *(Supersedes the original independent "which assistant?" / "which SSD engine?" questions — free pairing is out of scope per r3.)*
+2. Design system? → independent of stack (`none` / `material-3`); seeds `DESIGN.md` accordingly or defers to Phase 2.
+3. **Existing repo?** → see below.
 
-Answers are recorded in a small `zero-two-one.config.json` (layer 4) so `workflow-status.js` and future tooling can resolve roles → tools without parsing docs.
+Answers are recorded in **`.zero-two-one.json`** at the repo root (r2 decision — the proposal's original `zero-two-one.config.json` name is superseded) so `workflow-status.js` and future tooling can resolve roles → tools without parsing docs.
 
 ## Init Into Existing Repositories
 

@@ -12,7 +12,7 @@ There are three ways to get the initializer:
 |---|---|---|
 | One-shot (recommended) | `npx zero-two-one-init [target-dir]` | Downloads the package, runs `bin/init.js`, nothing stays installed |
 | Global | `npm install -g zero-two-one` then `zero-two-one-init` | The `bin` field maps `zero-two-one-init` → `bin/init.js` |
-| Claude Code | `/init` slash command | Just instructs the agent to run `npx zero-two-one-init` and walk the setup steps (see §6 gap: the command file itself is not installed into the user's repo by init) |
+| Claude Code | `/021-init` slash command | Just instructs the agent to run `npx zero-two-one-init` and walk the setup steps (see §6 gap: the command file itself is not installed into the user's repo by init) |
 
 The published tarball (~57 files, `files` array in `package.json`) contains: `bin/`, `.ai/`, `.github/`, `.claude/`, `hooks/`, `prototype/`, `scripts/`, `skills/`, `specs/`, `templates/`, `workflow/`, `README.md`. It does **not** contain `requirements/` or the guiding docs directly — those are instantiated from `templates/` at init time (TDD §5, template → install mapping).
 
@@ -44,11 +44,13 @@ If `package.json` exists, adds these scripts **only where the name isn't already
 
 | Script | Command |
 |---|---|
-| `status` | `node scripts/workflow-status.js` |
-| `qa` | `sh scripts/run-qa.sh` |
-| `spec:status` | `node scripts/speckit/spec-status.js` |
-| `spec:context` | `node scripts/speckit/fetch-speckit-context.js` |
-| `spec:verify` | `node scripts/speckit/verify-spec-compliance.js` |
+| `021-status` | `node scripts/workflow-status.js` |
+| `021-qa` | `sh scripts/run-qa.sh` |
+| `021-spec:status` | `node scripts/speckit/spec-status.js` |
+| `021-spec:context` | `node scripts/speckit/fetch-speckit-context.js` |
+| `021-spec:verify` | `node scripts/speckit/verify-spec-compliance.js` |
+
+*(Names follow the zero-two-one naming convention — `021-` namespace, adopted in r3 to avoid colliding with user scripts.)*
 
 If there's no `package.json`, prints a note to `npm init -y` and re-run.
 
@@ -119,9 +121,9 @@ There is **no migration system yet** — behavior on a non-empty repo is a mix o
 1. **Scaffold:** `npx zero-two-one-init` in the repo (after `git init` and `npm init -y` if brand new; re-run init if either was missing, so the hook and scripts get wired).
 2. **Orient:** read `README.md` and `workflow/workflows.md`; the 4-phase lifecycle is defined in `workflow/specific-workflows/product-lifecycle.md`.
 3. **Phase 1 — Planning:** fill in `requirements/01-PRD.md` (what & why), `03-TDD.md` (architecture), `04-ROADMAP.md` (MVP milestones). Update `CLAUDE.md` with project context and `DESIGN.md` with design tokens. Exit gate: PRD, TDD, Roadmap complete.
-4. **Verify:** `npm run status` (phase detection) and `npm run qa` (phase-appropriate checks). With Claude Code, `/status` wraps this plus a document-completeness review.
+4. **Verify:** `npm run 021-status` (phase detection) and `npm run 021-qa` (phase-appropriate checks). With Claude Code, `/021-status` wraps this plus a document-completeness review.
 5. **Phase 2 — Pre-build:** draft `02-EDD.md`, build the static prototype in `prototype/`, and iterate via refinement rounds (`requirements/_refinement/r{n}-review.md`, using `templates/06-REVIEW-Template.md`; plans are human-approved before living docs change).
-6. **Phase 3 — MVP Build:** install Spec Kit (`uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`, then `specify init --here --ai claude`). Features flow: spec on an `NNN-feature-name` branch → user approves via `npm run spec:status -- set <spec> Approved` → `npm run spec:context` to generate `.ai/context/` bundles → implement → `npm run spec:verify`. The pre-commit gate blocks implementation code until the spec is approved.
+6. **Phase 3 — MVP Build:** install Spec Kit (`uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`, then `specify init --here --ai claude`). Features flow: spec on an `NNN-feature-name` branch → user approves via `npm run 021-spec:status -- set <spec> Approved` → `npm run 021-spec:context` to generate `.ai/context/` bundles → implement → `npm run 021-spec:verify`. The pre-commit gate blocks implementation code until the spec is approved.
 7. **Phase 4 — Growth:** after the MVP ships and QA is green, follow `workflow/specific-workflows/mvp-to-growth-transition.md` — freeze the MVP roadmap, activate Releases, and prioritize the backlog by user value.
 8. **Agent memory:** ask the AI assistant to record the current lifecycle phase in its memory and keep it updated.
 
@@ -129,7 +131,7 @@ There is **no migration system yet** — behavior on a non-empty repo is a mix o
 
 > **r2 update (2026-07-10):** all five gaps below were captured as findings in `requirements/_refinement/r2-review.md` and have approved designs (TDD §§6–8). They remain open in the *implemented* CLI until the Init v2 backlog group ships.
 
-1. **Slash commands don't reach the user.** `.claude/commands/{init,status}.md` ship in the tarball but `init.js` never copies `.claude/` into the target, so `/init` and `/status` are not available in the initialized repo. Either copy them in step 1 or document that users must copy them manually.
+1. **Slash commands don't reach the user.** `.claude/commands/{021-init,021-status}.md` ship in the tarball but `init.js` never copies `.claude/` into the target, so `/021-init` and `/021-status` are not available in the initialized repo. Either copy them in step 1 or document that users must copy them manually.
 2. **README clobber.** Overwriting an existing `README.md` with the template is the most likely first bad surprise for an existing project.
 3. **Destructive re-run.** Re-running init resets `requirements/*.md`; there's no `--force`/`--skip-existing` distinction.
 4. **Hook conflict.** Installing `.git/hooks/pre-commit` overwrites hook managers' hooks (husky, lefthook) with no chaining.

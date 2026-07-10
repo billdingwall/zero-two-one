@@ -2,7 +2,7 @@
 
 ## Review Meta Data
 - **Date:** 2026-07-10
-- **Status:** Draft — synthesis plans awaiting approval
+- **Status:** Applied
 - **Round:** 3
 - **Reviewer:** William Dingwall (billdingwall) with Claude Code
 - **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Backlog](../05-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
@@ -93,4 +93,13 @@ Concrete collisions exist today: the framework's `/init` slash command shadows *
 
 <!-- Filled in once the round's changes are applied: which docs were edited, version bumps, date closed -->
 
-Pending. Synthesis plans: [r3-update-prd.md](r3-update-prd.md) · [r3-update-tdd.md](r3-update-tdd.md) · [r3-update-roadmap.md](r3-update-roadmap.md) · [r3-update-backlog.md](r3-update-backlog.md) · [r3-update-workflows.md](r3-update-workflows.md)
+**Closed:** 2026-07-10. Applied per the five synthesis plans ([prd](r3-update-prd.md) · [tdd](r3-update-tdd.md) · [roadmap](r3-update-roadmap.md) · [backlog](r3-update-backlog.md) · [workflows](r3-update-workflows.md)). Open questions resolved: implementation timing → post-MVP with adapter-shaped Init v2; Kiro steering → idiomatic three-file split (021-namespaced).
+
+- `01-PRD.md` — Core Feature 7 (Supported Tool Stacks); Features 1/4 amended; Stack Coverage metric.
+- `03-TDD.md` — §4 retitled Assistant Integration; new §9 Adapter Architecture & Contracts (stacks table, SSD engine contract, design-system adapter); §7 `tools.stack`/`design` keys; §8 stack detection; §6 naming convention.
+- `04-ROADMAP.md` — adapter-shaped Init v2 milestone; naming rename recorded done; r3 designed-state note.
+- `05-BACKLOG.md` — Stacks & Design Adapters group (absorbs v2 items 1–4); adapter-seam MVP task; layering question resolved; Antigravity SDK watch item.
+- `CODE.md` + `templates/CODE-Template.md` — Framework Naming Convention rule (constraint check).
+- Workflows — layers 2–3 de-bound (`workflows.md`, `spec-driven-delivery.md`, `key-docs-to-ssd.md`); `init-and-migration.md` gained Stack & Design Selection; **new `design-system-selection.md`**; `templates/DESIGN-Template.md` token-mapping skeleton.
+- **`021-` rename executed**: npm scripts (root `package.json`, `bin/init.js`), `.claude/commands/021-{init,status}.md`, and every doc/script/hook reference; only Claude Code's *built-in* `/init` is still referenced by its original name (intentionally, in the PRD).
+- `.021-updates/framework-architecture-proposal.md` — reconciled and marked Adopted (canonical in TDD §§6–9).

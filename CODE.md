@@ -7,6 +7,7 @@ This document outlines the coding standards, behavior constraints, and generatio
 * **Context is Key:** Always consult your memory and read `CLAUDE.md` at the start of a session to understand the current phase. Always verify file contents using read-only tools before making modifications.
 
 ## 2. Code Generation Rules
+* **Framework Naming Convention:** Every framework-owned name installed into a namespace shared with the user or a tool follows `021-<name>` — lowercase kebab-case after the prefix, `:` reserved for npm subcommand grouping (e.g. `021-spec:status`), bare `021` only where a tool requires a single identifier. This applies to npm scripts, slash commands, skills, steering files, agents, and any future framework additions; standalone names the framework fully owns (`zero-two-one-init`, `.zero-two-one.json`) already comply. See TDD §6 for structural enforcement.
 * **Modularity:** Keep functions small and single-purpose.
 * **Comments & Documentation:** Explain *why* a complex decision was made, not *what* the code does (the code should be self-evident). Ensure all new files or directories have an `_INDEX.md` if they are structurally significant.
 * **Artifact Integrity:** Do not directly edit build artifacts (e.g., in `dist/` or `build/`). Always trace back to the source files, modify them, and run the build process.

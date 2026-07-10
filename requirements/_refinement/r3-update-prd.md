@@ -1,6 +1,6 @@
 # r3 Update Plan: 01-PRD.md
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r3
 **Findings addressed:** 1, 2, 3, 4, 7, 8 (product surface)

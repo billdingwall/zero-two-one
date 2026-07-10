@@ -1,6 +1,6 @@
 # r3 Update Plan: Workflows, Templates, De-binding & Proposal Reconciliation
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r3
 **Findings addressed:** 4.2, 5 (invariant audit), 6 (proposal drift), 8 (command namespace sweep)

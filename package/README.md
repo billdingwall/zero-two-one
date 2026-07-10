@@ -42,24 +42,24 @@ Then:
 
 1. Fill in `requirements/01-PRD.md`, `03-TDD.md`, and `04-ROADMAP.md` (your AI assistant can drive this from `templates/`).
 2. Ask your assistant to record the current lifecycle phase in its memory, and update `CLAUDE.md` + this README with project specifics.
-3. Check where you stand any time: `npm run status`.
+3. Check where you stand any time: `npm run 021-status`.
 
 ## Tooling reference
 
 | Command | Purpose |
 |---|---|
-| `npm run status` | Detect the current lifecycle phase from repo state |
-| `npm run qa` | Phase-appropriate QA suite (docs → prototype → tests/a11y/spec compliance) |
-| `npm run spec:status -- list` | All feature specs with status and gate state |
-| `npm run spec:status -- set <spec> <status>` | Advance a spec through its lifecycle |
-| `npm run spec:context` | Pull the active feature's Spec Kit artifacts into AI-readable bundles (`.ai/context/`) |
-| `npm run spec:verify` | Spec compliance audit — gate status, artifact completeness, unresolved clarifications, task truthfulness (`--gate`, `--json`) |
+| `npm run 021-status` | Detect the current lifecycle phase from repo state |
+| `npm run 021-qa` | Phase-appropriate QA suite (docs → prototype → tests/a11y/spec compliance) |
+| `npm run 021-spec:status -- list` | All feature specs with status and gate state |
+| `npm run 021-spec:status -- set <spec> <status>` | Advance a spec through its lifecycle |
+| `npm run 021-spec:context` | Pull the active feature's Spec Kit artifacts into AI-readable bundles (`.ai/context/`) |
+| `npm run 021-spec:verify` | Spec compliance audit — gate status, artifact completeness, unresolved clarifications, task truthfulness (`--gate`, `--json`) |
 
 ## AI agent integration
 
 - **`skills/tools.json`** — tool schemas (Anthropic tool-use format) for `fetch_speckit_context`, `verify_spec_compliance`, and `set_spec_status`, each mapped to a local CLI.
 - **`skills/*.md`** — step-by-step skills the agent follows for context fetching, compliance verification, component generation, and doc generation.
-- **`.ai/context/`** — generated per-feature context bundles: one markdown file an agent loads in a single read, plus a structured JSON artifact (status, gate state, acceptance criteria, data-model entities, task progress). Gitignored; rebuild with `npm run spec:context`.
+- **`.ai/context/`** — generated per-feature context bundles: one markdown file an agent loads in a single read, plus a structured JSON artifact (status, gate state, acceptance criteria, data-model entities, task progress). Gitignored; rebuild with `npm run 021-spec:context`.
 - **`CLAUDE.md` / `CODE.md`** — session context and the coding constitution that governs all generated work.
 
 ## Repository structure
@@ -119,7 +119,7 @@ This repository serves as both the framework source and its own refinement works
 ### Workflow
 
 1. Edit framework files in the root directory (the working copy)
-2. Test changes locally with `npm run status` and `npm run qa`
+2. Test changes locally with `npm run 021-status` and `npm run 021-qa`
 3. Sync to package: `npm run sync:package`
 4. Bump the version manually in `package/package.json`
 5. Publish: `npm run publish:package`
@@ -140,12 +140,12 @@ The published package includes Claude Code slash commands in `.claude/commands/`
 
 | Command | Purpose |
 |---|---|
-| `/init` | Scaffold the Zero Two One framework into a new project |
-| `/status` | Check the current lifecycle phase and project health |
+| `/021-init` | Scaffold the Zero Two One framework into a new project |
+| `/021-status` | Check the current lifecycle phase and project health |
 
 ## TODOs for a new project
 
 - [ ] Fill out key documents in `requirements/`
 - [ ] Define the project architecture and roadmap
-- [ ] Set up baseline CI (run `npm run qa && npm run spec:verify` once a stack is chosen)
+- [ ] Set up baseline CI (run `npm run 021-qa && npm run 021-spec:verify` once a stack is chosen)
 

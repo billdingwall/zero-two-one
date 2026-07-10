@@ -11,3 +11,6 @@
 
 ## 3. Refinement Loop
 - Before implementing major architectural changes, discuss them in the refinement loop via `requirements/_refinement/`.
+
+## 4. Framework Naming Convention
+- Zero Two One framework commands and installed artifacts are namespaced `021-<name>` (lowercase kebab-case after the prefix; `:` for npm subcommand grouping, e.g. `021-spec:status`). Framework files never claim un-namespaced names in shared directories — project-owned names stay yours.

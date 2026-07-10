@@ -34,7 +34,7 @@ graph TD
 ### Root Directory
 | File | Purpose |
 |---|---|
-| `CLAUDE.md` | AI Assistant Instructions and Project Guidelines. |
+| `CLAUDE.md` | Assistant instructions and project guidelines (the default `claude` stack's rendering; other stacks render `AGENTS.md` or steering files — TDD §9). |
 | `CODE.md` | Basic coding principles and tech stack (informs constitution). |
 | `PRODUCT.md` | Formalizes the step-by-step lifecycle workflow. |
 | `DESIGN.md` | Machine-readable design tokens, palettes, and typography. |
@@ -71,7 +71,7 @@ AI prompts, skills, and tools used for generating project artifacts and driving 
 | `skills/tools.json` | Agent tool schemas (`fetch_speckit_context`, `verify_spec_compliance`, etc.). |
 | `skills/*.md` | Specific prompts (e.g., `generate-frontend-component.md`, `check-framework-compliance.md`). |
 | `scripts/workflow-status.js` | Detects the current lifecycle phase. |
-| `scripts/speckit/` | Spec status management, context bundle generation, compliance verification. |
+| `scripts/speckit/` | SSD engine tooling — spec status management, context bundle generation, compliance verification. |
 | `hooks/pre-commit` | The refinement gate — blocks implementation commits on feature branches. |
 
 ### Other Directories
@@ -94,6 +94,7 @@ The framework's operations are broken down into specific workflows:
 - **[The Refinement Loop (RLP)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/refinement-loop.md):** The project-level change-control loop for maintaining living documents and the backlog.
 - **[Spec-Driven Delivery (SSD)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/spec-driven-delivery.md):** The tactical delivery mechanism utilizing GitHub Spec Kit and the Refinement Gate.
 - **[Init & Migration (INM)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/init-and-migration.md):** How the framework lands in a target repository — fresh scaffolds and non-destructive migrations into working projects.
+- **[Design-System Selection (DSS)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/design-system-selection.md):** Adopting or switching a design system — assessment, token mapping, and cascade into the EDD and prototype.
 
 ### Transitional Flows
 - **[MVP > Growth Transition (MGT)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/mvp-to-growth-transition.md):** How the roadmap and backlog change roles when the product leaves MVP and enters Growth.
@@ -105,14 +106,16 @@ The framework's operations are broken down into specific workflows:
 
 ## 4. Dependencies & Automation
 
-The framework heavily relies on **Claude Code** and **GitHub SpecKit** to operationalize these workflows.
+The framework relies on the project's configured **stack** — the AI assistant + SSD engine pairing recorded in `.zero-two-one.json` (default stack `claude` = Claude Code + GitHub Spec Kit; see TDD §9 for the `antigravity` and `kiro` stacks). Process docs name roles, with defaults in parentheses; only the manifest and TDD §9 bind tools normatively.
+
+All framework commands follow the zero-two-one naming convention (`021-` namespace — see `CODE.md`):
 
 | Command | Purpose |
 |---|---|
-| `npx zero-two-one-init [dir]` | Scaffold the framework into a repository |
-| `npm run status` | Detect and print the current lifecycle phase |
-| `npm run qa` | Phase-appropriate QA suite |
-| `npm run spec:status -- list` | All specs with status and gate state |
-| `npm run spec:status -- set <spec> <status>` | Advance a spec's lifecycle |
-| `npm run spec:context` | Generate `.ai/context/` bundles for the active feature |
-| `npm run spec:verify` | Full spec compliance audit (`--gate` for the fast subset, `--json` for agents) |
+| `npx zero-two-one-init [dir]` | Scaffold or migrate the framework into a repository |
+| `npm run 021-status` | Detect and print the current lifecycle phase |
+| `npm run 021-qa` | Phase-appropriate QA suite |
+| `npm run 021-spec:status -- list` | All specs with status and gate state |
+| `npm run 021-spec:status -- set <spec> <status>` | Advance a spec's lifecycle |
+| `npm run 021-spec:context` | Generate `.ai/context/` bundles for the active feature |
+| `npm run 021-spec:verify` | Full spec compliance audit (`--gate` for the fast subset, `--json` for agents) |

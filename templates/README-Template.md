@@ -16,14 +16,14 @@ Development follows a 4-phase lifecycle:
 No implementation code can land until the corresponding feature spec is approved. The installed `pre-commit` hook enforces this.
 
 ## Tooling
-- `npm run status` — Detect current lifecycle phase
-- `npm run qa` — Run phase-appropriate tests
-- `npm run spec:status -- list` — View all feature specs and gate status
-- `npm run spec:context` — Build AI context bundles
-- `npm run spec:verify` — Audit spec compliance
+- `npm run 021-status` — Detect current lifecycle phase
+- `npm run 021-qa` — Run phase-appropriate tests
+- `npm run 021-spec:status -- list` — View all feature specs and gate status
+- `npm run 021-spec:context` — Build AI context bundles
+- `npm run 021-spec:verify` — Audit spec compliance
 
 ## AI Integration
 This project is configured for AI agent collaboration. Provide this context to your agent:
 - Read `CLAUDE.md` and `CODE.md` for rules
-- Use `/init` and `/status` slash commands (if using Claude Code)
+- Use `/021-init` and `/021-status` slash commands (if using Claude Code)
 - Check `workflow/workflows.md` for canonical processes

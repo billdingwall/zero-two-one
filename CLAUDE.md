@@ -4,13 +4,13 @@
 
 This framework can be installed via Claude Code or manually:
 
-- **Claude Code**: Use the `/init` slash command to scaffold the framework into your project
+- **Claude Code**: Use the `/021-init` slash command to scaffold the framework into your project
 - **Manual**: Run `npx zero-two-one-init` in your project directory
 - **Global**: `npm install -g zero-two-one` then `zero-two-one-init`
 
 Init is designed to be non-destructive on existing projects (migrate mode: user files are create-if-missing, existing docs are imported, `--force` is the only override). Recommended pattern on a working repo: `npx zero-two-one-init --dry-run` first, then run for real. See [`workflow/specific-workflows/init-and-migration.md`](workflow/specific-workflows/init-and-migration.md); until Init v2 ships, run only on a clean working tree.
 
-After installation, use `/status` to check the current lifecycle phase at any time. When a `.zero-two-one.json` manifest is present, read it to learn the lifecycle phase and tool stack instead of inferring from directory contents.
+After installation, use `/021-status` to check the current lifecycle phase at any time. When a `.zero-two-one.json` manifest is present, read it to learn the lifecycle phase and tool stack instead of inferring from directory contents.
 
 ---
 
@@ -38,12 +38,12 @@ Your primary role as an AI assistant is to help the user navigate these phases b
 - **`requirements/_design/`**: Holds design assets.
 - **`workflow/`**: Documentation defining the overall project workflow and personas involved. `workflow/workflows.md` is the canonical process reference (Discovery, Design, Refinement, Speckit Implementation, QA, Release).
 - **`skills/`**: AI prompts used for generating project artifacts and specs, plus `tools.json` agent tool schemas.
-- **`scripts/`**: Lifecycle automation — `npm run status`, `spec:status`, `spec:context`, `spec:verify`, `qa`.
-- **`.ai/context/`**: Generated Speckit context bundles (gitignored; rebuild with `npm run spec:context`).
+- **`scripts/`**: Lifecycle automation — `npm run 021-status`, `021-spec:status`, `021-spec:context`, `021-spec:verify`, `021-qa`.
+- **`.ai/context/`**: Generated Speckit context bundles (gitignored; rebuild with `npm run 021-spec:context`).
 
 ## AI Instructions
-- Always rely on your internal memory first to understand the current phase and state of the project. If unsure, ask the user. Verify with `npm run status`.
+- Always rely on your internal memory first to understand the current phase and state of the project. If unsure, ask the user. Verify with `npm run 021-status`.
 - Respect the dual workflow: project-level changes happen via the refinement loop in `requirements/`, while feature-level implementation uses the Spec Kit workflow.
-- Before implementing a feature, run `npm run spec:context` and load `.ai/context/NNN-feature-name.md`. Do not write implementation code unless the spec status is `Approved` or `Ready for Dev` — the pre-commit hook enforces this gate, and only the user can authorize the status change (`npm run spec:status -- set <spec> Approved`).
-- After generating code, run `npm run spec:verify` and follow `skills/verify-spec-compliance.md` before marking work complete.
+- Before implementing a feature, run `npm run 021-spec:context` and load `.ai/context/NNN-feature-name.md`. Do not write implementation code unless the spec status is `Approved` or `Ready for Dev` — the pre-commit hook enforces this gate, and only the user can authorize the status change (`npm run 021-spec:status -- set <spec> Approved`).
+- After generating code, run `npm run 021-spec:verify` and follow `skills/verify-spec-compliance.md` before marking work complete.
 - Do not assume domain specifics; adapt to the project as it is defined in the key documents.

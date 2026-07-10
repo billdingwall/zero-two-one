@@ -9,12 +9,16 @@
 `init.js` picks a mode at startup:
 
 - **Scaffold** — target has no framework install and nothing pre-existing in the paths init touches. Full surface is created; re-runs are idempotent.
-- **Migrate** — auto-detected when any of these exist: `README.md`/guiding docs, `requirements/`, `.specify/` or a populated `specs/`, an existing `pre-commit` hook, or a prior `.zero-two-one.json`.
+- **Migrate** — auto-detected when any of these exist: `README.md`/guiding docs, `requirements/`, `.specify/` or a populated `specs/`, an existing `pre-commit` hook, existing tool surfaces (`.claude/`, `.agents/`, `AGENTS.md`, `.kiro/`), or a prior `.zero-two-one.json`.
+
+## Stack & Design Selection
+
+Init asks two tool questions (TDD §9): the **stack** — `claude` (Claude Code + GitHub Spec Kit, default), `antigravity` (Google Antigravity + GitHub Spec Kit), or `kiro` (Kiro assistant + Kiro specs) — and the **design system** (`none` default, or `material-3`; see the [design-system-selection workflow](design-system-selection.md)). Non-interactive: `--stack` and `--design`. In migrate mode, detected tool surfaces propose the matching stack (`.claude/` → claude; `.agents/`/`AGENTS.md` → antigravity; `.kiro/` → kiro); conflicts are resolved by the interview. The adapter renders the framework surface for the chosen stack — all installed command names follow the `021-` naming convention (`CODE.md`), so framework files never collide with user files in shared directories.
 
 ## Scaffold Flow (empty repository)
 
 1. `git init` and `npm init -y` if not already done (init completes hook/script wiring only when both exist; re-running is safe).
-2. `npx zero-two-one-init` — copies the framework surface, instantiates requirements + guiding docs from templates, installs `.claude/commands/`, provisions `.ai/context/`, installs the refinement gate, merges npm scripts, writes `.zero-two-one.json` (mode: scaffold, phase: planning).
+2. `npx zero-two-one-init` — copies the framework surface, instantiates requirements + guiding docs from templates, installs the stack's assistant surface (default: `.claude/commands/021-*`), provisions `.ai/context/`, installs the refinement gate, merges the `021-*` npm scripts, writes `.zero-two-one.json` (mode: scaffold, phase: planning, tools per the stack/design answers).
 3. Continue with the Phase 1 getting-started steps (`workflow/workflows.md`, product lifecycle).
 
 ## Migrate Flow (working project)
@@ -38,4 +42,4 @@
 
 ## Agent Guidance
 
-AI assistants should read `.zero-two-one.json` (when present) to learn the lifecycle phase and tool stack instead of inferring from directory contents, and record it in memory. `npm run status` uses the manifest's `phase` field as the source of truth once available.
+AI assistants should read `.zero-two-one.json` (when present) to learn the lifecycle phase and tool stack instead of inferring from directory contents, and record it in memory. `npm run 021-status` uses the manifest's `phase` field as the source of truth once available.

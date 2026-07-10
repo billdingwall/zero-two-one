@@ -14,7 +14,7 @@ After initialization, complete these setup steps:
 4. Fill in `requirements/04-ROADMAP.md` with phased milestones.
 5. Update `CLAUDE.md` with project-specific context and the current lifecycle phase.
 6. Update `DESIGN.md` with the project's design tokens (colors, typography, spacing).
-7. Run `npm run status` to verify the installation and check the detected lifecycle phase.
+7. Run `npm run 021-status` to verify the installation and check the detected lifecycle phase.
 
 For Spec Kit integration (Phase 3+):
 ```
