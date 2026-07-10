@@ -1,6 +1,6 @@
 # r2 Update Plan: 03-TDD.md
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r2
 **Findings addressed:** 1, 2, 3, 4, 5, 6 (technical design for all)

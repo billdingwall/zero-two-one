@@ -8,7 +8,9 @@ This framework can be installed via Claude Code or manually:
 - **Manual**: Run `npx zero-two-one-init` in your project directory
 - **Global**: `npm install -g zero-two-one` then `zero-two-one-init`
 
-After installation, use `/status` to check the current lifecycle phase at any time.
+Init is designed to be non-destructive on existing projects (migrate mode: user files are create-if-missing, existing docs are imported, `--force` is the only override). Recommended pattern on a working repo: `npx zero-two-one-init --dry-run` first, then run for real. See [`workflow/specific-workflows/init-and-migration.md`](workflow/specific-workflows/init-and-migration.md); until Init v2 ships, run only on a clean working tree.
+
+After installation, use `/status` to check the current lifecycle phase at any time. When a `.zero-two-one.json` manifest is present, read it to learn the lifecycle phase and tool stack instead of inferring from directory contents.
 
 ---
 

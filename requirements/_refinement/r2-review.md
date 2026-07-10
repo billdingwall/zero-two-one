@@ -2,7 +2,7 @@
 
 ## Review Meta Data
 - **Date:** 2026-07-10
-- **Status:** Draft — synthesis plans awaiting approval
+- **Status:** Applied
 - **Round:** 2
 - **Reviewer:** William Dingwall (billdingwall) with Claude Code
 - **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Backlog](../05-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
@@ -60,4 +60,16 @@ Beyond not destroying files, init has no concept of a project that already has c
 
 <!-- Filled in once the round's changes are applied: which docs were edited, version bumps, date closed -->
 
-Pending. Synthesis plans: [r2-update-prd.md](r2-update-prd.md) · [r2-update-tdd.md](r2-update-tdd.md) · [r2-update-roadmap.md](r2-update-roadmap.md) · [r2-update-backlog.md](r2-update-backlog.md) · [r2-update-workflows.md](r2-update-workflows.md)
+**Closed:** 2026-07-10. Applied per the five synthesis plans ([prd](r2-update-prd.md) · [tdd](r2-update-tdd.md) · [roadmap](r2-update-roadmap.md) · [backlog](r2-update-backlog.md) · [workflows](r2-update-workflows.md)):
+
+- `01-PRD.md` — Core Feature 1 → scaffold + migrate modes; Feature 4 wording corrected; new Feature 6 (install manifest); Migration Success metric.
+- `03-TDD.md` — two-mode CLI and conflict-aware hook install (§1); merge-safe `.claude/commands/` delivery + Spec Kit detection (§4); new §6 File Ownership & Merge Rules, §7 Install Manifest (**location decision: repo root**), §8 Migrate-Mode Detection & Phase Interview.
+- `04-ROADMAP.md` — Init v2 milestone group + migration acceptance test in Phase 3; e2e test covers both modes; r3 sequencing note.
+- `05-BACKLOG.md` — 10-task Init v2 group (each future SSD spec material); v2 items 2–3 tagged `[r3]` (Kiro, Google Antigravity); item 4 partially delivered; manifest-location question resolved; r2 logged.
+- `workflow/specific-workflows/init-and-migration.md` — new INM workflow (with a status note that the CLI still runs legacy behavior until Init v2 ships), linked from `workflows.md` §3.
+- `CLAUDE.md` + `templates/CLAUDE-Template.md` — migrate-mode guidance, `--dry-run` recommendation, read-the-manifest instruction.
+- `.021-updates/init-installation-overview.md` — §4/§6 annotated: designs approved, implemented behavior unchanged until Init v2 ships.
+- `workflows.md` §4 command table intentionally *not* updated with the new flags — they document implemented behavior and land with the Init v2 specs.
+- Constraint check: `CODE.md` unchanged (zero-dependency principle reaffirmed in TDD §8).
+
+**r3 handoff:** tool-agnostic init/migration (Kiro, Google Antigravity) — pre-scoped in Open Questions above, tagged on the backlog, builds on the manifest `tools` block.

@@ -1,6 +1,6 @@
 # r2 Update Plan: 01-PRD.md
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r2
 **Findings addressed:** 1 (PRD claim), 6 (migration as a product capability)

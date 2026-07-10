@@ -95,6 +95,8 @@ Not created in the target: `bin/` (the initializer itself), `.claude/commands/` 
 
 ## 4. Existing Projects: How "Migration" Is Handled Today
 
+> **r2 update (2026-07-10):** the migration design is now approved and specified — TDD §§6–8 (ownership/merge rules, `.zero-two-one.json` install manifest at repo root, migrate-mode detection + phase interview) and `workflow/specific-workflows/init-and-migration.md`. Implementation is the "Init v2" group in `requirements/05-BACKLOG.md`, delivered via SSD specs. **The CLI behavior described below is what's implemented today** and remains accurate until those specs ship.
+
 There is **no migration system yet** — behavior on a non-empty repo is a mix of merge-safe and clobbering operations:
 
 **Merge-safe (existing content respected):**
@@ -123,7 +125,9 @@ There is **no migration system yet** — behavior on a non-empty repo is a mix o
 7. **Phase 4 — Growth:** after the MVP ships and QA is green, follow `workflow/specific-workflows/mvp-to-growth-transition.md` — freeze the MVP roadmap, activate Releases, and prioritize the backlog by user value.
 8. **Agent memory:** ask the AI assistant to record the current lifecycle phase in its memory and keep it updated.
 
-## 6. Known Gaps & Observations (candidates for r2)
+## 6. Known Gaps & Observations (adopted as r2 findings)
+
+> **r2 update (2026-07-10):** all five gaps below were captured as findings in `requirements/_refinement/r2-review.md` and have approved designs (TDD §§6–8). They remain open in the *implemented* CLI until the Init v2 backlog group ships.
 
 1. **Slash commands don't reach the user.** `.claude/commands/{init,status}.md` ship in the tarball but `init.js` never copies `.claude/` into the target, so `/init` and `/status` are not available in the initialized repo. Either copy them in step 1 or document that users must copy them manually.
 2. **README clobber.** Overwriting an existing `README.md` with the template is the most likely first bad surprise for an existing project.

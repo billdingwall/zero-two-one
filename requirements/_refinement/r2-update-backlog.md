@@ -1,6 +1,6 @@
 # r2 Update Plan: 05-BACKLOG.md
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r2
 **Findings addressed:** 1–6 task breakdown; r3 tagging

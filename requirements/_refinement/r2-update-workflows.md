@@ -1,6 +1,6 @@
 # r2 Update Plan: Workflows & Docs
 
-**Status:** Proposed — awaiting human approval
+**Status:** Applied (2026-07-10)
 **Date:** 2026-07-10
 **Round:** r2
 **Findings addressed:** 6.3 (workflow documentation), plus doc alignment

@@ -93,6 +93,7 @@ The framework's operations are broken down into specific workflows:
 - **[Product Lifecycle (PLC)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/product-lifecycle.md):** The overarching 4-phase lifecycle of the product.
 - **[The Refinement Loop (RLP)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/refinement-loop.md):** The project-level change-control loop for maintaining living documents and the backlog.
 - **[Spec-Driven Delivery (SSD)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/spec-driven-delivery.md):** The tactical delivery mechanism utilizing GitHub Spec Kit and the Refinement Gate.
+- **[Init & Migration (INM)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/init-and-migration.md):** How the framework lands in a target repository — fresh scaffolds and non-destructive migrations into working projects.
 
 ### Transitional Flows
 - **[MVP > Growth Transition (MGT)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/mvp-to-growth-transition.md):** How the roadmap and backlog change roles when the product leaves MVP and enters Growth.
