@@ -8,9 +8,11 @@ Directory tracking the refinement loop cycles.
 - `r{x}-review.md`: Refinement round review files (when created).
 - `r{x}-update-{doc}.md`: Per-document synthesis plans for a round; the human approves these before living docs are edited.
 
-## Current Round
+## Current Round: r4 — vision-alignment check
 
-None open. r3's implementation work lives in the backlog (Init v2 group in MVP scope; Stacks & Design Adapters group for Growth) and flows through SSD specs.
+Fresh review, driven by the stakeholder walking the current living docs (post r1–r3) against their intended vision — not a pre-identified gap. Capturing feedback now.
+
+- [r4-review.md](r4-review.md) — findings/proposed changes filled in as feedback is dictated.
 
 ## Closed Rounds
 
