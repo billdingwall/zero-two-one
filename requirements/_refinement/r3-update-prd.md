@@ -3,37 +3,43 @@
 **Status:** Proposed — awaiting human approval
 **Date:** 2026-07-10
 **Round:** r3
-**Findings addressed:** 1, 2, 3, 5 (product surface)
+**Findings addressed:** 1, 2, 3, 4, 7 (product surface)
 **Target doc:** [../01-PRD.md](../01-PRD.md)
 
 ## Intent
 
-Make the pluggable tool stack a product capability: the framework's value is the lifecycle + refinement gate, not any single tool. Users choose their assistant, SSD engine, and design system at init (or migration), and the framework renders itself for that stack.
+Make the pluggable tool stack a product capability: the framework's value is the lifecycle + refinement gate, not any single tool. Users choose one of **three supported stacks** plus an independent design system; the framework renders itself for that combination.
 
 ## Proposed Edits
 
-### 1. New Core Feature 7 — Pluggable Tool Stack
+### 1. New Core Feature 7 — Supported Tool Stacks
 
-The framework operates through three swappable adapter roles, recorded in `.zero-two-one.json` `tools`:
-- **AI assistant** — default Claude Code (`CLAUDE.md` + `.claude/commands/`); alternatives Google Antigravity (`AGENTS.md` + `.agents/skills/`) and Kiro (steering files + CLI agent).
-- **SSD engine** — default GitHub Spec Kit; alternative Kiro specs (`.kiro/specs/`). The refinement gate works identically across engines via the SSD state contract.
-- **Design system** — default bespoke `DESIGN.md`; first pluggable option Google Material 3 (token-mapped theming with Theme Builder exports).
+The framework runs on one of three named stacks (recorded as `stack` in `.zero-two-one.json`, with derived `assistant`/`ssd` fields), plus an independent design-system role:
+
+| Stack | AI Assistant | SSD Engine |
+|---|---|---|
+| `claude` (default) | Claude Code (`CLAUDE.md` + `.claude/commands/`) | GitHub Spec Kit |
+| `antigravity` | Google Antigravity (`AGENTS.md` + `.agents/skills/`) | GitHub Spec Kit |
+| `kiro` | Kiro IDE/CLI (steering files + CLI agent) | Kiro specs (`.kiro/specs/`) |
+
+- The refinement gate works identically across stacks via the SSD state contract (TDD §9.3).
+- **Design system** (independent of stack): default bespoke `DESIGN.md`; first pluggable option Google Material 3 (token-mapped theming with Theme Builder exports).
 
 ### 2. Amend Core Feature 1 (init modes)
 
-The init interview gains tool selection (`--assistant`, `--ssd`, `--design` for non-interactive); migrate mode detects existing tool surfaces (`.kiro/`, `.agents/`, `AGENTS.md`, `.claude/`) and proposes matching adapters.
+The init interview gains **one stack question** (`--stack claude|antigravity|kiro` for non-interactive) plus the design question (`--design none|material-3`); migrate mode detects existing tool surfaces (`.kiro/`, `.agents/`, `AGENTS.md`, `.claude/`, `.specify/`) and proposes the matching stack.
 
 ### 3. Amend Core Feature 4 (Agent Integration)
 
-Generalize from Claude-specific wording to: "assistant instructions, commands/skills, and tool schemas rendered for the selected assistant by its adapter" — with Claude Code named as the default rendering.
+Generalize from Claude-specific wording to: "assistant instructions, commands/skills, and tool schemas rendered for the selected stack by its adapter" — with the `claude` stack named as the default rendering.
 
 ### 4. Target Audience
 
-Extend the AI Agents bullet beyond "e.g. Claude Code" to name the supported adapter families.
+Extend the AI Agents bullet beyond "e.g. Claude Code" to name the three supported stacks.
 
 ### 5. Success Metrics
 
-Add: **Stack coverage** — number of projects running on a non-default adapter without framework forks.
+Add: **Stack coverage** — number of projects running on a non-default stack (or Material 3) without framework forks.
 
 ## Cascade
 
