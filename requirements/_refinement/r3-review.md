@@ -22,7 +22,7 @@ Pre-scoped by r2's open questions, expanded per user direction: make init/migrat
 
 The design system is an **independent role** (any stack × `none` / `material-3`). This round designs the adapter contracts; implementation timing is an open question below.
 
-**Stakeholder direction (this round, addition):** all framework commands — terminal (npm scripts) and coding-assistant namespace (slash commands, skills, agents, steering files) — are **namespaced with `021-`** to avoid conflicts with user projects and tool built-ins.
+**Stakeholder direction (this round, addition):** all framework commands — terminal (npm scripts) and coding-assistant namespace (slash commands, skills, agents, steering files) — follow a **zero-two-one naming convention** built on the `021-` namespace, to avoid conflicts with user projects and tool built-ins. This is a framework-wide convention (a core principle, recorded in `CODE.md`), not a one-off rename: anything the framework installs into a shared namespace carries it, including future commands.
 
 ## Findings
 
@@ -72,9 +72,13 @@ Concrete collisions exist today: the framework's `/init` slash command shadows *
 
 6.1 **Reconcile the architecture proposal** (finding 6): correct the Kiro steering model and manifest filename, replace the independent assistant/SSD interview with the stack question, add Antigravity, note the `021-` command namespace, and mark the adopted sections as canonical-in-TDD-§9 so the internal doc stops drifting.
 
-8.1 **Namespace the framework command surface with `021-`** (finding 8), across all stacks:
-- npm scripts: `status`/`qa`/`spec:status`/`spec:context`/`spec:verify` → `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify` (the `zero-two-one-init` bin name is already unique and unchanged).
-- `claude` stack: `.claude/commands/021-init.md`, `.claude/commands/021-status.md` → `/021-init`, `/021-status` (also resolves the built-in `/init` shadowing).
+8.1 **Adopt the zero-two-one naming convention** (finding 8) as a core principle, recorded in `CODE.md` and enforced through TDD §6 ownership:
+
+*The convention:* every framework-owned name installed into a namespace shared with the user or a tool follows `021-<name>` — lowercase kebab-case after the prefix, `:` reserved for subcommand grouping in npm scripts (`021-spec:status`), the bare `021` allowed only where a tool requires a single identifier (the Kiro CLI agent). Names the framework fully owns in their own right (the `zero-two-one-init` bin, the `.zero-two-one.json` manifest, this repo's `.021-updates/`) already satisfy the convention and are unchanged. **All future framework commands, skills, and installed artifacts must follow it.**
+
+*Applied to the current surface, across all stacks:*
+- npm scripts: `status`/`qa`/`spec:status`/`spec:context`/`spec:verify` → `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify`.
+- `claude` stack: `.claude/commands/021-init.md`, `021-status.md` → `/021-init`, `/021-status` (also resolves the built-in `/init` shadowing).
 - `antigravity` stack: skill packages named `.agents/skills/021-<name>/`.
 - `kiro` stack: steering rendered as `.kiro/steering/021-{product,tech,structure}.md`; CLI agent `.kiro/agents/021.json` (invoked as `021`).
 - The rename is mechanical and cheap — apply it to the dogfooding repo and package at r3 apply time (scripts/commands are gate-exempt tooling surface), so docs and reality don't drift; init-time collision handling remains as the r2 merge rule, now with collision-improbable names.

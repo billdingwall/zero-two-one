@@ -4,7 +4,7 @@
 **Date:** 2026-07-10
 **Round:** r3
 **Findings addressed:** 4.2, 5 (invariant audit), 6 (proposal drift), 8 (command namespace sweep)
-**Target docs:** `workflow/workflows.md`, `workflow/specific-workflows/spec-driven-delivery.md`, `workflow/specific-workflows/key-docs-to-ssd.md`, `workflow/specific-workflows/init-and-migration.md`, `workflow/specific-workflows/design-system-selection.md` (new), `templates/DESIGN-Template.md`, `.021-updates/framework-architecture-proposal.md`
+**Target docs:** `workflow/workflows.md`, `workflow/specific-workflows/spec-driven-delivery.md`, `workflow/specific-workflows/key-docs-to-ssd.md`, `workflow/specific-workflows/init-and-migration.md`, `workflow/specific-workflows/design-system-selection.md` (new), `templates/DESIGN-Template.md`, `CODE.md` + `templates/CODE-Template.md` (naming convention — RLP constraint check), `.021-updates/framework-architecture-proposal.md`
 
 ## Intent
 
@@ -20,8 +20,11 @@ Three jobs: (a) cure the layer-2/3 invariant violations found in the audit — p
 - `init-and-migration.md`: add the stack question (interview/`--stack` flag) + design question; adapter-aware surface table per stack; migrate-mode detection list gains `.kiro/`, `.agents/`, `AGENTS.md`.
 - Rule of thumb added to `workflows.md`: process docs may name a default in parentheses; only the manifest and TDD §9 bind tools normatively.
 
-### 1b. `021-` command rename sweep (finding 8 — mechanical, applied at r3 apply time)
+### 1b. Zero-two-one naming convention (finding 8) — constitution + mechanical sweep at r3 apply time
 
+**Constitution (RLP step 4, constraint check):** add a **Framework Naming Convention** rule to `CODE.md` §2 (and `templates/CODE-Template.md`): every framework-owned name installed into a shared namespace follows `021-<name>` — lowercase kebab-case after the prefix, `:` reserved for npm subcommand grouping (`021-spec:status`), bare `021` only where a tool requires a single identifier. Applies to npm scripts, slash commands, skills, steering files, agents, and any future additions; standalone names the framework fully owns (`zero-two-one-init`, `.zero-two-one.json`) already comply.
+
+**Mechanical sweep:**
 - Rename npm scripts in root + package `package.json` and `bin/init.js` `lifecycleScripts`: `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify`.
 - Rename `package/.claude/commands/{init,status}.md` → `021-init.md`, `021-status.md` (fixes the shadowing of Claude Code's built-in `/init`).
 - Sweep every `npm run <cmd>` / `/init` / `/status` reference: `workflows.md` §4 command table, `CLAUDE.md` (root + template), `hooks/pre-commit` fix-hint text, `README.md`, `init-and-migration.md`, skills prompts, `.021-updates/init-installation-overview.md`.

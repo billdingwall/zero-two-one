@@ -24,7 +24,7 @@ The framework runs on one of three named stacks (recorded as `stack` in `.zero-t
 
 - The refinement gate works identically across stacks via the SSD state contract (TDD §9.3).
 - **Design system** (independent of stack): default bespoke `DESIGN.md`; first pluggable option Google Material 3 (token-mapped theming with Theme Builder exports).
-- **`021-` command namespace** (finding 8): every framework command — npm scripts (`021-status`, `021-qa`, `021-spec:*`) and assistant-side commands/skills/steering — is namespaced to avoid conflicts with user projects and tool built-ins (e.g. Claude Code's own `/init`).
+- **Framework naming convention** (finding 8): every framework command — npm scripts (`021-status`, `021-qa`, `021-spec:*`) and assistant-side commands/skills/steering — follows the zero-two-one naming convention (`021-` namespace, recorded in `CODE.md`), avoiding conflicts with user projects and tool built-ins (e.g. Claude Code's own `/init`) by construction.
 
 ### 2. Amend Core Feature 1 (init modes)
 

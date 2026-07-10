@@ -62,9 +62,9 @@ Existing tool surfaces propose the matching stack: `.claude/` → `claude`; `.ag
 
 Framework-owned paths become stack-resolved and 021-scoped (`.claude/commands/021-*` for `claude`; `.agents/skills/021-*` for `antigravity`; `.kiro/steering/021-*` + `.kiro/agents/021.json` for `kiro`) — the framework only ever owns files inside its namespace, so user files in the same directories are untouchable by definition. Ownership semantics unchanged.
 
-### 6. Command namespace (finding 8) — applies at r3 apply time
+### 6. Framework naming convention (finding 8) — applies at r3 apply time
 
-Lifecycle npm scripts rename to the `021-` namespace: `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify` (`zero-two-one-init` bin unchanged — already unique). `bin/init.js` `lifecycleScripts`, the dogfooding repo's own `package.json` (root + package), `.claude/commands/` filenames, and all doc references update together. This also resolves the `/init` shadowing of Claude Code's built-in command, and makes r2's add-only-if-name-free merge rule collision-improbable in practice.
+All framework-owned names follow the **zero-two-one naming convention** (constitution rule in `CODE.md`, per [r3-update-workflows.md](r3-update-workflows.md) §1b): `021-<name>`, lowercase kebab-case after the prefix, `:` for npm subcommand grouping, bare `021` only where a tool requires a single identifier. Lifecycle npm scripts rename accordingly: `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify` (`zero-two-one-init` bin and `.zero-two-one.json` manifest already comply — unchanged). `bin/init.js` `lifecycleScripts`, the dogfooding repo's own `package.json` (root + package), `.claude/commands/` filenames, and all doc references update together. This also resolves the `/init` shadowing of Claude Code's built-in command, and makes r2's add-only-if-name-free merge rule collision-improbable in practice. TDD §6 ownership enforces it structurally: the framework only owns files inside its namespace in shared directories.
 
 ## Constraints
 
