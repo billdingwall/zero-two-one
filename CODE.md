@@ -3,7 +3,7 @@
 This document outlines the coding standards, behavior constraints, and generation rules for LLMs (like Claude Code) operating within this repository.
 
 ## 1. Core Principles
-* **Spec-Driven First:** Do not write code until a clear specification (`specs/NNN-feature-name/`) exists and is approved. Prototype code is not managed through Speckit—it's part of the workflow and should be maintained by a skill that reads the PRD and TDD to keep the prototype in sync for testing and ready for review.
+* **Spec-Driven First:** Do not write code until a clear specification (`specs/NNN-feature-name/`) exists and is approved. Prototype code is not managed through Speckit—it is **optional** (r5) and generated on demand by the `021-prototype` command/skill, which reads the PRD/EDD and `DESIGN.md` to build and keep the prototype in sync. A project has no prototype until that command runs, and no gate depends on one (TDD §12).
 * **Context is Key:** Always consult your memory and read `CLAUDE.md` at the start of a session to understand the current phase. Always verify file contents using read-only tools before making modifications.
 
 ## 2. Code Generation Rules

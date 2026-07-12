@@ -2,7 +2,7 @@
 
 ## Review Meta Data
 - **Date:** 2026-07-12
-- **Status:** Applied (2026-07-12)
+- **Status:** Closed (2026-07-12)
 - **Round:** 5
 - **Reviewer:** William Dingwall (billdingwall) + `/harden-docs` alignment audit
 - **Lifecycle Phase:** Pre-build → MVP Build hardening
@@ -45,4 +45,17 @@ Driven by the `/harden-docs` Document Hardening & Alignment audit run against th
 
 ## Outcome
 
-Applied 2026-07-12. Docs edited: `01-PRD.md` (prototype command F9, metrics reframe, manifest dogfood note), `02-EDD.md` (prototype workflow, CLI-docs pointer), `03-TDD.md` (§12 prototype command, §7 manifest-read + status script, §10 repo slug), `04-ROADMAP.md` (six engineering-ordered MVP releases, empty Growth), `05-BACKLOG.md` (release-mapped, V2 emptied). New: `.zero-two-one.json`, `requirements/_design/command-design.md`, `requirements/_design/workflow-design.md`, `requirements/_releases/mvp-4..6.md`. Code: `scripts/workflow-status.js` reads manifest + prototype optional. Process: `product-lifecycle.md`, `refinement-loop.md`, `key-docs-to-prototype.md`, `workflows.md` updated for optional prototype. `sync:package` run. `/harden-docs` re-run to confirm MVP-ready.
+Applied 2026-07-12. Docs edited: `01-PRD.md` (prototype command F9, metrics reframe, manifest dogfood note), `02-EDD.md` (prototype workflow, CLI-docs pointer), `03-TDD.md` (§12 prototype command, §7 manifest-read + status script, §10 repo slug), `04-ROADMAP.md` (six engineering-ordered MVP releases, empty Growth), `05-BACKLOG.md` (release-mapped, V2 emptied). New: `.zero-two-one.json`, `requirements/_design/command-design.md`, `requirements/_design/workflow-design.md`, `requirements/_releases/mvp-4..6.md`. Code: `scripts/workflow-status.js` reads manifest + prototype optional. Process: `product-lifecycle.md`, `refinement-loop.md`, `key-docs-to-prototype.md`, `workflows.md` updated for optional prototype. `sync:package` run. `/harden-docs` re-run confirmed MVP-ready (no showstoppers, no orphans, no scope creep).
+
+### Re-audit clarifications resolved (2026-07-12)
+
+The `/harden-docs` re-run posed three optional confirmations; the team answered:
+- **Q1 (Product):** V2 stays empty; the three dropped items are re-derived from field-test/`021-feedback` evidence in Growth. *(No further change — already reflected.)*
+- **Q2 (UX/DX) → yes:** add a lightweight **command-walkthrough / transcript demo** of the `021` CLI experience to **mvp-2** scope, backing the Pre-build exit gate alongside EDD §3. Applied to roadmap/backlog/`mvp-2.md`.
+- **Q3 (Engineering) → yes:** **mvp-3 regenerates this repo's own manifest** (full hash inventory), and `mode` gains a **`source`** value for the framework's own repo. Applied to TDD §7 (schema + `mode: source` note), `.zero-two-one.json` (`mode: source`), and mvp-3 scope.
+
+### Refinement Loop close-out (RLP steps 4–6)
+
+- **Step 4 — Constraint Check (CODE.md):** amended `CODE.md` §1 "Spec-Driven First" — the prototype principle now states the prototype is **optional**, generated on demand by `021-prototype` (was: "part of the workflow… maintained by a skill"). `templates/CODE-Template.md` carries no prototype line — no template change needed.
+- **Step 5 — Design & Prototype Update:** no design-system or prototype change this round. Prototype is optional and none has been added to this repo; `DESIGN.md` untouched. N/A by design.
+- **Step 6 — Commit:** all r5 changes committed (`5d970cc`, `76e8644`, + this close-out). Round **Closed**.

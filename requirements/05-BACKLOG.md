@@ -15,6 +15,7 @@
 - [x] Dogfood `.zero-two-one.json`; `workflow-status.js` reads manifest `phase`; prototype dropped from inference (r5).
 - [x] `requirements/_design/command-design.md` + `workflow-design.md` (r5).
 - [ ] Finalize Claude Code integrations wiring (`/021-init`, `/021-status`).
+- [ ] Stakeholder sign-off demo: lightweight command-walkthrough / transcript of the `021` CLI experience, backing the Pre-build exit gate (EDD §3; r5 Q2).
 
 ### mvp-3 — Safe Install & Manifest (Init v2; TDD §§6–8)
 
@@ -28,6 +29,7 @@
 - [ ] Spec Kit reuse: detect `.specify/`/populated `specs/`, validate frontmatter, skip duplicate guidance.
 - [ ] Migration acceptance test on a non-empty fixture repo (zero user-file overwrites).
 - [ ] Adapter interface seam: rendering + SSD paths resolved through the stack adapter layer (TDD §9).
+- [ ] Regenerate the framework's own `.zero-two-one.json` (`mode: source`, full hash inventory) — end-to-end manifest dogfooding, replacing the r5 hand-authored `files: {}` stub (r5 Q3).
 
 ### mvp-4 — AI-Led Init & Stack/Design Adapters (r3 group; TDD §9)
 

@@ -95,7 +95,7 @@ Written to the **target repo root** at install (user-visible state, not a genera
 {
   "version": "<package version>",
   "installedAt": "<ISO date>",
-  "mode": "scaffold | migrate",
+  "mode": "scaffold | migrate | source",
   "phase": "planning | prebuild | mvp | growth",
   "tools": {
     "stack": "claude | antigravity | kiro",
@@ -110,6 +110,7 @@ Written to the **target repo root** at install (user-visible state, not a genera
 - Basis for **idempotent re-runs** (skip anything present and unmodified), **`--upgrade`** (refresh framework-owned files whose hash still matches install; list conflicts otherwise), and a documented **uninstall** (delete files still matching their hash; list the rest for manual review).
 - **Upgrade scope (r4)**: `--upgrade` refreshes **only** framework-owned surfaces — `templates/`, `skills/`, `scripts/`, `hooks/`, and the stack-rendered command surfaces (`.claude/commands/021-*` etc.). User-owned instantiated docs (`requirements/*.md`, guiding docs) are never touched by upgrade, matching the §6 "never touch" column.
 - `workflow-status.js` reads `phase` from the manifest when present, instead of inferring from directory contents (**implemented and dogfooded in this repo, r5** — `.zero-two-one.json` at the framework root sets `phase: prebuild`). Inference is the fallback only when no manifest exists, and it no longer treats a prototype as required (prototype is optional, §12).
+- **`mode: source` (r5)**: the self-referential case for the framework's own repo, which is the source rather than an init target (`scaffold`/`migrate` both imply init ran on someone else's project). Init v2 **regenerates this repo's own manifest** — including the full `files` hash inventory — so the framework dogfoods its own manifest end-to-end rather than relying on the hand-authored `files: {}` stub (mvp-3).
 - `assistant`/`ssd` are **derived from `stack`** (kept for per-role tooling and r2 compatibility); `design` is chosen independently of the stack (§9.4). Additive since r2 — no schema break.
 
 ## 8. Migrate-Mode Detection & Phase Interview

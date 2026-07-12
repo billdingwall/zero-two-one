@@ -21,10 +21,11 @@ Turn the legacy scaffold-only CLI into the safe, non-destructive Init v2 engine 
 - [ ] Existing-doc import + duplicate resolution (archive / update-to-fit / leave-alongside), decisions recorded in the manifest.
 - [ ] Spec Kit reuse: detect `.specify/`/populated `specs/`, validate frontmatter, skip duplicate setup.
 - [ ] Migration acceptance test on a non-empty fixture repo (zero user-file overwrites).
+- [ ] Regenerate the framework's own `.zero-two-one.json` (`mode: source`, full hash inventory) — end-to-end manifest dogfooding, replacing the r5 hand-authored `files: {}` stub (r5 Q3).
 
 ## Exit Gate
 
-Migration acceptance test green; a working repo can be initialized with zero user-file overwrites and a correct manifest.
+Migration acceptance test green; a working repo can be initialized with zero user-file overwrites and a correct manifest; the framework's own manifest is engine-regenerated (`mode: source`).
 
 ## Delivered
 

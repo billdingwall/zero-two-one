@@ -20,10 +20,11 @@ A working framework skeleton with launch-ready living docs and a documented CLI/
 - [x] Dogfood `.zero-two-one.json`; `workflow-status.js` reads manifest phase; prototype dropped from inference (r5).
 - [x] `requirements/_design/command-design.md` + `workflow-design.md` (r5).
 - [ ] Finalize Claude Code integrations wiring (`/021-init`, `/021-status`).
+- [ ] Stakeholder sign-off demo: a lightweight command-walkthrough / transcript of the `021` CLI experience, backing the Pre-build exit gate (EDD §3; r5 Q2).
 
 ## Exit Gate
 
-Every core scenario defined in the EDD and reviewable by stakeholders (docs, or prototype if added); architecture locked in the TDD; mvp-3 scope specced. **No prototype required** (r5).
+Every core scenario defined in the EDD and reviewable by stakeholders via the CLI-experience walkthrough demo (or a prototype, if one was added); architecture locked in the TDD; mvp-3 scope specced. **No prototype required** (r5).
 
 ## Delivered
 

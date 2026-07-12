@@ -28,6 +28,7 @@
 - [x] **Dogfood `.zero-two-one.json`** at repo root; `021-status` reads the manifest (`phase` source of truth), prototype dropped from inference (r5).
 - [x] CLI/DX documentation: `requirements/_design/command-design.md` + `workflow-design.md` (r5).
 - [ ] Finalize Claude Code integrations wiring (`/021-init`, `/021-status`).
+- [ ] Stakeholder sign-off demo: a lightweight command-walkthrough / transcript of the `021` CLI experience, backing the Pre-build exit gate (EDD §3; r5 Q2).
 
 ### mvp-3 — Safe Install & Manifest (Next) · [_releases/mvp-3.md](_releases/mvp-3.md)
 
@@ -37,6 +38,7 @@
 - [ ] `.zero-two-one.json` manifest write (full file-hash inventory) + `--upgrade` (scoped to templates/skills/scripts/hooks, TDD §7).
 - [ ] Migrate-mode detection + phase interview; existing-doc import; duplicate resolution (archive/update/leave-alongside).
 - [ ] Spec Kit reuse; migration acceptance test (zero user-file overwrites).
+- [ ] Regenerate the framework's own `.zero-two-one.json` (`mode: source`, full hash inventory) — end-to-end manifest dogfooding (r5 Q3).
 
 ### mvp-4 — AI-Led Init & Stack/Design Adapters · [_releases/mvp-4.md](_releases/mvp-4.md)
 
