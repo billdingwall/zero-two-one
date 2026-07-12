@@ -1,6 +1,6 @@
 # Experience Design Document (EDD)
 
-*Instructions for AI:* This document serves as the definitive source of truth for the product's user experience. It must remain highly structured, modular, and easy to parse. This file defines the HOW (Experience) — UX strategy, interaction architecture, and state definitions. Specific design tokens are maintained separately in `DESIGN.md` in the repository root.
+*Instructions for AI:* This document serves as the definitive source of truth for the product's user experience. It must remain highly structured, modular, and easy to parse. This file defines the HOW (Experience) — UX strategy, interaction architecture, and state definitions. Specific design tokens are maintained separately in `DESIGN.md` in the repository root. The EDD is one third of the cohesive **PRD/EDD/TDD set** — draft it alongside the other two and include it in every cascade.
 
 ## Target User & Core Journeys
 
@@ -16,6 +16,15 @@
 * **Navigation Paradigm:** [Establish primary and secondary navigation structures.]
 * **Layout Structures:** [Define grid systems for responsive consistency.]
 * **Information Hierarchy:** [Define content prioritization and progressive disclosure strategy.]
+
+## Core Workflows
+
+*One subsection per core scenario. Keep the triple explicit so both humans and agents can verify the experience:*
+
+### [Workflow Name]
+- **User Action:** [What the user does.]
+- **System Response:** [What the product does.]
+- **Experience Goal:** [How it should feel; what makes this good.]
 
 ## State Management (UX Perspective)
 

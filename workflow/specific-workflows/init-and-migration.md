@@ -1,6 +1,10 @@
 # Init & Migration (INM)
 
-**Goal:** Define how `npx zero-two-one-init` lands the framework in a target repository — both fresh scaffolds and migrations into already-working projects — without ever destroying user content. The technical contract lives in the TDD (§§6–8: ownership/merge rules, install manifest, phase detection); this workflow is the human/agent-facing process.
+**Goal:** Define how the framework lands in a target repository — both fresh scaffolds and migrations into already-working projects — without ever destroying user content. Init is **assistant-led** (r4): a stack-rendered walkthrough (e.g. `/021-init`) runs the interview and drives the CLI engine (`npx zero-two-one-init`), which can also run standalone for bootstrap. An LLM is the framework's core dependency, including setup. The technical contract lives in the TDD (§1 walkthrough/engine split; §§6–8 ownership/merge rules, install manifest, phase detection); this workflow is the human/agent-facing process.
+
+## The Walkthrough
+
+The init walkthrough interviews the user before anything is written, using the **ask-don't-assume** pattern (EDD §4): each question presents a recommended answer (detection proposes it), sensible alternatives, and a free-text write-in. Topics: the **stack**, the **design system**, the **lifecycle phase**, a review of the **existing structure**, and — in migrate mode — a **per-conflict decision** for each duplicate found. The walkthrough then explains the resulting plan (the `--dry-run` view) and executes via CLI flags.
 
 > **Status note:** the merge rules, flags, manifest, and migrate mode described here were designed in refinement round r2. Until the Init v2 backlog group ships (see `requirements/05-BACKLOG.md`), the CLI still performs the legacy scaffold-only behavior — run it only on a clean working tree.
 
@@ -28,7 +32,11 @@ Init asks two tool questions (TDD §9): the **stack** — `claude` (Claude Code 
    - Framework-owned tooling (`scripts/`, `hooks/`, `skills/`, `workflow/`, `templates/`, `.github/`, `.claude/commands/`) is copied in.
    - User-owned files (`README.md`, guiding docs, `requirements/*.md`) are **create-if-missing — never overwritten**. `--force <path>` is the only override.
    - `.gitignore` and `package.json` scripts are additively merged.
-3. **Existing docs are imported, not replaced:** init catalogs found documentation in `requirements/_notes/imported-docs.md` and the fresh templates reference it.
+3. **Existing docs are never destroyed** — they may be added to, renamed, or updated, but existing content is never removed. For each doc that duplicates a framework file, the walkthrough offers three options (TDD §6):
+   - **Archive** — move the old duplicate to `requirements/_notes/archive/` with a pointer left behind.
+   - **Update to fit framework** — restructure it in place; all content preserved.
+   - **Leave alongside** — keep it untouched; init catalogs it in `requirements/_notes/imported-docs.md` and the fresh templates reference it.
+   Each decision is recorded in the install manifest.
 4. **Phase interview:** heuristics propose the project's real lifecycle phase; confirm interactively or pass `--phase <phase>`. A shipped product enters at **Growth**: the roadmap/backlog are scaffolded in post-transition shape (Releases active, MVP section historical — see [mvp-to-growth-transition.md](mvp-to-growth-transition.md)).
 5. **Existing Spec Kit setups are reused:** `.specify/`/populated `specs/` are detected, frontmatter is validated against the gate, and duplicate setup guidance is suppressed.
 6. **Hook installation is conflict-aware:** plain existing hooks are chained (`pre-commit.zto` + invocation line); husky/lefthook get the gate added to their config. Nothing is silently overwritten.
@@ -37,7 +45,7 @@ Init asks two tool questions (TDD §9): the **stack** — `claude` (Claude Code 
 ## Re-run, Upgrade, Uninstall
 
 - **Re-run:** always safe — completes missing pieces only; present-and-unmodified files are skipped.
-- **Upgrade:** `npx zero-two-one-init --upgrade` refreshes framework-owned files whose hash still matches the install manifest; anything user-modified is reported as a conflict for manual review.
+- **Upgrade:** `npx zero-two-one-init --upgrade` refreshes framework-owned files whose hash still matches the install manifest; anything user-modified is reported as a conflict for manual review. Upgrades deliver **only** template, skill, script, and hook updates (plus stack command surfaces) — user-owned instantiated docs are never touched (TDD §7).
 - **Uninstall:** delete files still matching their manifest hash; the CLI lists everything else for manual review. User-owned docs are never removed.
 
 ## Agent Guidance

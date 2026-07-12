@@ -1,5 +1,7 @@
 # Refinement Review Round: r{n}
 
+> **Stage-aware reviews (r4):** prefer the template matching your lifecycle phase in `templates/reviews/` — `06-REVIEW-{idea,prebuild,mvp,growth}-Template.md` (phase from `.zero-two-one.json` or `021-status`). This file is the generic fallback.
+
 ## Review Meta Data
 - **Date:** [YYYY-MM-DD]
 - **Status:** [Draft / Applied]

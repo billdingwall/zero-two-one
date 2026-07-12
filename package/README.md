@@ -16,7 +16,7 @@ The framework runs a **4-phase lifecycle** driven by two connected workflows:
 
 | Phase | Focus | Workflow |
 |---|---|---|
-| 1 — Planning (Zero) | PRD, TDD, Roadmap in `requirements/` | Discovery |
+| 1 — Planning (Zero) | PRD, EDD, TDD, Roadmap in `requirements/` | Discovery |
 | 2 — Pre-build | Design system + static prototype, iterated via review rounds | Design + Refinement |
 | 3 — MVP Build (One) | Features specified and implemented via Spec Kit in `specs/` | Speckit Implementation + QA + Release |
 | 4 — Growth | Feedback/analytics re-enter the refinement loop; enhancements ship via Spec Kit | All of the above, continuously |
@@ -26,6 +26,24 @@ The framework runs a **4-phase lifecycle** driven by two connected workflows:
 ### The refinement gate
 
 The framework's central enforcement: **no implementation code lands until the feature's spec is approved.** Every `specs/NNN-feature-name/spec.md` carries a lifecycle status (`Draft → In Review → Approved → Ready for Dev → In Progress → Done`). The installed `pre-commit` hook blocks implementation commits on feature branches unless the status is `Approved` or beyond. Docs, specs, and design assets are never blocked — the gate stops code, not refinement.
+
+## Install with your AI assistant
+
+Init is assistant-led — an LLM is the framework's core dependency, including setup. Copy the prompt for your stack and paste it into your assistant inside the target repository:
+
+**Claude Code** (default stack — pairs with GitHub Spec Kit):
+
+> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `claude` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and `workflow/workflows.md`, then report the lifecycle phase with `npm run 021-status`.
+
+**Google Antigravity** (pairs with GitHub Spec Kit):
+
+> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `antigravity` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and `AGENTS.md`, then report the lifecycle phase with `npm run 021-status`.
+
+**Kiro** (assistant + specs in one):
+
+> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `kiro` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and the `.kiro/steering/021-*.md` files, then report the lifecycle phase with `npm run 021-status`.
+
+On an existing project the install is non-destructive: your files may be added to, renamed, or updated, but existing content is never removed (see [`workflow/specific-workflows/init-and-migration.md`](workflow/specific-workflows/init-and-migration.md)).
 
 ## Quick start
 
@@ -40,7 +58,7 @@ specify init --here --ai claude
 
 Then:
 
-1. Fill in `requirements/01-PRD.md`, `03-TDD.md`, and `04-ROADMAP.md` (your AI assistant can drive this from `templates/`).
+1. Fill in `requirements/01-PRD.md`, `02-EDD.md`, `03-TDD.md`, and `04-ROADMAP.md` — one cohesive set (your AI assistant can drive this from `templates/`).
 2. Ask your assistant to record the current lifecycle phase in its memory, and update `CLAUDE.md` + this README with project specifics.
 3. Check where you stand any time: `npm run 021-status`.
 
@@ -65,7 +83,7 @@ Then:
 ## Repository structure
 
 ```
-requirements/     PRD, EDD, TDD, Roadmap, Backlog + _refinement/ rounds, _design/, _notes/
+requirements/     PRD, EDD, TDD, Roadmap, Backlog + _refinement/ rounds, _releases/, _design/, _notes/
 prototype/        Static prototype for design review (Phase 2)
 specs/            Spec Kit feature artifacts (NNN-feature-name)
 .ai/context/      Generated agent context bundles (gitignored)

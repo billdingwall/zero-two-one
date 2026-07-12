@@ -48,11 +48,13 @@ The core documentation that defines the product. These are **living documents** 
 | `01-PRD.md` | Product Requirements Document (What & why — modules, scenarios, data model). |
 | `02-EDD.md` | Experience Design Document (How - Experience). |
 | `03-TDD.md` | Technical Design Document (Architecture overview + locked decisions). |
-| `04-ROADMAP.md` | Phased plan and milestone gates. |
+| `01-PRD.md` + `02-EDD.md` + `03-TDD.md` | Treated as **one cohesive set** (r4) — every surface referencing one includes all three. |
+| `04-ROADMAP.md` | Release-based plan: MVP releases now, Growth releases post-transition; summaries link to `_releases/`. |
 | `05-BACKLOG.md` | Planned backlog and project tracker. |
 | `_design/` | Holds design assets. |
 | `_notes/` | Unstructured research, analysis and background context. |
 | `_refinement/` | Tracks the refinement loop cycles (`r{x}-review.md`). |
+| `_releases/` | One file per roadmap release (`mvp-N.md`, `v1.x-<theme>.md`) — goal, promoted items, delivered summary (r4). |
 
 ### `workflow/`
 Documentation defining the overall project workflow and personas involved.

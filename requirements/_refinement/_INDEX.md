@@ -8,13 +8,13 @@ Directory tracking the refinement loop cycles.
 - `r{x}-review.md`: Refinement round review files (when created).
 - `r{x}-update-{doc}.md`: Per-document synthesis plans for a round; the human approves these before living docs are edited.
 
-## Current Round: r4 — vision-alignment check
+## Current Round
 
-Fresh review, driven by the stakeholder walking the current living docs (post r1–r3) against their intended vision — not a pre-identified gap. Capturing feedback now.
-
-- [r4-review.md](r4-review.md) — findings/proposed changes filled in as feedback is dictated.
+None open. The next round should use the stage-matched review template from `templates/reviews/` (Pre-build).
 
 ## Closed Rounds
+
+- **r4** (2026-07-12, Applied): [r4-review.md](r4-review.md) — vision-alignment round, 18 findings. PRD/EDD/TDD as one cohesive set; AI-led init walkthrough (LLM as core dependency); MVP releases + `requirements/_releases/`; v2 stack/design work promoted to MVP; `021-feedback` + `021-design`; stage-specific review templates; README install prompts. Plans: [prd](r4-update-prd.md) · [edd](r4-update-edd.md) *(first EDD round)* · [tdd](r4-update-tdd.md) · [roadmap](r4-update-roadmap.md) · [backlog](r4-update-backlog.md) · [workflows](r4-update-workflows.md).
 
 - **r3** (2026-07-10, Applied): [r3-review.md](r3-review.md) — three supported stacks (`claude`/`antigravity`/`kiro`), pluggable design system (`none`/`material-3`), `021-` naming convention, layer de-binding, proposal reconciliation. Research: [_notes/r3-tool-research.md](../_notes/r3-tool-research.md). Plans: [prd](r3-update-prd.md) · [tdd](r3-update-tdd.md) · [roadmap](r3-update-roadmap.md) · [backlog](r3-update-backlog.md) · [workflows](r3-update-workflows.md).
 

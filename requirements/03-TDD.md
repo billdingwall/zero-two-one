@@ -2,21 +2,24 @@
 
 ## 1. System Architecture
 
-The framework consists of three main technical components:
-1. **The CLI Scaffolder (`bin/init.js`)**: A zero-dependency Node.js script that constructs the user workspace from clean templates. It runs in one of two modes, decided at startup:
+The framework consists of four main technical components. **An LLM is a core dependency of the framework — including setup**: init is assistant-led, with the CLI as its mechanical engine.
+
+1. **The Init Walkthrough (stack-rendered skill/command)**: `/021-init` for `claude`, an `021-init` skill for `antigravity`, agent/steering for `kiro` (§9.2). Owns the interactive interview — stack, design system, lifecycle phase, existing-structure review, per-conflict decisions — using the ask-don't-assume question pattern (EDD §4). The walkthrough explains the plan, collects answers, and drives the CLI engine non-interactively via flags.
+2. **The CLI Engine (`bin/init.js`)**: A zero-dependency Node.js script that constructs the user workspace from clean templates — file classification, merge rules, hashing, manifest writes. Runs standalone (`npx zero-two-one-init`) for bootstrap, accepting flags (`--stack`, `--design`, `--phase`, per-conflict answers) so the walkthrough can drive it. It runs in one of two modes, decided at startup:
    - **Scaffold mode** — the target has no framework install and no meaningful pre-existing content in the paths init touches.
    - **Migrate mode** — auto-detected when any of the following exist: `README.md` or other guiding docs, `requirements/`, `.specify/` or a populated `specs/`, an existing `.git/hooks/pre-commit`, or a prior `.zero-two-one.json`. Migrate mode applies the ownership rules (§6) and runs the detection/interview flow (§8).
-2. **The Refinement Gate (`hooks/pre-commit`)**: A bash script installed into `.git/hooks/` that parses Markdown frontmatter in `specs/` to determine approval status. Installation is conflict-aware:
+3. **The Refinement Gate (`hooks/pre-commit`)**: A bash script installed into `.git/hooks/` that parses Markdown frontmatter in `specs/` to determine approval status. Installation is conflict-aware:
    - No existing hook → install directly (current behavior).
    - Existing plain `pre-commit` → install the gate as `.git/hooks/pre-commit.zto` and append a guarded invocation line to the existing hook.
    - Hook manager detected (`.husky/`, `lefthook.yml`) → add the gate invocation to the manager's config instead of touching `.git/hooks/` directly.
    - Never silently overwrite; `--dry-run` shows which strategy will be used.
-3. **Lifecycle Tooling (`scripts/`)**: Node.js scripts for fetching context, verifying compliance, and determining project status.
+4. **Lifecycle Tooling (`scripts/`)**: Node.js scripts for fetching context, verifying compliance, and determining project status.
 
 ## 2. Data Models
 State is managed entirely in text files (Markdown frontmatter and JSON):
 - `specs/*/spec.md`: Tracks feature lifecycle status (`status: Draft | In Review | Approved | Ready for Dev | In Progress | Done`).
 - `.ai/context/*.json`: Derived artifacts combining spec criteria and gate state for AI consumption.
+- `requirements/_releases/<release-id>.md`: One file per roadmap release (MVP releases `mvp-1` … `mvp-3`; Growth releases `v1.x-<theme>`), carrying goal, promoted backlog items, spec links, and a delivered summary. Growth releases record their **release branch**; backlog items promoted into a release are implemented as SSD specs off that branch. `04-ROADMAP.md` keeps per-release summaries and links to these files.
 
 ## 3. Technical Constraints & Decisions
 - **Zero Runtime Dependencies**: The framework must run on built-in Node.js modules (`fs`, `path`, `child_process`) and standard POSIX shell utilities. We do not want to bloat the user's `node_modules` with framework tooling.
@@ -64,6 +67,9 @@ The canonical contract for what crosses the root ↔ `package/` boundary. `scrip
 Guiding docs are delivered as templates and instantiated by `bin/init.js` in the user's repo:
 `templates/CLAUDE-Template.md` → `CLAUDE.md` · `templates/CODE-Template.md` → `CODE.md` · `templates/PRODUCT-Template.md` → `PRODUCT.md` · `templates/DESIGN-Template.md` → `DESIGN.md` · `templates/README-Template.md` → `README.md` · `templates/0N-*-Template.md` → `requirements/0N-*.md`.
 
+- **Install guarantee (r4)**: installing into a target repo **creates `requirements/` with the key docs — PRD, EDD, TDD, Roadmap, Backlog — instantiated from the templates** (create-if-missing in migrate mode, per §6).
+- **Template neutrality (r4)**: everything under `templates/` is **tool-agnostic**. Stack-specific formatting and naming is applied at render time by the init adapter (§9.1) — never authored into the templates.
+
 ## 6. File Ownership & Merge Rules
 
 The enforcement contract for both init modes. The Package Manifest (§5) defines what ships; this section defines how it lands.
@@ -78,6 +84,7 @@ The enforcement contract for both init modes. The Package Manifest (§5) defines
 - `--force <path>` is the only way to overwrite user-owned files.
 - `--dry-run` prints the classified action plan (create / skip / merge / conflict per file) and exits without changing anything.
 - **Existing-doc import**: when a user-owned doc already exists, init writes `requirements/_notes/imported-docs.md` cataloging what was found (path + description slot), and the fresh templates link to it — existing content is referenced, never moved or rewritten.
+- **Duplicate resolution (r4)**: when migrate mode finds a user doc duplicating a framework file, the walkthrough offers per file — **archive** (move to `requirements/_notes/archive/` with a pointer left behind), **update to fit framework** (restructure in place; content preserved), or **leave alongside** (the import behavior above: catalog + cross-link). Each decision is recorded in the install manifest. Invariant: existing files may be added to, renamed, or updated — **existing content is never removed**.
 - **Framework naming convention (r3)**: every framework-owned name installed into a shared namespace follows `021-<name>` (lowercase kebab-case after the prefix; `:` reserved for npm subcommand grouping, e.g. `021-spec:status`; bare `021` only where a tool requires a single identifier). The rule is authored in `CODE.md` §2 and enforced structurally here: in shared directories, framework-owned paths are **stack-resolved and 021-scoped** (`.claude/commands/021-*` for `claude`; `.agents/skills/021-*` for `antigravity`; `.kiro/steering/021-*` + `.kiro/agents/021.json` for `kiro`), so user files in the same directories are untouchable by definition. Lifecycle npm scripts: `021-status`, `021-qa`, `021-spec:status`, `021-spec:context`, `021-spec:verify`. `zero-two-one-init` and `.zero-two-one.json` already comply.
 
 ## 7. Install Manifest (`.zero-two-one.json`)
@@ -101,6 +108,7 @@ Written to the **target repo root** at install (user-visible state, not a genera
 ```
 
 - Basis for **idempotent re-runs** (skip anything present and unmodified), **`--upgrade`** (refresh framework-owned files whose hash still matches install; list conflicts otherwise), and a documented **uninstall** (delete files still matching their hash; list the rest for manual review).
+- **Upgrade scope (r4)**: `--upgrade` refreshes **only** framework-owned surfaces — `templates/`, `skills/`, `scripts/`, `hooks/`, and the stack-rendered command surfaces (`.claude/commands/021-*` etc.). User-owned instantiated docs (`requirements/*.md`, guiding docs) are never touched by upgrade, matching the §6 "never touch" column.
 - `workflow-status.js` reads `phase` from the manifest when present, instead of inferring from directory contents.
 - `assistant`/`ssd` are **derived from `stack`** (kept for per-role tooling and r2 compatibility); `design` is chosen independently of the stack (§9.4). Additive since r2 — no schema break.
 
@@ -146,7 +154,23 @@ Every engine must expose: (a) **durable committed spec state** readable by the g
 - `none` (default): bespoke `DESIGN.md` tokens — current behavior.
 - `material-3`: roles map to `md.sys.*` tokens (tiers `md.ref`/`md.sys`/`md.comp`; color/typography/shape/elevation/motion); Material Theme Builder exports (JSON/CSS variables/DSP) stored and referenced; M3 Expressive component/motion implications surfaced by the [design-system-selection workflow](../workflow/specific-workflows/design-system-selection.md).
 
+## 10. Feedback Command (`021-feedback`)
+
+Stack-rendered command that files feedback from a user's repo as an issue in the zero-two-one GitHub repo:
+
+- **Payload**: feedback text · link to the user's repo · manifest context (framework `version`, `stack`, `phase`) — the manifest block is the extra high-value field, attached automatically.
+- **Transport**: prefer the `gh` CLI when present (`gh issue create --repo <owner>/zero-two-one`); otherwise fall back to opening a **pre-filled GitHub new-issue URL** (query-param template). Both preserve zero runtime dependencies and keep auth entirely on GitHub's side — the framework never handles tokens.
+- `.github/ISSUE_TEMPLATE/021-feedback.yml` shapes incoming issues for backlog triage; feedback issues are pulled into refinement rounds (Growth reviews) and promoted to releases from there.
+
+## 11. Design-System Install Command (`021-design`)
+
+Operationalizes the design-system-selection workflow over the §9.4 adapter — select / assess / map / cascade:
+
+- Updates the `DESIGN.md` token-mapping section; imports exported artifacts into `requirements/_design/tokens/`; updates component details and the prototype theme; records `tools.design` in the manifest.
+- Supports named systems (`material-3`) and **bring-your-own**: a user-supplied token export mapped onto the framework's role assignments.
+
 ## Changelog
+- **2026-07-12 (r4):** §1 recast as walkthrough + engine (AI-led init; LLM a core dependency); §2 gains `requirements/_releases/` release files; §5 install guarantee + template neutrality; §6 duplicate-resolution options (archive/update/leave-alongside) with content-preservation invariant; §7 upgrade scope limited to templates/skills/scripts/hooks + command surfaces; new §10 (`021-feedback`) and §11 (`021-design`). Per [_refinement/r4-update-tdd.md](_refinement/r4-update-tdd.md).
 - **2026-07-10 (r3):** §4 generalized to Assistant Integration (default stack `claude`); new §9 Adapter Architecture (three supported stacks, SSD engine contract, design-system adapter); §7 `tools` block gains `stack`/`design`; §8 stack detection; §6 framework naming convention (`021-`). Per [_refinement/r3-update-tdd.md](_refinement/r3-update-tdd.md).
 - **2026-07-10 (r2):** Two-mode CLI (§1), conflict-aware hook install (§1), merge-safe `.claude/commands/` delivery + Spec Kit detection (§4), new §6 File Ownership & Merge Rules, §7 Install Manifest (root location confirmed), §8 Migrate-Mode Detection. Per [_refinement/r2-update-tdd.md](_refinement/r2-update-tdd.md).
 - **2026-07-10 (r1):** Added Package Manifest (section 5); amended Dual-Workspace Dogfooding constraint to bind the sync script to the manifest. Per [_refinement/r1-update-tdd.md](_refinement/r1-update-tdd.md).
