@@ -1,0 +1,48 @@
+{
+  "name": "zero-two-one",
+  "version": "1.1.0",
+  "description": "Zero Two One — an agentic product framework that takes new products from point 0 (idea) to point 1 (MVP) via project-level refinement loops and Spec Kit-driven feature delivery.",
+  "main": "index.js",
+  "bin": {
+    "zero-two-one-init": "bin/init.js"
+  },
+  "files": [
+    "bin/",
+    ".ai/",
+    ".github/",
+    ".claude/",
+    "hooks/",
+    "prototype/",
+    "scripts/",
+    "skills/",
+    "specs/",
+    "templates/",
+    "workflow/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billdingwall/zero-two-one.git"
+  },
+  "keywords": [
+    "spec-driven-development",
+    "speckit",
+    "ai-agents",
+    "product-framework",
+    "lifecycle",
+    "claude-code"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/billdingwall/zero-two-one/issues"
+  },
+  "homepage": "https://github.com/billdingwall/zero-two-one#readme"
+}

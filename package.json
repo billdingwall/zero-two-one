@@ -7,12 +7,14 @@
     "zero-two-one-init": "bin/init.js"
   },
   "scripts": {
-    "status": "node scripts/workflow-status.js",
-    "qa": "sh scripts/run-qa.sh",
-    "spec:status": "node scripts/speckit/spec-status.js",
-    "spec:context": "node scripts/speckit/fetch-speckit-context.js",
-    "spec:verify": "node scripts/speckit/verify-spec-compliance.js",
-    "test": "node scripts/speckit/spec-status.js list && node scripts/workflow-status.js"
+    "021-status": "node scripts/workflow-status.js",
+    "021-qa": "sh scripts/run-qa.sh",
+    "021-spec:status": "node scripts/speckit/spec-status.js",
+    "021-spec:context": "node scripts/speckit/fetch-speckit-context.js",
+    "021-spec:verify": "node scripts/speckit/verify-spec-compliance.js",
+    "test": "node scripts/speckit/spec-status.js list && node scripts/workflow-status.js",
+    "sync:package": "node scripts/sync-to-package.js",
+    "publish:package": "npm run sync:package && cd package && npm publish"
   },
   "engines": {
     "node": ">=18"
