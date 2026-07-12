@@ -109,7 +109,7 @@ Written to the **target repo root** at install (user-visible state, not a genera
 
 - Basis for **idempotent re-runs** (skip anything present and unmodified), **`--upgrade`** (refresh framework-owned files whose hash still matches install; list conflicts otherwise), and a documented **uninstall** (delete files still matching their hash; list the rest for manual review).
 - **Upgrade scope (r4)**: `--upgrade` refreshes **only** framework-owned surfaces — `templates/`, `skills/`, `scripts/`, `hooks/`, and the stack-rendered command surfaces (`.claude/commands/021-*` etc.). User-owned instantiated docs (`requirements/*.md`, guiding docs) are never touched by upgrade, matching the §6 "never touch" column.
-- `workflow-status.js` reads `phase` from the manifest when present, instead of inferring from directory contents.
+- `workflow-status.js` reads `phase` from the manifest when present, instead of inferring from directory contents (**implemented and dogfooded in this repo, r5** — `.zero-two-one.json` at the framework root sets `phase: prebuild`). Inference is the fallback only when no manifest exists, and it no longer treats a prototype as required (prototype is optional, §12).
 - `assistant`/`ssd` are **derived from `stack`** (kept for per-role tooling and r2 compatibility); `design` is chosen independently of the stack (§9.4). Additive since r2 — no schema break.
 
 ## 8. Migrate-Mode Detection & Phase Interview
@@ -159,7 +159,7 @@ Every engine must expose: (a) **durable committed spec state** readable by the g
 Stack-rendered command that files feedback from a user's repo as an issue in the zero-two-one GitHub repo:
 
 - **Payload**: feedback text · link to the user's repo · manifest context (framework `version`, `stack`, `phase`) — the manifest block is the extra high-value field, attached automatically.
-- **Transport**: prefer the `gh` CLI when present (`gh issue create --repo <owner>/zero-two-one`); otherwise fall back to opening a **pre-filled GitHub new-issue URL** (query-param template). Both preserve zero runtime dependencies and keep auth entirely on GitHub's side — the framework never handles tokens.
+- **Transport**: prefer the `gh` CLI when present (`gh issue create --repo billdingwall/zero-two-one`); otherwise fall back to opening a **pre-filled GitHub new-issue URL** (`https://github.com/billdingwall/zero-two-one/issues/new?...`, query-param template). Both preserve zero runtime dependencies and keep auth entirely on GitHub's side — the framework never handles tokens. The destination repo slug (`billdingwall/zero-two-one`) is a build-time constant in the command template.
 - `.github/ISSUE_TEMPLATE/021-feedback.yml` shapes incoming issues for backlog triage; feedback issues are pulled into refinement rounds (Growth reviews) and promoted to releases from there.
 
 ## 11. Design-System Install Command (`021-design`)
@@ -169,7 +169,17 @@ Operationalizes the design-system-selection workflow over the §9.4 adapter — 
 - Updates the `DESIGN.md` token-mapping section; imports exported artifacts into `requirements/_design/tokens/`; updates component details and the prototype theme; records `tools.design` in the manifest.
 - Supports named systems (`material-3`) and **bring-your-own**: a user-supplied token export mapped onto the framework's role assignments.
 
+## 12. Optional Prototype Command (`021-prototype`)
+
+The prototype is an **opt-in** artifact, not a lifecycle prerequisite (r5). `021-prototype` (stack-rendered) generates it on demand:
+
+- **Generate**: reads the key docs (PRD/EDD) and `DESIGN.md` tokens; produces a static HTML/CSS/JS prototype under `prototype/` consuming the design-system CSS variables (so a later `021-design` swap re-themes it).
+- **Wire in**: on first successful run it activates the prototype steps that are otherwise inert — Design workflow prototype build, Refinement Loop step 5 (prototype update), and the `021-qa` prototype tier. Presence is detected by `prototype/` holding more than its `_INDEX.md` scaffold.
+- **Until run**: no command, script, or gate depends on a prototype. `workflow-status.js` does not gate Pre-build on one (§7); the Pre-build exit gate is defined around the CLI/DX experience (EDD §3). This removes the r4-era unschedulable-exit-gate conflict (r5 audit finding 2).
+- Zero-runtime-dependency constraint holds: generation is template/string assembly via built-in `fs`/`path`, driven by the assistant.
+
 ## Changelog
+- **2026-07-12 (r5):** §10 feedback repo slug resolved to `billdingwall/zero-two-one`; §7 manifest-read implemented and dogfooded (`.zero-two-one.json` at root) with prototype dropped from inference; new §12 Optional Prototype Command (`021-prototype`). Per [_refinement/r5-review.md](_refinement/r5-review.md).
 - **2026-07-12 (r4):** §1 recast as walkthrough + engine (AI-led init; LLM a core dependency); §2 gains `requirements/_releases/` release files; §5 install guarantee + template neutrality; §6 duplicate-resolution options (archive/update/leave-alongside) with content-preservation invariant; §7 upgrade scope limited to templates/skills/scripts/hooks + command surfaces; new §10 (`021-feedback`) and §11 (`021-design`). Per [_refinement/r4-update-tdd.md](_refinement/r4-update-tdd.md).
 - **2026-07-10 (r3):** §4 generalized to Assistant Integration (default stack `claude`); new §9 Adapter Architecture (three supported stacks, SSD engine contract, design-system adapter); §7 `tools` block gains `stack`/`design`; §8 stack detection; §6 framework naming convention (`021-`). Per [_refinement/r3-update-tdd.md](_refinement/r3-update-tdd.md).
 - **2026-07-10 (r2):** Two-mode CLI (§1), conflict-aware hook install (§1), merge-safe `.claude/commands/` delivery + Spec Kit detection (§4), new §6 File Ownership & Merge Rules, §7 Install Manifest (root location confirmed), §8 Migrate-Mode Detection. Per [_refinement/r2-update-tdd.md](_refinement/r2-update-tdd.md).

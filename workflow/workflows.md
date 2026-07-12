@@ -81,7 +81,7 @@ AI prompts, skills, and tools used for generating project artifacts and driving 
 |---|---|
 | `.github/` | GitHub-specific configurations and templates (`ISSUE_TEMPLATE/`). |
 | `.ai/context/` | Generated AI artifacts (gitignored) like Speckit context bundles (`NNN-feature-name.md`). |
-| `prototype/` | One cohesive static prototype that aligns with the PRD and TDD. |
+| `prototype/` | Optional static prototype (added via `021-prototype`, r5) that aligns with the PRD/EDD and `DESIGN.md`. |
 | `specs/` | Canonical SpecKit specs, feature-level implementation details, and validation rules. |
 | `templates/` | Templates for creating standardized project documentation (`01-PRD-Template.md`, etc.). |
 
@@ -100,7 +100,7 @@ The framework's operations are broken down into specific workflows:
 
 ### Transitional Flows
 - **[MVP > Growth Transition (MGT)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/mvp-to-growth-transition.md):** How the roadmap and backlog change roles when the product leaves MVP and enters Growth.
-- **[Key Docs > Prototype](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/key-docs-to-prototype.md):** How the living documents drive the initial prototype (Phases 1 & 2).
+- **[Key Docs > Prototype](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/key-docs-to-prototype.md):** How the living documents drive an **optional** prototype, generated on demand via `021-prototype` (Phases 1 & 2).
 - **[Key Docs > Roadmap > Backlog > SSD](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/key-docs-to-ssd.md):** How high-level definitions mechanically translate into actionable code.
 - **[Review > Backlog > SSD](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/review-to-ssd.md):** How user feedback and analytics continuously cycle into the development pipeline.
 

@@ -35,8 +35,13 @@ Review rounds are **stage-aware**: the refinement loop presents a review templat
 
 ### Installing a Design System
 - **User Action**: Runs `021-design`, naming their own design system or choosing a supported one (e.g. `material-3`).
-- **System Response**: Walks the design-system-selection workflow — maps tokens into `DESIGN.md`, stores exported artifacts in `requirements/_design/tokens/`, updates component details and the prototype theme, records `tools.design` in the manifest (TDD §11).
+- **System Response**: Walks the design-system-selection workflow — maps tokens into `DESIGN.md`, stores exported artifacts in `requirements/_design/tokens/`, updates component details and (if one exists) the prototype theme, records `tools.design` in the manifest (TDD §11).
 - **Experience Goal**: Adopting or swapping a design system re-themes the project without touching the key docs.
+
+### Adding a Prototype (optional)
+- **User Action**: Runs `021-prototype` when the team wants a visual prototype to react to.
+- **System Response**: Generates a static prototype in `prototype/` from the key docs (PRD/EDD + `DESIGN.md` tokens), then activates the prototype steps in the Design, Refinement, and QA workflows (TDD §12).
+- **Experience Goal**: Teams that want a prototype get one on demand; teams that don't are never blocked by a missing one. The prototype is off the critical path until explicitly added.
 
 ## 3. The CLI Experience
 
@@ -56,8 +61,9 @@ The `021` command surface is a first-class interface:
 | `021-qa` | QA | Manual verification |
 | `021-feedback` (assistant) | Feedback loop | Automatic (files the issue) |
 | `021-design` (assistant) | Design-system selection | Automatic (walkthrough) |
+| `021-prototype` (assistant) | Prototype (optional) | On-demand (generates `prototype/`) |
 
-Assistant-side names are stack-rendered per TDD §9.2 (`/021-*` commands for `claude`, skills for `antigravity`, steering/agent for `kiro`).
+Assistant-side names are stack-rendered per TDD §9.2 (`/021-*` commands for `claude`, skills for `antigravity`, steering/agent for `kiro`). The full command ↔ skill ↔ script mapping is maintained in [`requirements/_design/command-design.md`](../_design/command-design.md); how hooks and workflows touch project files is in [`workflow-design.md`](../_design/workflow-design.md).
 
 ## 4. Design Principles
 1. **Text as UI**: Markdown files are the primary interface. They must be highly readable by both humans and LLMs.
@@ -66,4 +72,5 @@ Assistant-side names are stack-rendered per TDD §9.2 (`/021-*` commands for `cl
 4. **Ask, don't assume**: when a `021` command needs more context, it asks an interactive question presenting a recommended option (marked as such), sensible alternatives, and a free-text write-in option. Applies to init walkthrough questions, phase/stack confirmation, conflict resolution, and any future command needing input.
 
 ## Changelog
+- **2026-07-12 (r5):** Added the optional "Adding a Prototype" workflow (`021-prototype`); CLI table gains the prototype command and a pointer to `_design/command-design.md` + `workflow-design.md`; design-system workflow re-themes the prototype only if one exists. Per [_refinement/r5-review.md](_refinement/r5-review.md).
 - **2026-07-12 (r4):** First dedicated EDD round — init split into scaffold/migrate experiences with the interactive walkthrough, content-preservation invariant, and archive/update/leave-alongside options; new CLI Experience section (command ↔ workflow table); new workflows for `021-feedback` and `021-design`; stage-aware reviews; "Ask, don't assume" principle; cohesive-set statement; changelog added. Per [_refinement/r4-update-edd.md](_refinement/r4-update-edd.md).

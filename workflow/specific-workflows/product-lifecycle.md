@@ -10,11 +10,11 @@ The Zero Two One framework operates across a 4-phase lifecycle, transitioning a 
 - **Exit Gate:** PRD, EDD, TDD, and Roadmap are complete.
 
 ## Phase 2: Pre-build
-**Goal:** Make the written definition visible through design systems and a static prototype that stakeholders can react to.
-- **Key Artifacts:** `DESIGN.md`, `prototype/`; the EDD deepens from its Phase 1 draft.
-- **Workflow:** Design & Refinement. The static HTML/CSS/JS prototype is built and iteratively refined through the Refinement Loop.
-- **Review Focus (r4):** refining the key docs, prototype reviews, and roadmap definition.
-- **Exit Gate:** Stakeholders can review every core scenario in the prototype. Architecture is locked into the TDD; roadmap milestones are gated.
+**Goal:** Refine the written definition and the CLI/DX experience to the fidelity stakeholders can commit to; optionally make it visible through a design system and prototype.
+- **Key Artifacts:** `DESIGN.md`; the EDD deepens from its Phase 1 draft. `prototype/` is **optional** — added on demand via `021-prototype` (r5), not required to progress.
+- **Workflow:** Design & Refinement. The key docs are iteratively refined through the Refinement Loop; if a prototype has been added, it is refined alongside them.
+- **Review Focus (r4):** refining the key docs, roadmap definition, and (if present) prototype reviews.
+- **Exit Gate (r5):** Every core scenario is defined in the EDD and reviewable by stakeholders (in the docs, or in the prototype if one was added); architecture is locked into the TDD; roadmap releases are gated. A prototype is **not** a gate condition.
 
 ## Phase 3: MVP Build (One)
 **Goal:** Deliver the first iteration of the product defined by the roadmap's MVP releases (`requirements/_releases/mvp-N.md`).

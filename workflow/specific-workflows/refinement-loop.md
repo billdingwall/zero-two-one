@@ -26,7 +26,7 @@
    *Growth-phase note:* once the product is in the Growth phase, the cascade in step 3 reads **Roadmap > Releases (`requirements/_releases/`) > Backlog** — reviews feed the backlog, and releases promote from it as SSD specs on the release branch (see [mvp-to-growth-transition.md](mvp-to-growth-transition.md)).
 
 5. **Design & Prototype Update**
-   Update `DESIGN.md` (or the Design System) and the `prototype/` to reflect the applied changes.
+   Update `DESIGN.md` (or the Design System) to reflect the applied changes. **If a prototype exists** (added via `021-prototype`), update `prototype/` too; if none has been added, skip this — the prototype is optional (r5) and never blocks a round.
 
 6. **Commit**
    Commit all affected docs together. `hooks/pre-commit` will ensure implementation isn't blocked by spec drifts if appropriate.

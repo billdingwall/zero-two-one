@@ -1,0 +1,14 @@
+{
+  "_comment": "Dogfooding manifest for the zero-two-one framework's own repo (r5). Hand-authored to resolve the phase source-of-truth conflict; the full file-hash inventory is populated by the Init v2 engine once it ships (see requirements/_releases/mvp-3.md).",
+  "version": "1.1.0",
+  "installedAt": "2026-07-12",
+  "mode": "scaffold",
+  "phase": "prebuild",
+  "tools": {
+    "stack": "claude",
+    "assistant": "claude-code",
+    "ssd": "github-speckit",
+    "design": "none"
+  },
+  "files": {}
+}

@@ -17,25 +17,27 @@ echo "Detected Lifecycle Phase: $PHASE"
 
 if [ "$PHASE" = "1" ] || [ "$PHASE" = "1.5" ]; then
     echo "Phase 1 (Planning): Running Documentation Validation..."
-    # Check if PRD and TDD exist and aren't empty
-    if [ ! -f "requirements/01-PRD.md" ] || [ ! -f "requirements/03-TDD.md" ]; then
-        echo "FAIL: Core requirements documents are missing."
+    # The PRD, EDD, and TDD are one cohesive set (r4) — all three are required.
+    if [ ! -f "requirements/01-PRD.md" ] || [ ! -f "requirements/02-EDD.md" ] || [ ! -f "requirements/03-TDD.md" ]; then
+        echo "FAIL: Core requirements documents (PRD/EDD/TDD) are missing."
         exit 1
     fi
     echo "PASS: Documentation structure looks good."
 
 elif [ "$PHASE" = "2" ]; then
-    echo "Phase 2 (Pre-build): Validating Prototype Assets..."
-    if [ ! -d "prototype" ]; then
-         echo "FAIL: Prototype directory missing."
-         exit 1
+    echo "Phase 2 (Pre-build): Validating Key Docs & (optional) Prototype..."
+    # Pre-build's real deliverable is the refined cohesive doc set.
+    if [ ! -f "requirements/01-PRD.md" ] || [ ! -f "requirements/02-EDD.md" ] || [ ! -f "requirements/03-TDD.md" ]; then
+        echo "FAIL: Core requirements documents (PRD/EDD/TDD) are missing."
+        exit 1
     fi
-    # Basic check to see if HTML exists
-    ls prototype/*.html > /dev/null 2>&1
-    if [ $? -ne 0 ]; then
-         echo "WARNING: No HTML files found in prototype/."
+    echo "PASS: Cohesive PRD/EDD/TDD set present."
+    # The prototype is OPTIONAL (r5) — added on demand via 021-prototype. Only
+    # validate it when one has actually been generated; its absence is not a fault.
+    if ls prototype/*.html > /dev/null 2>&1; then
+        echo "PASS: Prototype assets present."
     else
-         echo "PASS: Prototype assets present."
+        echo "INFO: No prototype added (optional — run 021-prototype to generate one)."
     fi
 
 elif [ "$PHASE" = "3" ] || [ "$PHASE" = "4" ]; then
