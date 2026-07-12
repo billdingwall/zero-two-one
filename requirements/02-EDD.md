@@ -21,7 +21,7 @@ Init is a conversation, not a script: the assistant-led walkthrough (stack-rende
 - **System Response**: Reports the current lifecycle phase (e.g., "Planning") and highlights missing key documents (PRD, EDD, and TDD checked as one set).
 - **Experience Goal**: The AI should act as a proactive project manager, guiding the user to complete the necessary prerequisites before writing code.
 
-Review rounds are **stage-aware**: the refinement loop presents a review template matched to the lifecycle phase — Idea: completing the key and principle/guiding docs; Pre-build: refining key docs, prototype reviews, roadmap definition; MVP: code review and build testing; Growth: product review and user-feedback gathering.
+Review rounds are **stage-aware**: the refinement loop presents a review template matched to the lifecycle phase — Idea: completing the key and principle/guiding docs; Pre-build: refining key docs, roadmap definition, and (if one has been added) prototype reviews; MVP: code review and build testing; Growth: product review and user-feedback gathering.
 
 ### Feature Implementation (Spec Kit)
 - **User Action**: The AI attempts to commit code for a new feature.

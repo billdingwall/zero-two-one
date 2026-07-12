@@ -9,10 +9,10 @@
 
 ## Review Focus: Refining Key Docs, Prototype Reviews & Roadmap Definition
 
-*Pre-build reviews converge the docs and prototype on the desired fidelity before implementation begins.*
+*Pre-build reviews converge the docs (and, if one has been added, the prototype) on the desired fidelity before implementation begins.*
 
 - **Key-doc refinement**: What in the PRD/EDD/TDD set has drifted from the current vision? What contradicts the Roadmap or Backlog?
-- **Prototype review**: Walk the core EDD scenarios in `prototype/` — what reads wrong, what's missing, what surprised stakeholders?
+- **Prototype review (only if a prototype was added via `021-prototype`)**: Walk the core EDD scenarios in `prototype/` — what reads wrong, what's missing, what surprised stakeholders?
 - **Roadmap definition**: Are the MVP releases scoped, sequenced, and gated? Is the exit gate to MVP Build crisp?
 
 ## Project Updates
