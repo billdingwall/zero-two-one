@@ -6,8 +6,8 @@ One file per roadmap release (r4; TDD §2). MVP releases (`mvp-N.md`) are the de
 
 - `_INDEX.md`: This file.
 - [mvp-1.md](mvp-1.md) — Planning (delivered).
-- [mvp-2.md](mvp-2.md) — Pre-build: Foundation & Design Docs (current).
-- [mvp-3.md](mvp-3.md) — Safe Install & Manifest (Init v2 engine).
+- [mvp-2.md](mvp-2.md) — Pre-build: Foundation & Design Docs (delivered).
+- [mvp-3.md](mvp-3.md) — Safe Install & Manifest (Init v2 engine) (current).
 - [mvp-4.md](mvp-4.md) — AI-Led Init & Stack/Design Adapters.
 - [mvp-5.md](mvp-5.md) — Lifecycle Commands (feedback, design, prototype).
 - [mvp-6.md](mvp-6.md) — Test, Publish & Field Launch.

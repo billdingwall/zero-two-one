@@ -1,7 +1,7 @@
 # Release: mvp-3 — Safe Install & Manifest
 
 - **Type:** MVP release
-- **Status:** Planned (next)
+- **Status:** In progress (current)
 - **Lifecycle Phase:** MVP Build (Phase 3)
 - **Branch:** feature branches per spec (`NNN-feature-name`) through the refinement gate
 - **Roadmap:** [04-ROADMAP.md](../04-ROADMAP.md) · [05-BACKLOG.md](../05-BACKLOG.md)
