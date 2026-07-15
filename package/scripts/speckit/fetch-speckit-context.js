@@ -133,7 +133,7 @@ const bundleParts = [
 const projectContextFiles = [
   path.join(root, 'CODE.md'),
   path.join(root, 'PRODUCT.md'),
-  path.join(root, 'requirements/05-BACKLOG.md')
+  path.join(root, 'requirements/04-BACKLOG.md')
 ];
 
 for (const p of projectContextFiles) {

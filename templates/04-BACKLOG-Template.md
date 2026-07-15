@@ -1,14 +1,16 @@
 # Project Backlog: [Project Name]
 
-## Current Phase: [Planning / Pre-build / MVP Build / Growth]
+## Current Phase: [Planning / MVP Build / Growth]
 
 *Backlog ordering is roadmap-driven until the Growth phase. From Growth onward, **user value** — defined from user feedback collected in refinement rounds — is the primary prioritization signal. See `workflow/specific-workflows/mvp-to-growth-transition.md`.*
 
 ## MVP Backlog
 
-*Tasks that support delivery of the MVP Roadmap in `04-ROADMAP.md`.*
+*A table (description · status · ownership · release). Ownership uses the AI role lenses — **Eng** (`CODE.md`), **PM** (`PRODUCT.md`), **Design** (`DESIGN.md`). Grouped by the `Release` column; feeds `05-ROADMAP.md`.*
 
-- [ ] **Task:** (Link to roadmap milestone or spec)
+| Description | Status | Ownership | Release |
+|---|---|---|---|
+| *[task — link to spec or roadmap release]* | Open | Eng | mvp-1 |
 
 ## v2 / Growth Backlog
 

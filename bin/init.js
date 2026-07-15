@@ -41,7 +41,7 @@ const dirsToCopy = [
   'hooks',
 ];
 
-const requirementsDocs = ['01-PRD', '02-EDD', '03-TDD', '04-ROADMAP', '05-BACKLOG'];
+const requirementsDocs = ['01-PRD', '02-EDD', '03-TDD', '04-BACKLOG', '05-ROADMAP'];
 const guidingFiles = ['CLAUDE', 'README', 'CODE', 'PRODUCT', 'DESIGN'];
 
 function copyDir(src, dest) {
@@ -186,6 +186,6 @@ console.log(`  specify   ${has('specify') ? '✅' : '⚠️  Spec Kit CLI missin
 console.log('\n✅ Framework initialized successfully!');
 console.log('\nNext Steps:');
 console.log('1. Review README.md and workflow/workflows.md.');
-console.log('2. Fill in requirements/01-PRD.md, 03-TDD.md, 04-ROADMAP.md (Phase 1), then 02-EDD.md (Phase 2).');
+console.log('2. Fill in requirements/01-PRD.md, 02-EDD.md, 03-TDD.md, then 04-BACKLOG.md / 05-ROADMAP.md (all Planning).');
 console.log('3. Install Spec Kit slash commands for your agent: specify init --here --ai claude');
 console.log('4. Ask your AI assistant to record the current lifecycle phase in its memory.');

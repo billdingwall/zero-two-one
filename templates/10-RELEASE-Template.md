@@ -5,7 +5,7 @@
 - **Type:** MVP release | Growth release
 - **Status:** Planned | In progress | Delivered
 - **Branch:** <release branch — required for Growth releases; specs branch off it as `NNN-feature-name`>
-- **Roadmap:** [04-ROADMAP.md](../04-ROADMAP.md)
+- **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md)
 
 ## Goal
 
@@ -14,7 +14,7 @@
 ## Scope
 
 <!-- Promoted backlog items. Each item becomes its own SSD spec through the refinement gate.
-- [ ] <item> (from 05-BACKLOG.md) → spec: specs/NNN-<feature>/ -->
+- [ ] <item> (from 04-BACKLOG.md) → spec: specs/NNN-<feature>/ -->
 
 ## Exit Gate
 

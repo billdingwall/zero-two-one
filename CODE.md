@@ -1,6 +1,6 @@
 # AI Coding Guidelines
 
-This document outlines the coding standards, behavior constraints, and generation rules for LLMs (like Claude Code) operating within this repository.
+This document outlines the coding standards, behavior constraints, and generation rules for LLMs (like Claude Code) operating within this repository. It is the **Lead Engineer role lens** (distinct from the persona documents in `workflow/_personas/`).
 
 ## 1. Core Principles
 * **Spec-Driven First:** Do not write code until a clear specification (`specs/NNN-feature-name/`) exists and is approved. Prototype code is not managed through Speckit—it is **optional** (r5) and generated on demand by the `021-prototype` command/skill, which reads the PRD/EDD and `DESIGN.md` to build and keep the prototype in sync. A project has no prototype until that command runs, and no gate depends on one (TDD §12).
@@ -18,4 +18,4 @@ This document outlines the coding standards, behavior constraints, and generatio
 
 ## 4. Communication
 * **Clarity over cleverness:** Use simple, understandable language in PRDs, commit messages, and code comments.
-* **Ask for Clarification:** If a task is ambiguous or contradicts the PRD/TDD, halt execution and request user input.
+* **Ask for Clarification (the "Wait" rule):** If a task is ambiguous or contradicts the PRD/TDD, halt execution and request user input. This is the code-specific instance of the **"Wait" rule** defined in the assistant entrypoint (`CLAUDE.md` / `AGENTS.md`) — outline the plan and confirm before complex multi-file changes; this section defers to that rule rather than restating it (r6).

@@ -8,10 +8,10 @@ npx zero-two-one-init
 
 After initialization, complete these setup steps:
 
-1. Review `README.md` and `workflow/workflows.md` to understand the 4-phase lifecycle.
+1. Review `README.md` and `workflow/workflows.md` to understand the 3-phase lifecycle.
 2. Fill in `requirements/01-PRD.md` with the product vision, target users, and core features.
 3. Fill in `requirements/03-TDD.md` with the technical architecture and stack decisions.
-4. Fill in `requirements/04-ROADMAP.md` with phased milestones.
+4. Fill in `requirements/05-ROADMAP.md` with phased milestones.
 5. Update `CLAUDE.md` with project-specific context and the current lifecycle phase.
 6. Update `DESIGN.md` with the project's design tokens (colors, typography, spacing).
 7. Run `npm run 021-status` to verify the installation and check the detected lifecycle phase.

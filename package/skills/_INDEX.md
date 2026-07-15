@@ -14,9 +14,11 @@ AI prompts, skills, and tool definitions used for generating project artifacts a
 ### Design skills
 - `generate-frontend-component.md`: Scaffold UI components against an approved spec and the design system.
 
-### Document generation skills
-- `generate-tdd.md`: Prompt for generating Technical Design Documents.
-- `generate-tasks.md`: Prompt for generating tasks.
+### Document generation skills (one generator per key doc — r6)
+- `generate-prd.md`: Prompt for drafting a PRD from the EDD + TDD (gap-fills an existing draft).
+- `generate-edd.md`: Prompt for drafting an EDD from the PRD + TDD (gap-fills an existing draft).
+- `generate-tdd.md`: Prompt for generating a Technical Design Document from the PRD + EDD.
+- `generate-backlog.md`: Prompt for generating a dependency-ordered Epic/Task breakdown for the `04-BACKLOG` table (renamed from `generate-tasks.md`, r6).
 
 ### Governance skills
 - `check-framework-compliance.md`: Diagnostic review of repo state against framework best practices.

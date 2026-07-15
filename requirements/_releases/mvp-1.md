@@ -3,15 +3,15 @@
 - **Type:** MVP release
 - **Status:** Delivered
 - **Branch:** — (MVP releases pre-date release branches; Growth releases record theirs)
-- **Roadmap:** [04-ROADMAP.md](../04-ROADMAP.md)
+- **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md)
 
 ## Goal
 
-Define the framework's shape: the 4-phase lifecycle concept and the repository structure that carries it.
+Define the framework's shape: the phased lifecycle concept and the repository structure that carries it.
 
 ## Scope
 
-- 4-phase lifecycle (Idea → Pre-build → MVP → Growth) defined in `workflow/specific-workflows/product-lifecycle.md`.
+- Phased lifecycle defined in `workflow/specific-workflows/product-lifecycle.md` (drafted as 4 phases; refined to 3 — Planning → MVP → Growth — at r6).
 - `requirements/` and `workflow/` directory structures established.
 
 ## Delivered

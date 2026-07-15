@@ -6,7 +6,7 @@
 
 The init walkthrough interviews the user before anything is written, using the **ask-don't-assume** pattern (EDD §4): each question presents a recommended answer (detection proposes it), sensible alternatives, and a free-text write-in. Topics: the **stack**, the **design system**, the **lifecycle phase**, a review of the **existing structure**, and — in migrate mode — a **per-conflict decision** for each duplicate found. The walkthrough then explains the resulting plan (the `--dry-run` view) and executes via CLI flags.
 
-> **Status note:** the merge rules, flags, manifest, and migrate mode described here were designed in refinement round r2. Until the Init v2 backlog group ships (see `requirements/05-BACKLOG.md`), the CLI still performs the legacy scaffold-only behavior — run it only on a clean working tree.
+> **Status note:** the merge rules, flags, manifest, and migrate mode described here were designed in refinement round r2. Until the Init v2 backlog group ships (see `requirements/04-BACKLOG.md`), the CLI still performs the legacy scaffold-only behavior — run it only on a clean working tree.
 
 ## Mode Decision
 

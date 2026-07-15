@@ -12,14 +12,13 @@ This README serves as the high-level entry point into the product documentation 
 
 ## How it works
 
-The framework runs a **4-phase lifecycle** driven by two connected workflows:
+The framework runs a **3-phase lifecycle** driven by two connected workflows:
 
 | Phase | Focus | Workflow |
 |---|---|---|
-| 1 — Planning (Zero) | PRD, EDD, TDD, Roadmap in `requirements/` | Discovery |
-| 2 — Pre-build | Design system + static prototype, iterated via review rounds | Design + Refinement |
-| 3 — MVP Build (One) | Features specified and implemented via Spec Kit in `specs/` | Speckit Implementation + QA + Release |
-| 4 — Growth | Feedback/analytics re-enter the refinement loop; enhancements ship via Spec Kit | All of the above, continuously |
+| 1 — Planning (Zero) | PRD, EDD, TDD, Roadmap, Backlog in `requirements/`; design system + optional prototype, iterated via review rounds; gated by a sign-off milestone | Discovery + Design + Refinement |
+| 2 — MVP Build (One) | Features specified and implemented via Spec Kit in `specs/` | Speckit Implementation + QA + Release |
+| 3 — Growth | Feedback/analytics re-enter the refinement loop; enhancements ship via Spec Kit | All of the above, continuously |
 
 **Project-level changes** (what the product *is*) flow through the refinement loop in `requirements/_refinement/`. **Feature-level changes** (building it) flow through Spec Kit on `NNN-feature-name` branches. The full process — Discovery, Design, Refinement, Speckit Implementation, QA, Release — is documented in [`workflow/workflows.md`](workflow/workflows.md).
 
@@ -58,7 +57,7 @@ specify init --here --ai claude
 
 Then:
 
-1. Fill in `requirements/01-PRD.md`, `02-EDD.md`, `03-TDD.md`, and `04-ROADMAP.md` — one cohesive set (your AI assistant can drive this from `templates/`).
+1. Fill in `requirements/01-PRD.md`, `02-EDD.md`, `03-TDD.md`, `04-BACKLOG.md`, and `05-ROADMAP.md` — one cohesive set (your AI assistant can drive this from `templates/`).
 2. Ask your assistant to record the current lifecycle phase in its memory, and update `CLAUDE.md` + this README with project specifics.
 3. Check where you stand any time: `npm run 021-status`.
 
@@ -83,8 +82,8 @@ Then:
 ## Repository structure
 
 ```
-requirements/     PRD, EDD, TDD, Roadmap, Backlog + _refinement/ rounds, _releases/, _design/, _notes/
-prototype/        Static prototype for design review (Phase 2)
+requirements/     PRD, EDD, TDD, Backlog, Roadmap + _refinement/ rounds, _releases/, _design/, _architecture/, _notes/
+prototype/        Optional static prototype for design review (Planning)
 specs/            Spec Kit feature artifacts (NNN-feature-name)
 .ai/context/      Generated agent context bundles (gitignored)
 workflow/         workflows.md (canonical manifest & process), specific-workflows/, _personas/
@@ -107,7 +106,7 @@ The framework itself is dependency-free at runtime (Node built-ins only) and sta
 | [Git](https://git-scm.com) | ≥ 2.30 | Branch↔spec mapping, pre-commit refinement gate |
 | POSIX shell (`sh`) | — | `run-qa.sh`, git hooks (on Windows, use Git Bash/WSL) |
 
-### Required for Spec Kit feature delivery (Phase 3+)
+### Required for Spec Kit feature delivery (MVP Build, Phase 2+)
 
 | Dependency | Install | Used for |
 |---|---|---|
@@ -121,7 +120,7 @@ No Speckit API keys are required — Spec Kit runs locally through your agent; t
 
 | Dependency | Used for |
 |---|---|
-| [pa11y-ci](https://github.com/pa11y/pa11y-ci) or axe | Wire into `scripts/run-qa.sh` Phase 3 accessibility checks |
+| [pa11y-ci](https://github.com/pa11y/pa11y-ci) or axe | Wire into `scripts/run-qa.sh` MVP-Build accessibility checks |
 | A test runner (Jest/Vitest/etc.) | `npm test` in the consuming repo — `run-qa.sh` calls it when present |
 | React/Astro/other UI stack | Peer of the *consuming* product only; chosen in your TDD, not imposed by the framework |
 

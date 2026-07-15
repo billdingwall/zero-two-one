@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "installedAt": "2026-07-12",
   "mode": "source",
-  "phase": "prebuild",
+  "phase": "planning",
   "tools": {
     "stack": "claude",
     "assistant": "claude-code",

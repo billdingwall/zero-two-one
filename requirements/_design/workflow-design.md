@@ -14,12 +14,12 @@ The gate is the framework's one hard enforcement point. Everything else is conve
 
 | Workflow | Doc | Primarily reads | Primarily writes |
 |---|---|---|---|
-| **Discovery** | product-lifecycle §1 | `requirements/_notes/` | `01-PRD.md`, `02-EDD.md`, `03-TDD.md` (drafted as one set), `04-ROADMAP.md` |
+| **Discovery** | product-lifecycle §1 | `requirements/_notes/` | `01-PRD.md`, `02-EDD.md`, `03-TDD.md` (drafted as one set), `05-ROADMAP.md` |
 | **Design** | key-docs-to-prototype, design-system-selection | PRD/EDD, `DESIGN.md` | `DESIGN.md`, `requirements/_design/tokens/`, `prototype/` (optional) |
 | **Refinement Loop (RLP)** | refinement-loop | living docs + `r{n}-review.md` | `_refinement/r{n}-*.md`, then the living docs in cascade order (PRD → EDD → TDD → Roadmap → Backlog), `CODE.md` on constraint change |
 | **Spec-Driven Delivery (SSD)** | spec-driven-delivery, key-docs-to-ssd | approved key docs | `specs/NNN-*/{spec,plan,tasks}.md`, implementation code, `.ai/context/` |
 | **QA** | (run-qa.sh) | docs, optional `prototype/`, `specs/`, tests | QA report (stdout); no file writes |
-| **Release** | mvp-to-growth-transition | `04-ROADMAP.md`, `05-BACKLOG.md` | `requirements/_releases/<id>.md`, roadmap summaries |
+| **Release** | mvp-to-growth-transition | `05-ROADMAP.md`, `04-BACKLOG.md` | `requirements/_releases/<id>.md`, roadmap summaries |
 | **Init & Migration** | init-and-migration | target repo state, existing docs | framework surface, `requirements/` key docs, `.zero-two-one.json`, hook install |
 | **Design-System Selection** | design-system-selection | `DESIGN.md`, EDD | `DESIGN.md` token map, `requirements/_design/tokens/`, `tools.design` in manifest, `prototype/` theme (if present) |
 | **Prototype (optional)** | key-docs-to-prototype | PRD, EDD, `DESIGN.md` | `prototype/` static build; only after `/021-prototype` runs are prototype steps active in Design/Refinement/QA |
@@ -36,16 +36,16 @@ Written at repo root by init (TDD §7); read by tooling as the source of truth:
 | `files` | init engine (hashes) | idempotent re-run, `--upgrade`, uninstall |
 | `mode` | init | re-run behavior |
 
-This repo **dogfoods** its own manifest (r5): `phase: prebuild`, `stack: claude`. That is why `021-status` reports Pre-build rather than inferring from directory contents.
+This repo **dogfoods** its own manifest: `phase: planning`, `stack: claude` (r6 — the former `prebuild` value merged into `planning`). That is why `021-status` reports Planning rather than inferring from directory contents.
 
 ## 4. Prototype: optional, not on the critical path (r5)
 
 The prototype is **not required** for a project to progress. It is added on demand by `/021-prototype`, which generates a static prototype from the key docs and only then activates the prototype steps in the Design, Refinement (step 5), and QA workflows. Until the command runs:
 
 - `prototype/` holds only its `_INDEX.md` scaffold.
-- `workflow-status.js` does **not** gate Pre-build on a prototype.
+- `workflow-status.js` does **not** gate Planning on a prototype.
 - Design-System Selection re-themes the prototype only *if one exists*.
-- The Pre-build exit gate is defined around the CLI/DX experience (EDD §3), not a prototype.
+- The Planning sign-off milestone is defined around the CLI/DX experience (EDD §3), not a prototype.
 
 ## 5. File-ownership recap (enforcement, TDD §6)
 

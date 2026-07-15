@@ -2,9 +2,9 @@
 
 - **Type:** MVP release
 - **Status:** Delivered
-- **Lifecycle Phase:** Pre-build (Phase 2)
-- **Branch:** working on the pre-build branch; Phase 3 releases branch per spec (`NNN-feature-name`)
-- **Roadmap:** [04-ROADMAP.md](../04-ROADMAP.md)
+- **Lifecycle Phase:** Planning (Phase 1) — delivered during the former Pre-build phase, merged into Planning at r6
+- **Branch:** worked on the pre-build branch; MVP-Build releases branch per spec (`NNN-feature-name`)
+- **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md)
 
 ## Goal
 
@@ -28,7 +28,7 @@ Every core scenario defined in the EDD and reviewable by stakeholders via the CL
 
 ## Delivered
 
-All nine scope items shipped: the legacy `npx zero-two-one-init` scaffolder, the `pre-commit` refinement gate, the `package/` boundary + sync manifest, the `_INDEX.md`/`-Template.md` + `021-` conventions, five refinement rounds (r1–r5), the dogfooded `.zero-two-one.json` manifest (read by `workflow-status.js`), the `command-design.md` + `workflow-design.md` references, root `.claude/commands/` slash-command dogfooding, and the [CLI-experience walkthrough demo](../_design/cli-walkthrough-demo.md). **Pre-build exit gate closed** — every core scenario is reviewable via the walkthrough, architecture is locked in the TDD, and mvp-3 scope is specced. Framework advanced to Phase 3 (MVP Build).
+All nine scope items shipped: the legacy `npx zero-two-one-init` scaffolder, the `pre-commit` refinement gate, the `package/` boundary + sync manifest, the `_INDEX.md`/`-Template.md` + `021-` conventions, five refinement rounds (r1–r5), the dogfooded `.zero-two-one.json` manifest (read by `workflow-status.js`), the `command-design.md` + `workflow-design.md` references, root `.claude/commands/` slash-command dogfooding, and the [CLI-experience walkthrough demo](../_design/cli-walkthrough-demo.md). **Planning sign-off milestone closed** (formerly the Pre-build exit gate) — every core scenario is reviewable via the walkthrough, architecture is locked in the TDD, and mvp-3 scope is specced.
 
 ## Changelog
 - **2026-07-12 (mvp-2 close):** Closed the two remaining scope items — Claude Code command wiring (root `.claude/commands/`) and the stakeholder sign-off walkthrough ([_design/cli-walkthrough-demo.md](../_design/cli-walkthrough-demo.md)); Status → Delivered; Delivered summary written; Pre-build exit gate closed ahead of mvp-3.

@@ -6,13 +6,13 @@
  *
  * Source of truth (TDD §7): when `.zero-two-one.json` is present, its `phase`
  * field is authoritative. Only when no manifest exists does the script fall
- * back to inferring the phase from repository state:
- *   Phase 1 (Planning):   `requirements/01-PRD.md` is missing or thin.
- *   Phase 2 (Pre-build):  the PRD exists (a prototype is OPTIONAL — added on
- *                         demand via `021-prototype`, so it is not required to
- *                         be in Pre-build).
- *   Phase 3 (MVP Build):  `specs/` contains feature markdown.
- *   Phase 4 (Growth):     recorded in the manifest (not inferred here).
+ * back to inferring the phase from repository state (3-phase model, r6):
+ *   Phase 1 (Planning):   the PRD exists but no feature specs do. Planning
+ *                         absorbs the former Pre-build phase; a prototype is
+ *                         OPTIONAL (added on demand via `021-prototype`).
+ *   Phase 2 (MVP Build):  `specs/` contains feature markdown.
+ *   Phase 3 (Growth):     recorded in the manifest (not inferred here).
+ * The legacy `prebuild` manifest value maps to Planning for back-compat.
  */
 
 const fs = require('fs');
@@ -26,9 +26,9 @@ const specsDir = path.join(repoRoot, 'specs');
 
 const PHASE_FROM_MANIFEST = {
   planning: { phase: 1, status: 'Planning (Zero)' },
-  prebuild: { phase: 2, status: 'Pre-build (Refinement)' },
-  mvp: { phase: 3, status: 'MVP Build (One)' },
-  growth: { phase: 4, status: 'Growth' },
+  prebuild: { phase: 1, status: 'Planning (Zero)' }, // legacy value → Planning (Pre-build merged, r6)
+  mvp: { phase: 2, status: 'MVP Build (One)' },
+  growth: { phase: 3, status: 'Growth' },
 };
 
 function readManifestPhase() {
@@ -58,11 +58,11 @@ function inferWorkflowStatus() {
   }
 
   if (hasSpecs) {
-    phase = 3;
+    phase = 2;
     status = 'MVP Build (One)';
   } else if (hasPRD) {
-    phase = 2;
-    status = 'Pre-build (Refinement)';
+    phase = 1;
+    status = 'Planning (Zero)';
   }
 
   return { phase, status, source: 'inferred' };

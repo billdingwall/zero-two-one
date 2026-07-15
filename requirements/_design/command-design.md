@@ -2,7 +2,7 @@
 
 *How every zero-two-one command surface maps together: npm scripts, assistant-rendered commands, agent skills, and the underlying Node/shell scripts. This is the reference the EDD's [CLI Experience](../02-EDD.md#3-the-cli-experience) section points to.*
 
-**Status legend:** ✅ shipped · 🔜 planned (release noted, see [../04-ROADMAP.md](../04-ROADMAP.md)).
+**Status legend:** ✅ shipped · 🔜 planned (release noted, see [../05-ROADMAP.md](../05-ROADMAP.md)).
 
 **Naming:** every framework command follows the `021-` convention (`CODE.md` §2). Assistant-side names are **stack-rendered** (TDD §9.2): `/021-*` slash commands for `claude`, `021-*` skills for `antigravity`, steering + the `021` agent for `kiro`. The tables below name the `claude` (default) rendering.
 
@@ -46,8 +46,10 @@ The dependency is deliberate (PRD §2, TDD §1): an **LLM drives**, scripts exec
 |---|---|---|
 | `fetch-speckit-context.md` | SSD, before implementing | active `specs/NNN-*/`, emits `.ai/context/` |
 | `verify-spec-compliance.md` | SSD / QA | spec artifacts + generated code |
+| `generate-prd.md` | Discovery / Planning | EDD + TDD → PRD draft (cohesive set) |
+| `generate-edd.md` | Discovery / Planning | PRD + TDD → EDD draft (cohesive set) |
 | `generate-tdd.md` | Discovery / Planning | PRD + EDD → TDD draft (cohesive set) |
-| `generate-tasks.md` | Planning / SSD | PRD + EDD + TDD → task breakdown |
+| `generate-backlog.md` | Planning / SSD | PRD + EDD + TDD → `04-BACKLOG` table (renamed from `generate-tasks`, r6) |
 | `generate-frontend-component.md` | Design / build | approved spec + `DESIGN.md` tokens |
 | `check-framework-compliance.md` | Governance / audit | repo state vs framework rules |
 
@@ -63,8 +65,8 @@ Anthropic tool-use schemas mapping agent tool calls to local CLIs:
 
 ## 6. Command → phase map
 
-- **Planning:** `generate-tdd`, `generate-tasks` skills; `/021-status`.
-- **Pre-build:** `/021-design`, optional `/021-prototype`; `021-qa` (docs tier); refinement rounds.
+- **Planning:** `generate-prd`/`generate-edd`/`generate-tdd`, `generate-backlog` skills; `/021-design`, optional `/021-prototype`; `/021-status`.
+- **Planning:** `/021-design`, optional `/021-prototype`; `021-qa` (docs tier); refinement rounds.
 - **MVP Build:** `/021-spec:*`, `fetch-speckit-context` / `verify-spec-compliance` skills, the pre-commit gate; `021-qa` (full tier).
 - **Growth:** `/021-feedback` → backlog; releases promote to SSD.
 
