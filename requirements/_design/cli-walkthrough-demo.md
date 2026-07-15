@@ -1,8 +1,10 @@
 # CLI Experience Walkthrough — Stakeholder Sign-off Demo
 
-*A lightweight, reviewable transcript of the `021` command surface as it exists today. This is the artifact backing the **Pre-build exit gate** (EDD [§3 The CLI Experience](../02-EDD.md#3-the-cli-experience); r5 Q2): it lets stakeholders see and sign off on the DX before MVP build proceeds. It is a **source-repo dogfooding artifact** — it is not shipped in the package.*
+*A lightweight, reviewable transcript of the `021` command surface. This is the artifact backing the **Planning sign-off milestone** (formerly the Pre-build exit gate; EDD [§3 The CLI Experience](../02-EDD.md#3-the-cli-experience); r5 Q2): it lets stakeholders see and sign off on the DX before MVP Build proceeds. It is a **source-repo dogfooding artifact** — it is not shipped in the package.*
 
-**Captured:** 2026-07-12, from this repository (`mode: source`, Phase 3 branch `mvp-3-safe-install-and-manifest`). Output is real, not illustrative.
+**Captured:** 2026-07-12, from this repository (`mode: source`, branch `mvp-3-safe-install-and-manifest`). Output is real, not illustrative.
+
+> **Era note (r7):** the phase numbers in the captured blocks below reflect the **4-phase model** in force on the capture date. The framework is now **3-phase** (Planning · MVP Build · Growth), so MVP Build is **Phase 2** and the dogfood manifest currently reads `phase: planning`. The captured output is left verbatim as a dated record; the surrounding prose uses current-model terms.
 
 ## What stakeholders are signing off on
 
@@ -50,9 +52,9 @@ Source: .zero-two-one.json
 ===================================
 ```
 
-`Source: .zero-two-one.json` shows the manifest is the phase source of truth (TDD §7) — the dogfooded manifest at the repo root is read directly rather than inferred. The `/021-status` slash command then layers on document-completeness, spec gate state (Phase 3+), and recommended next steps.
+`Source: .zero-two-one.json` shows the manifest is the phase source of truth (TDD §7) — the dogfooded manifest at the repo root is read directly rather than inferred. The `/021-status` slash command then layers on document-completeness, spec gate state (MVP Build+), and recommended next steps.
 
-## §3 — Spec-driven delivery surface (Phase 3)
+## §3 — Spec-driven delivery surface (MVP Build)
 
 ```
 $ npm run 021-spec:status -- list
@@ -63,7 +65,8 @@ Clean baseline as MVP build opens: no feature specs yet, and the surface points 
 
 ## Sign-off
 
-This walkthrough demonstrates the `021` CLI experience end to end against the real repository: an assistant-led, non-destructive init; a phase-aware, manifest-sourced status surface; and a gated spec-delivery surface — satisfying the EDD §3 "legible / automatic-by-default / manual-controls-available" criteria. It stands as the Pre-build exit-gate demo (mvp-2). Architecture is locked in the TDD; mvp-3 scope is specced in [_releases/mvp-3.md](../_releases/mvp-3.md).
+This walkthrough demonstrates the `021` CLI experience end to end against the real repository: an assistant-led, non-destructive init; a phase-aware, manifest-sourced status surface; and a gated spec-delivery surface — satisfying the EDD §3 "legible / automatic-by-default / manual-controls-available" criteria. It stands as the Planning sign-off demo (mvp-2; formerly the Pre-build exit-gate demo). Architecture is locked in the TDD; mvp-3 scope is specced in [_releases/mvp-3.md](../_releases/mvp-3.md).
 
 ## Changelog
+- **2026-07-15 (r7):** Prose relabeled to the 3-phase model (Pre-build exit gate → Planning sign-off milestone; Phase 3+ → MVP Build+); added an era note that the captured blocks predate the r6 3-phase migration. Per [_refinement/r7-review.md](../_refinement/r7-review.md).
 - **2026-07-12 (mvp-2 close):** Created — lightweight command-walkthrough / transcript backing the Pre-build exit gate (EDD §3; r5 Q2). Closes the mvp-2 "stakeholder sign-off demo" scope item.

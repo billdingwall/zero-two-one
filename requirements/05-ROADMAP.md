@@ -13,16 +13,16 @@
 
 ## MVP Releases
 
-*Summary view over the canonical [`_releases/`](_releases/_INDEX.md) files — detail (goal, scope, exit gate, delivered) lives there. Frozen as a historical record once the Growth phase begins. Lifecycle phases (3-phase model, r6): mvp-1/mvp-2 = **Planning**; mvp-3…mvp-6 = **MVP Build**. All previously-deferred v2 work has been pulled into these releases (r5).*
+*Summary view over the canonical [`_releases/`](_releases/_INDEX.md) files — detail (goal, scope, exit gate, delivered) lives there. Frozen as a historical record once the Growth phase begins. Lifecycle phases (3-phase model, r6): mvp-1/mvp-2 = **Planning**; mvp-3…mvp-6 = **MVP Build**. All previously-deferred v2 work has been pulled into these releases (r5). **All three stacks (Claude Code, Antigravity, Kiro) are MVP scope** — the non-`claude` stacks land at mvp-4 (r7).*
 
 | Release | Description | Status | Priority | Dependency | Phase |
 |---|---|---|---|---|---|
 | [mvp-1](_releases/mvp-1.md) | Planning — phased lifecycle concept + `requirements/`/`workflow/` structures | ✅ Completed | — | — | Planning |
 | [mvp-2](_releases/mvp-2.md) | Foundation & Design Docs — scaffolder, refinement gate, `package/` boundary, r1–r6 living docs, manifest dogfood, CLI/DX design docs | ✅ Delivered | — | mvp-1 | Planning |
-| [mvp-3](_releases/mvp-3.md) | Safe Install & Manifest — Init v2 merge engine, `--dry-run`/`--force`, manifest write + `--upgrade`, migrate-mode, Spec Kit reuse; **+ Workflow Manager (TDD §13) and r6 numbering/phase schema in `bin/init.js`** | 🔜 Next | High | mvp-2 | MVP Build |
-| [mvp-4](_releases/mvp-4.md) | AI-Led Init & Stack/Design Adapters — init walkthrough, source-layer generalization, `antigravity`/`kiro` stacks, `material-3`, 3×{none,material-3} matrix | ◻ Planned | High | mvp-3 | MVP Build |
+| [mvp-3](_releases/mvp-3.md) | Safe Install & Manifest — Init v2 merge engine, `--dry-run`/`--force`, manifest write + `--upgrade`, migrate-mode, Spec Kit reuse; **+ fixture tests (exit gate), manifest-as-QA-contract, read-only Workflow-Manager reporter** (r7) | 🔜 Next | High | mvp-2 | MVP Build |
+| [mvp-4](_releases/mvp-4.md) | AI-Led Init & Stack/Design Adapters — init walkthrough, `antigravity`/`kiro` stacks (**all three stacks land here**), `material-3`, 3×{none,material-3} matrix; **API-surface decision** (r7) | ◻ Planned | High | mvp-3 | MVP Build |
 | [mvp-5](_releases/mvp-5.md) | Lifecycle Commands — `021-feedback`, `021-design`, `021-prototype`, stage-specific review-template selection | ◻ Planned | Medium | mvp-4 | MVP Build |
-| [mvp-6](_releases/mvp-6.md) | Test, Publish & Field Launch — automated tests + e2e, **publish** (after safe-install), field test in three real repos, live feedback loop | ◻ Planned | Medium | mvp-5 | MVP Build |
+| [mvp-6](_releases/mvp-6.md) | Test, Publish & Field Launch — e2e, **CI publish pipeline** (provenance + pre-publish gate, r7), field test in three real repos, live feedback loop | ◻ Planned | Medium | mvp-5 | MVP Build |
 
 *Priority/dependency are the roadmap's summary fields (r6); they never restate the release files' scope. `bin/init.js` in mvp-3 implements the r6 `04-BACKLOG`/`05-ROADMAP` numbering and the `{planning,mvp,growth}` phase schema, so the engine is built against the new structure.*
 
@@ -31,6 +31,7 @@
 When the mvp-6 exit gate passes (MVP launched, QA green, field test running), the roadmap changes shape: the MVP Releases above freeze as history and the Releases (Growth) section takes over, pulling from the backlog. The **v2 feature set is defined at that point** (team direction, r5). Mechanics: [mvp-to-growth-transition.md](../workflow/specific-workflows/mvp-to-growth-transition.md).
 
 ## Changelog
+- **2026-07-15 (r7):** Release re-scoping from the repo/package audit — init+hook tests pulled forward to mvp-3's exit gate; mvp-3 gains manifest-as-QA-contract + read-only Workflow-Manager reporter; mvp-4 gains the programmatic-API decision and the "all three stacks land here" note; mvp-6 publish → CI pipeline (provenance + pre-publish gate). Per [_refinement/r7-review.md](_refinement/r7-review.md).
 - **2026-07-15 (r6):** Renamed `04-ROADMAP.md` → **`05-ROADMAP.md`** (backlog↔roadmap numbering swap); MVP Releases converted to a summary **table** (description·status·priority·dependency·phase) as the view over `_releases/`; phase labels updated to the 3-phase model (mvp-1/2 = Planning, mvp-3–6 = MVP Build); Workflow-Manager build folded into mvp-3. Per [_refinement/r6-review.md](_refinement/r6-review.md).
 - **2026-07-12 (mvp-2 close):** mvp-2 closed (Delivered) — the two remaining Pre-build items done: root `.claude/commands/` slash-command dogfooding and the stakeholder [CLI-experience walkthrough demo](_design/cli-walkthrough-demo.md); Pre-build exit gate closed. mvp-3 activated (In progress); framework manifest advanced to MVP Build (later reset to Planning under the 3-phase model, r6).
 - **2026-07-12 (r5):** MVP roadmap re-sequenced into six engineering-ordered releases (mvp-1…mvp-6): Foundation & Design Docs → Safe Install & Manifest → AI-Led Init & Adapters → Lifecycle Commands → Test/Publish/Launch. Publish moved into the launch release (mvp-6) behind safe-install; manifest dogfood + CLI docs added to mvp-2; `021-prototype` added to mvp-5; Growth section emptied (v2 defined in Growth). Per [_refinement/r5-review.md](_refinement/r5-review.md).

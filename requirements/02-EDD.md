@@ -63,7 +63,7 @@ The `021` command surface is a first-class interface:
 | `021-design` (assistant) | Design-system selection | Automatic (walkthrough) |
 | `021-prototype` (assistant) | Prototype (optional) | On-demand (generates `prototype/`) |
 
-Assistant-side names are stack-rendered per TDD §9.2 (`/021-*` commands for `claude`, skills for `antigravity`, steering/agent for `kiro`). The full command ↔ skill ↔ script mapping is maintained in [`requirements/_design/command-design.md`](../_design/command-design.md); how hooks and workflows touch project files is in [`workflow-design.md`](../_design/workflow-design.md).
+Assistant-side names are stack-rendered per TDD §9.2 (`/021-*` commands for `claude`, skills for `antigravity`, steering/agent for `kiro`). The full command ↔ skill ↔ script mapping is maintained in [`requirements/_design/command-design.md`](_design/command-design.md); how hooks and workflows touch project files is in [`workflow-design.md`](_design/workflow-design.md).
 
 ## 4. Design Principles
 1. **Text as UI**: Markdown files are the primary interface. They must be highly readable by both humans and LLMs.

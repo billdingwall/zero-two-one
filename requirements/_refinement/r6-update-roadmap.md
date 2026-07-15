@@ -4,7 +4,7 @@
 **Date:** 2026-07-15
 **Round:** r6
 **Decisions addressed:** #2 (rename to 05), #3 (table format), #8 (structural work into mvp scope)
-**Target doc:** [../04-ROADMAP.md](../04-ROADMAP.md) → renamed `05-ROADMAP.md`
+**Target doc:** [../04-ROADMAP.md](../05-ROADMAP.md) → renamed `05-ROADMAP.md`
 **References:** [_notes/021-structure-proposal.md](../_notes/021-structure-proposal.md) §1, §8.2 · [alignment audit](../_notes/021-structure-doc-alignment-audit.md) §2, §3
 
 ## Intent

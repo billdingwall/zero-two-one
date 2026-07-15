@@ -1,6 +1,6 @@
-# Audit: 021-structure.md vs the Key Docs & Guiding Files
+# Audit: 021-structure-proposal.md vs the Key Docs & Guiding Files
 
-*What to weigh before adopting the proposed structure in [021-structure.md](021-structure.md). This audit compares the proposal against the **content of the living docs** — PRD, EDD, TDD, 04-ROADMAP, 05-BACKLOG — and the **guiding files** — CLAUDE.md, PRODUCT.md, CODE.md, DESIGN.md, README.md. It is distinct from [021-structure-audit.md](021-structure-audit.md), which compared the proposal against the on-disk file tree. Here the question is narrower: **where does the proposal contradict what the docs currently assert, and what would have to change to make them agree?***
+*What to weigh before adopting the proposed structure in [021-structure-proposal.md](021-structure-proposal.md). This audit compares the proposal against the **content of the living docs** — PRD, EDD, TDD, 04-BACKLOG, 05-ROADMAP — and the **guiding files** — CLAUDE.md, PRODUCT.md, CODE.md, DESIGN.md, README.md. It is distinct from the earlier cross-functional review (since folded into the proposal), which compared the proposal against the on-disk file tree. Here the question is narrower: **where does the proposal contradict what the docs currently assert, and what would have to change to make them agree?***
 
 *Read as input to r6, not as decisions. Nothing below is applied.*
 

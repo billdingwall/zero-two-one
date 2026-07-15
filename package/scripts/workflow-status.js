@@ -70,6 +70,13 @@ function inferWorkflowStatus() {
 
 const { phase, status, source } = readManifestPhase() || inferWorkflowStatus();
 
+// --json: machine-readable output for tooling (run-qa.sh, CI) — consumers
+// must never scrape the human-readable block below (r7).
+if (process.argv.includes('--json')) {
+  console.log(JSON.stringify({ phase, status, source }));
+  process.exit(0);
+}
+
 console.log(`\n=== Zero Two One Lifecycle Status ===`);
 console.log(`Current Phase: ${phase} - ${status}`);
 console.log(`Source: ${source === 'manifest' ? '.zero-two-one.json' : 'inferred from repo state'}`);

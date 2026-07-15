@@ -12,9 +12,9 @@ Prove the framework in the field and ship it. Publishing happens **here and only
 
 ## Scope
 
-- [ ] Automated tests for `bin/init.js` and `hooks/pre-commit`.
-- [ ] End-to-end test via Claude Code — scaffold mode (fresh repo) and migrate mode (working repo).
-- [ ] Publish `zero-two-one` v1.1.x to the NPM registry (`npm run publish:package`).
+- [ ] End-to-end test via Claude Code — scaffold mode (fresh repo) and migrate mode (working repo). *(Unit tests for `bin/init.js` + `hooks/pre-commit` moved forward to mvp-3's exit gate, r7.)*
+- [ ] **CI publish pipeline** (r7, TDD §14): tag-triggered, `npm run sync:package -- --check` then `npm publish --provenance` from `package/`; **pre-publish gate** fails on a dangling `main`, missing `LICENSE`, `.ai/context` dummies in the tarball, or broken links. Manual `publish:package` is a documented fallback only.
+- [ ] Publish `zero-two-one` v1.1.x to the NPM registry **via the pipeline** (name verified unclaimed — npm 404, r7).
 - [ ] Field test: init the framework into three real repos —
   - Claude Code + GitHub Spec Kit, at **Growth**;
   - Google Antigravity + GitHub Spec Kit;
@@ -30,4 +30,5 @@ MVP launched, QA green, three-repo field test running, feedback arriving. Passin
 *Summary written at release close.*
 
 ## Changelog
+- **2026-07-15 (r7):** Init/hook unit tests moved forward to mvp-3; publish rewritten as a CI-only, tag-triggered `--provenance` pipeline with a pre-publish gate (TDD §14). Per [_refinement/r7-review.md](../_refinement/r7-review.md).
 - **2026-07-12 (r5):** New launch release — publish moved out of the backlog top into this gated final release; three-repo field test and feedback-loop activation consolidated here.

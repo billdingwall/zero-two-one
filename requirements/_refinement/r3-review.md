@@ -5,7 +5,7 @@
 - **Status:** Applied
 - **Round:** 3
 - **Reviewer:** William Dingwall (billdingwall) with Claude Code
-- **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Backlog](../05-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
+- **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../05-ROADMAP.md) · [Backlog](../04-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
 - **Research:** [_notes/r3-tool-research.md](../_notes/r3-tool-research.md) (Google Antigravity, Kiro IDE/CLI, Material Design 3)
 
 ## Scope

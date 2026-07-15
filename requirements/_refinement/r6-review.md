@@ -10,7 +10,7 @@
 - **Primary references (read in full before drafting update plans):**
   - [_notes/021-structure-proposal.md](../_notes/021-structure-proposal.md) — the target structure in full; §8.2 is the migration surface, §8.3 the adoption phasing.
   - [_notes/021-structure-doc-alignment-audit.md](../_notes/021-structure-doc-alignment-audit.md) — the conflict analysis vs the living docs, with the recorded DECISIONs per section.
-- **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Backlog](../05-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md) · [README](../../README.md)
+- **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../05-ROADMAP.md) · [Backlog](../04-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md) · [README](../../README.md)
 
 ## Review Focus: Structural Overhaul Before MVP Build
 

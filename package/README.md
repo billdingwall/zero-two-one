@@ -30,6 +30,8 @@ The framework's central enforcement: **no implementation code lands until the fe
 
 Init is assistant-led — an LLM is the framework's core dependency, including setup. Copy the prompt for your stack and paste it into your assistant inside the target repository:
 
+> **Stack availability:** all three stacks (Claude Code, Antigravity, Kiro) are **MVP scope**. **Claude Code works today.** The `--stack antigravity|kiro` flag, stack rendering, and the interactive walkthrough land in **mvp-4** (see [`05-ROADMAP.md`](requirements/05-ROADMAP.md)) — until then the Antigravity/Kiro prompts below describe the intended experience, and `npx zero-two-one-init` installs the `claude` surface. The `--dry-run`/`--force` and safe merge behavior land in **mvp-3**.
+
 **Claude Code** (default stack — pairs with GitHub Spec Kit):
 
 > Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `claude` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and `workflow/workflows.md`, then report the lifecycle phase with `npm run 021-status`.

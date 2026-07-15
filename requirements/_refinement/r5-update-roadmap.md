@@ -4,7 +4,7 @@
 **Date:** 2026-07-12
 **Round:** r5
 **Findings addressed:** Showstopper 1 (publish-before-safe-install), Gap 4 (orphaned v2 items), Gap 8 (mvp-3 overloaded, no dependency ordering)
-**Target doc:** [../04-ROADMAP.md](../04-ROADMAP.md)
+**Target doc:** [../04-ROADMAP.md](../05-ROADMAP.md)
 
 > **Note:** r5 was driven by the `/harden-docs` audit and applied directly from [r5-review.md](r5-review.md)'s Outcome section rather than through a standalone proposal step. This file records what changed, for consistency with the r1–r4 update-file convention.
 

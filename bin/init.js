@@ -22,16 +22,51 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const targetDir = path.resolve(process.argv[2] || process.cwd());
 const sourceDir = path.join(__dirname, '..');
+
+// ---------------------------------------------------------------------------
+// 0. Argument gating (r7 interim guards — full Init v2 flag surface lands mvp-3)
+// ---------------------------------------------------------------------------
+const USAGE = [
+  'Usage: npx zero-two-one-init [target-dir]',
+  '',
+  'Scaffold the Zero Two One framework into target-dir (default: cwd).',
+  'User-owned docs (CLAUDE.md, CODE.md, PRODUCT.md, DESIGN.md, README.md,',
+  'requirements/*.md) are create-if-missing — existing files are never overwritten.',
+  '',
+  'Options:',
+  '  --help       Show this help and exit',
+  '  --version    Print the framework version and exit',
+].join('\n');
+
+const rawArgs = process.argv.slice(2);
+if (rawArgs.includes('--help') || rawArgs.includes('-h')) {
+  console.log(USAGE);
+  process.exit(0);
+}
+if (rawArgs.includes('--version') || rawArgs.includes('-v')) {
+  console.log(require(path.join(sourceDir, 'package.json')).version);
+  process.exit(0);
+}
+const unknownFlags = rawArgs.filter((a) => a.startsWith('-'));
+if (unknownFlags.length) {
+  console.error(`Unknown option: ${unknownFlags[0]}\n\n${USAGE}`);
+  process.exit(1);
+}
+if (rawArgs.length > 1) {
+  console.error(`Expected at most one target directory, got: ${rawArgs.join(' ')}\n\n${USAGE}`);
+  process.exit(1);
+}
+
+const targetDir = path.resolve(rawArgs[0] || process.cwd());
 
 console.log(`Initializing Zero Two One AI Framework in ${targetDir}...`);
 
 // ---------------------------------------------------------------------------
 // 1. Copy the framework surface
 // ---------------------------------------------------------------------------
+// prototype/ is not scaffolded — it is generated on demand by 021-prototype (TDD §12, r7).
 const dirsToCopy = [
-  'prototype',
   'skills',
   'specs',
   'templates',
@@ -74,19 +109,47 @@ fs.mkdirSync(reqDir, { recursive: true });
   fs.mkdirSync(path.join(reqDir, sub), { recursive: true });
 });
 
+// User-owned docs are create-if-missing (TDD §6): existing files are never
+// overwritten — the r7 interim guard honoring the non-destructive contract
+// ahead of the full mvp-3 ownership engine.
 for (const doc of requirementsDocs) {
   const src = path.join(sourceDir, 'templates', `${doc}-Template.md`);
-  if (fs.existsSync(src)) {
+  const dest = path.join(reqDir, `${doc}.md`);
+  if (!fs.existsSync(src)) continue;
+  if (fs.existsSync(dest)) {
+    console.log(`Skipping requirements/${doc}.md (already exists — never overwritten).`);
+  } else {
     console.log(`Creating requirements/${doc}.md from template...`);
-    fs.copyFileSync(src, path.join(reqDir, `${doc}.md`));
+    fs.copyFileSync(src, dest);
   }
 }
 
 for (const file of guidingFiles) {
   const src = path.join(sourceDir, 'templates', `${file}-Template.md`);
-  if (fs.existsSync(src)) {
+  const dest = path.join(targetDir, `${file}.md`);
+  if (!fs.existsSync(src)) continue;
+  if (fs.existsSync(dest)) {
+    console.log(`Skipping ${file}.md (already exists — never overwritten).`);
+  } else {
     console.log(`Creating ${file}.md from template...`);
-    fs.copyFileSync(src, path.join(targetDir, `${file}.md`));
+    fs.copyFileSync(src, dest);
+  }
+}
+
+// Assistant slash commands (.claude/commands/021-*), merge-safe per TDD §4:
+// existing user commands with the same name win; skips are reported.
+const claudeSrc = path.join(sourceDir, '.claude', 'commands');
+if (fs.existsSync(claudeSrc)) {
+  const claudeDest = path.join(targetDir, '.claude', 'commands');
+  fs.mkdirSync(claudeDest, { recursive: true });
+  for (const entry of fs.readdirSync(claudeSrc)) {
+    const dest = path.join(claudeDest, entry);
+    if (fs.existsSync(dest)) {
+      console.log(`Skipping .claude/commands/${entry} (user command exists — never overwritten).`);
+    } else {
+      fs.copyFileSync(path.join(claudeSrc, entry), dest);
+      console.log(`Installing .claude/commands/${entry}`);
+    }
   }
 }
 
@@ -125,6 +188,13 @@ const hookSource = path.join(targetDir, 'hooks', 'pre-commit');
 if (fs.existsSync(hooksDir) && fs.existsSync(hookSource)) {
   console.log('Installing pre-commit refinement gate...');
   const hookDest = path.join(hooksDir, 'pre-commit');
+  // r7 interim guard: never silently clobber an existing hook — back it up.
+  // (Conflict-aware chaining for husky/lefthook lands with Init v2, mvp-3.)
+  if (fs.existsSync(hookDest)) {
+    const backup = `${hookDest}.backup`;
+    fs.copyFileSync(hookDest, backup);
+    console.log(`Existing pre-commit hook backed up to ${path.relative(targetDir, backup)}.`);
+  }
   fs.copyFileSync(hookSource, hookDest);
   fs.chmodSync(hookDest, 0o755);
 } else if (!fs.existsSync(hooksDir)) {

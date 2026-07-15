@@ -5,7 +5,7 @@
 The framework consists of five main technical components (the fifth, the Workflow Manager, is added in r6 — §13). **An LLM is a core dependency of the framework — including setup**: init is assistant-led, with the CLI as its mechanical engine.
 
 1. **The Init Walkthrough (stack-rendered skill/command)**: `/021-init` for `claude`, an `021-init` skill for `antigravity`, agent/steering for `kiro` (§9.2). Owns the interactive interview — stack, design system, lifecycle phase, existing-structure review, per-conflict decisions — using the ask-don't-assume question pattern (EDD §4). The walkthrough explains the plan, collects answers, and drives the CLI engine non-interactively via flags.
-2. **The CLI Engine (`bin/init.js`)**: A zero-dependency Node.js script that constructs the user workspace from clean templates — file classification, merge rules, hashing, manifest writes. Runs standalone (`npx zero-two-one-init`) for bootstrap, accepting flags (`--stack`, `--design`, `--phase`, per-conflict answers) so the walkthrough can drive it. It runs in one of two modes, decided at startup:
+2. **The CLI Engine (`bin/init.js`)**: A zero-dependency Node.js script that constructs the user workspace from clean templates — file classification, merge rules, hashing, manifest writes. Runs standalone (`npx zero-two-one-init`) for bootstrap, accepting flags (`--stack`, `--design`, `--phase`, per-conflict answers) so the walkthrough can drive it. **Interim v1 guards (r7, ahead of the full Init v2 engine):** validates arguments (`--help`/`--version`, rejects unknown flags and `-`-prefixed targets), creates user-owned docs and installs `.claude/commands/` create-if-missing (existing files never overwritten), and backs up an existing `.git/hooks/pre-commit` before installing the gate. It runs in one of two modes, decided at startup:
    - **Scaffold mode** — the target has no framework install and no meaningful pre-existing content in the paths init touches.
    - **Migrate mode** — auto-detected when any of the following exist: `README.md` or other guiding docs, `requirements/`, `.specify/` or a populated `specs/`, an existing `.git/hooks/pre-commit`, or a prior `.zero-two-one.json`. Migrate mode applies the ownership rules (§6) and runs the detection/interview flow (§8).
 3. **The Refinement Gate (`hooks/pre-commit`)**: A bash script installed into `.git/hooks/` that parses Markdown frontmatter in `specs/` to determine approval status. Installation is conflict-aware:
@@ -45,10 +45,13 @@ The canonical contract for what crosses the root ↔ `package/` boundary. `scrip
 | `templates/` | Starting-point templates, including guiding-doc templates |
 | `workflow/` | Lifecycle, refinement, and SSD process docs |
 | `skills/` | Agent prompts and `tools.json` |
-| `scripts/` | Lifecycle tooling only — dev-only scripts are excluded (see below) |
-| `specs/`, `prototype/` | Empty scaffolds with `_INDEX.md` |
-| `.github/` | Issue templates |
-| `README.md`, `.gitignore` | Starting-point files |
+| `scripts/` | Lifecycle tooling only — dev-only scripts excluded (`sync-to-package.js`, `check-links.js`) |
+| `specs/` | Empty scaffold with `_INDEX.md` |
+| `.ai/` | **Empty** `context/` scaffold only — generated bundles never ship (r7) |
+| `.github/` | Issue templates only — CI `workflows/` excluded (r7) |
+| `README.md`, `LICENSE`, `.gitignore` | Starting-point files (r7: LICENSE added) |
+
+`prototype/` is **not** shipped (r7): it is generated on demand by `021-prototype` (§12), including its `_INDEX.md`.
 
 ### Package-only (never overwritten by sync)
 | Path | Notes |
@@ -60,10 +63,12 @@ The canonical contract for what crosses the root ↔ `package/` boundary. `scrip
 | Path | Notes |
 |---|---|
 | `requirements/` | This framework's own living docs |
-| `.021-updates/` | Internal audits and proposals |
-| `scripts/sync-to-package.js` | The bridge tool itself — users never sync a package |
+| `.021-updates/` | Internal audits and proposals (archived — tombstoned, r7) |
+| `scripts/sync-to-package.js`, `scripts/check-links.js` | Dev-only tooling — users never sync a package |
+| `.github/workflows/` | CI governs this repo, not scaffolded projects (r7) |
+| `CONTRIBUTING.md` | Contribution flow for this repo, not shipped to user projects |
 | `CLAUDE.md`, `CODE.md`, `PRODUCT.md`, `DESIGN.md` | Root instances are dogfooding content; the package delivers their `templates/*-Template.md` counterparts instead |
-| `.ai/` | Generated, gitignored artifacts |
+| `.ai/context/` (generated bundles) | Generated, gitignored artifacts — only the empty scaffold ships |
 
 ### Template → install mapping
 Guiding docs are delivered as templates and instantiated by `bin/init.js` in the user's repo:
@@ -112,6 +117,7 @@ Written to the **target repo root** at install (user-visible state, not a genera
 - Basis for **idempotent re-runs** (skip anything present and unmodified), **`--upgrade`** (refresh framework-owned files whose hash still matches install; list conflicts otherwise), and a documented **uninstall** (delete files still matching their hash; list the rest for manual review).
 - **Upgrade scope (r4)**: `--upgrade` refreshes **only** framework-owned surfaces — `templates/`, `skills/`, `scripts/`, `hooks/`, and the stack-rendered command surfaces (`.claude/commands/021-*` etc.). User-owned instantiated docs (`requirements/*.md`, guiding docs) are never touched by upgrade, matching the §6 "never touch" column.
 - `workflow-status.js` reads `phase` from the manifest when present, instead of inferring from directory contents (**implemented and dogfooded in this repo** — `.zero-two-one.json` at the framework root sets `phase: planning`, r6). Inference is the fallback only when no manifest exists, and it no longer treats a prototype as required (prototype is optional, §12). **Phase enum (r6):** `{ planning, mvp, growth }` — the former `prebuild` value is merged into `planning` and kept only as a back-compat alias in the status reader.
+- **QA contract (r7):** `workflow-status.js --json` emits `{ phase, status, source }`. Consumers (`scripts/run-qa.sh`, CI) read this machine-readable output — **never** scrape the human-readable block. Once the mvp-3 manifest write lands, `run-qa.sh` and `hooks/pre-commit` resolve phase/stack through a single parser in `scripts/speckit/lib.js`, permanently retiring the output-scraping coupling that caused the r6 `run-qa.sh` phase regression.
 - **`mode: source` (r5)**: the self-referential case for the framework's own repo, which is the source rather than an init target (`scaffold`/`migrate` both imply init ran on someone else's project). Init v2 **regenerates this repo's own manifest** — including the full `files` hash inventory — so the framework dogfoods its own manifest end-to-end rather than relying on the hand-authored `files: {}` stub (mvp-3).
 - `assistant`/`ssd` are **derived from `stack`** (kept for per-role tooling and r2 compatibility); `design` is chosen independently of the stack (§9.4). Additive since r2 — no schema break.
 
@@ -189,9 +195,19 @@ A **fifth** technical component (§1): keeps lifecycle state consistent as work 
 - **Guardrails (normative)**: advisory / corrective only — **never in the blocking commit path** (that stays the deterministic `pre-commit` refinement gate, §1/§3) and **never auto-commits** (it edits the working tree; the human commits). It is assistant-side or a post-commit helper, not a `pre-commit` gate.
 - **Advisory doc-sync**: the non-blocking BACKLOG-vs-work drift check lives here too — it warns when spec/backlog status and committed work diverge, but never blocks.
 - **Zero runtime dependencies**: built-in `fs`/`path` (+ `node:child_process` for git reads); no packages.
-- **Delivery**: defined here in r6; **built in mvp-3** alongside the manifest-write engine (the manifest is the state it syncs).
+- **Delivery (r7)**: **read-only reporter first** — mvp-3 ships drift *detection* with proposed diffs (a `021-doctor`-style report; no auto-apply). Applying working-tree corrections is a later increment once the report is trusted. Guardrails above hold at every increment.
+
+## 14. Publish Pipeline (mvp-6) — r7
+
+Publishing is **CI-only, tag-triggered**, never a local one-liner:
+
+- Trigger: a version tag pushes; the workflow runs `npm run sync:package -- --check` (fail on drift), then `npm publish --provenance` from `package/`.
+- **Pre-publish gate** (fails the pipeline): a dangling `"main"`, a missing `LICENSE`, any `.ai/context` generated bundle in the tarball, or unresolved Markdown links. These encode the r7 audit's package findings as the release's own checks.
+- `npm run publish:package` remains only as a documented manual fallback (not the primary path).
+- **API surface (open, decide mvp-4):** `"main"` is removed from both manifests now (no dangling entry). Whether to expose a programmatic surface — `require('zero-two-one/speckit')` over `scripts/speckit/lib.js` via `exports` — is decided with the adapter seam in mvp-4; until then the package is CLI/content-only.
 
 ## Changelog
+- **2026-07-15 (r7):** §1 CLI Engine gains the interim v1 guards; §5 manifest updated (drop `prototype/` + generated `.ai` bundles + CI workflows from the package; add `LICENSE`, `CONTRIBUTING.md` root-only, `check-links.js` dev-only); §7 QA contract (`--json`, single-parser rule); §13 Workflow Manager → read-only reporter first; new **§14 Publish Pipeline** (CI-only, provenance, pre-publish gate) + `main`-removal / API-decision-at-mvp-4. Per [_refinement/r7-review.md](_refinement/r7-review.md).
 - **2026-07-15 (r6):** Lifecycle enum → `{ planning, mvp, growth }` (§7; `prebuild` merged into Planning); §2/§5/§8 key-doc numbering swapped to `04-BACKLOG`/`05-ROADMAP`; `_architecture/` boundary added (§2); new **§13 Workflow Manager** (fifth §1 component, built mvp-3); §12 Pre-build references → Planning sign-off milestone. Per [_refinement/r6-review.md](_refinement/r6-review.md).
 - **2026-07-12 (r5):** §10 feedback repo slug resolved to `billdingwall/zero-two-one`; §7 manifest-read implemented and dogfooded (`.zero-two-one.json` at root) with prototype dropped from inference; new §12 Optional Prototype Command (`021-prototype`). Per [_refinement/r5-review.md](_refinement/r5-review.md).
 - **2026-07-12 (r4):** §1 recast as walkthrough + engine (AI-led init; LLM a core dependency); §2 gains `requirements/_releases/` release files; §5 install guarantee + template neutrality; §6 duplicate-resolution options (archive/update/leave-alongside) with content-preservation invariant; §7 upgrade scope limited to templates/skills/scripts/hooks + command surfaces; new §10 (`021-feedback`) and §11 (`021-design`). Per [_refinement/r4-update-tdd.md](_refinement/r4-update-tdd.md).
