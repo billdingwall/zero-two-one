@@ -4,7 +4,7 @@
 **Date:** 2026-07-15
 **Round:** r6
 **Decisions addressed:** #2 (rename to 04), #3 (table format + ownership), #8 (structural work as items)
-**Target doc:** [../05-BACKLOG.md](../04-BACKLOG.md) → renamed `04-BACKLOG.md`
+**Target doc:** [../04-BACKLOG.md](../04-BACKLOG.md) (renamed from `05-BACKLOG.md`, this round)
 **References:** [_notes/021-structure-proposal.md](../_notes/021-structure-proposal.md) §1, §8.2 · [alignment audit](../_notes/021-structure-doc-alignment-audit.md) §2, §3
 
 ## Intent

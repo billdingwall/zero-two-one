@@ -4,7 +4,7 @@
 **Date:** 2026-07-10
 **Round:** r1
 **Findings addressed:** 3 (3.1–3.4 backlog items), 4.2
-**Target doc:** [../05-BACKLOG.md](../04-BACKLOG.md)
+**Target doc:** [../04-BACKLOG.md](../04-BACKLOG.md)
 
 ## Intent
 
