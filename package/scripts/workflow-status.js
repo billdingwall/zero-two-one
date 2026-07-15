@@ -7,11 +7,11 @@
  * Source of truth (TDD §7): when `.zero-two-one.json` is present, its `phase`
  * field is authoritative. Only when no manifest exists does the script fall
  * back to inferring the phase from repository state (3-phase model, r6):
- *   Phase 1 (Planning):   the PRD exists but no feature specs do. Planning
+ *   Phase 0 (Planning):   the PRD exists but no feature specs do. Planning
  *                         absorbs the former Pre-build phase; a prototype is
  *                         OPTIONAL (added on demand via `021-prototype`).
- *   Phase 2 (MVP Build):  `specs/` contains feature markdown.
- *   Phase 3 (Growth):     recorded in the manifest (not inferred here).
+ *   Phase 1 (MVP Build):  `specs/` contains feature markdown.
+ *   Phase 2 (Growth):     recorded in the manifest (not inferred here).
  * The legacy `prebuild` manifest value maps to Planning for back-compat.
  */
 
@@ -25,10 +25,10 @@ const prdPath = path.join(repoRoot, 'requirements', '01-PRD.md');
 const specsDir = path.join(repoRoot, 'specs');
 
 const PHASE_FROM_MANIFEST = {
-  planning: { phase: 1, status: 'Planning (Zero)' },
-  prebuild: { phase: 1, status: 'Planning (Zero)' }, // legacy value → Planning (Pre-build merged, r6)
-  mvp: { phase: 2, status: 'MVP Build (One)' },
-  growth: { phase: 3, status: 'Growth' },
+  planning: { phase: 0, status: 'Planning (Zero)' },
+  prebuild: { phase: 0, status: 'Planning (Zero)' }, // legacy value → Planning (Pre-build merged, r6)
+  mvp: { phase: 1, status: 'MVP Build (One)' },
+  growth: { phase: 2, status: 'Growth' },
 };
 
 function readManifestPhase() {
@@ -46,7 +46,7 @@ function readManifestPhase() {
 }
 
 function inferWorkflowStatus() {
-  let phase = 1;
+  let phase = 0;
   let status = 'Planning (Zero)';
 
   const hasPRD = fs.existsSync(prdPath) && fs.statSync(prdPath).size > 1000; // rough heuristic
@@ -58,10 +58,10 @@ function inferWorkflowStatus() {
   }
 
   if (hasSpecs) {
-    phase = 2;
+    phase = 1;
     status = 'MVP Build (One)';
   } else if (hasPRD) {
-    phase = 1;
+    phase = 0;
     status = 'Planning (Zero)';
   }
 

@@ -2,7 +2,7 @@
 
 - **Type:** MVP release
 - **Status:** In progress (current)
-- **Lifecycle Phase:** MVP Build (Phase 2)
+- **Lifecycle Phase:** MVP Build (Phase 1)
 - **Branch:** feature branches per spec (`NNN-feature-name`) through the refinement gate
 - **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md) · [04-BACKLOG.md](../04-BACKLOG.md)
 

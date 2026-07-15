@@ -4,7 +4,7 @@
 Dynamically retrieve the current feature's Spec Kit requirements, data models, and acceptance criteria, and inject them into the agent's context window as AI-readable artifacts.
 
 **Usage Constraint:**
-Run this skill BEFORE beginning any implementation work on a feature (Phase 3: MVP Build, or Phase 4 enhancements), and re-run it whenever spec artifacts change. Never implement from memory of an old spec read.
+Run this skill BEFORE beginning any implementation work on a feature (Phase 1: MVP Build, or Phase 2: Growth enhancements), and re-run it whenever spec artifacts change. Never implement from memory of an old spec read.
 
 **Execution Steps for AI Agent:**
 1. **Resolve the feature:** Determine the active spec from the current `NNN-feature-name` branch, or ask the user which spec to load if the branch does not follow the convention.

@@ -2,7 +2,7 @@
 
 - **Type:** MVP release
 - **Status:** Delivered
-- **Lifecycle Phase:** Planning (Phase 1) — delivered during the former Pre-build phase, merged into Planning at r6
+- **Lifecycle Phase:** Planning (Phase 0) — delivered during the former Pre-build phase, merged into Planning at r6
 - **Branch:** worked on the pre-build branch; MVP-Build releases branch per spec (`NNN-feature-name`)
 - **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md)
 

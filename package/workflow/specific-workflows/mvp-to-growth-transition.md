@@ -1,6 +1,6 @@
 # MVP → Growth Transition (MGT)
 
-**Goal:** Switch the project's planning model when it leaves Phase 2 (MVP Build) and enters Phase 3 (Growth). Before the transition, the roadmap drives everything and the backlog exists to support MVP delivery. After it, the backlog drives everything and the roadmap records releases pulled from it.
+**Goal:** Switch the project's planning model when it leaves Phase 1 (MVP Build) and enters Phase 2 (Growth). Before the transition, the roadmap drives everything and the backlog exists to support MVP delivery. After it, the backlog drives everything and the roadmap records releases pulled from it.
 
 ## Trigger
 

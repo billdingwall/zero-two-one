@@ -16,7 +16,7 @@ After initialization, complete these setup steps:
 6. Update `DESIGN.md` with the project's design tokens (colors, typography, spacing).
 7. Run `npm run 021-status` to verify the installation and check the detected lifecycle phase.
 
-For Spec Kit integration (Phase 3+):
+For Spec Kit integration (MVP Build onwards, Phase 1+):
 ```
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 specify init --here --ai claude

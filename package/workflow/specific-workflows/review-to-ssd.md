@@ -1,6 +1,6 @@
 # Flow: Review > Backlog > SSD
 
-**Scope:** Continuous Improvement (Phase 3 Growth)
+**Scope:** Continuous Improvement (Phase 2 Growth)
 
 ## The Flow
 

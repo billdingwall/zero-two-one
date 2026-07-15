@@ -1,6 +1,6 @@
 # Planning → MVP Build Transition
 
-*How the workflows shift when a project passes the Planning sign-off milestone and enters MVP Build (Phase 1 → Phase 2). The former "phase 0 → phase 1" transition, renamed for the 3-phase model (r6).*
+*How the workflows shift when a project passes the Planning sign-off milestone and enters MVP Build (Phase 0 → Phase 1). Renamed from the former Pre-build → MVP Build transition for the 3-phase model (r6).*
 
 **Trigger:** the Planning sign-off milestone passes — every core scenario is stakeholder-reviewable (docs, or prototype if one was added) and the architecture is locked in the TDD (see [product-lifecycle.md](product-lifecycle.md)).
 

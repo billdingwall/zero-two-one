@@ -27,7 +27,7 @@ Your primary role as an AI assistant is to help the user navigate these phases b
 ## Context
 
 * **DOGFOODING**: You are currently operating in the root repository of the `zero-two-one` framework itself. We are using the framework's own rules to refine and build the framework.
-* The project is in **Phase 1: Planning** (which now includes the former Pre-build refinement work; r6). The PRD, EDD, TDD, Roadmap, and Backlog for the framework itself have been drafted in `requirements/`.
+* The project is in **Phase 0: Planning** (which now includes the former Pre-build refinement work; r6). The PRD, EDD, TDD, Roadmap, and Backlog for the framework itself have been drafted in `requirements/`.
 * **Important Boundary**: Development happens in the root. The `package/` directory is a clean snapshot for NPM publishing. When we change the framework mechanics (templates, scripts, skills), we run `npm run sync:package` to update the package.
 
 **Please update your memory to track that you are managing the zero-two-one framework development.**

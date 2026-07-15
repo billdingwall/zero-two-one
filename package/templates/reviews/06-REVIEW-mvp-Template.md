@@ -4,7 +4,7 @@
 - **Date:** [YYYY-MM-DD]
 - **Status:** [Draft / Applied]
 - **Round:** [Number]
-- **Lifecycle Phase:** MVP Build (Phase 2)
+- **Lifecycle Phase:** MVP Build (Phase 1)
 - **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../05-ROADMAP.md) · [Backlog](../04-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
 
 ## Review Focus: Code Review & Build Testing

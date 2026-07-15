@@ -4,9 +4,9 @@
 # Executes tailored automated checks depending on the current lifecycle phase.
 #
 # Phase model (3-phase, r6; this script remapped in r7):
-#   1 = Planning (Zero)    — docs tier
-#   2 = MVP Build (One)    — full code QA (tests, a11y, spec compliance)
-#   3 = Growth             — full code QA + feedback checks
+#   0 = Planning (Zero)    — docs tier
+#   1 = MVP Build (One)    — full code QA (tests, a11y, spec compliance)
+#   2 = Growth             — full code QA + feedback checks
 #
 # Phase is read from `workflow-status.js --json` (machine-readable contract,
 # r7) — never scraped from the human-readable output.
@@ -18,8 +18,8 @@ let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{process.stdout.write
 ")
 
 if [ -z "$PHASE" ]; then
-    echo "WARN: could not determine lifecycle phase — defaulting to 1 (Planning)."
-    PHASE=1
+    echo "WARN: could not determine lifecycle phase — defaulting to 0 (Planning)."
+    PHASE=0
 fi
 
 echo "Detected Lifecycle Phase: $PHASE"
@@ -58,8 +58,8 @@ run_code_qa() {
     echo "PASS: Spec surface present."
 }
 
-if [ "$PHASE" = "1" ]; then
-    echo "Phase 1 (Planning): Validating Key Docs & (optional) Prototype..."
+if [ "$PHASE" = "0" ]; then
+    echo "Phase 0 (Planning): Validating Key Docs & (optional) Prototype..."
     check_key_docs
     # The prototype is OPTIONAL (r5) — added on demand via 021-prototype. Only
     # validate it when one has actually been generated; absence is not a fault.
@@ -69,14 +69,14 @@ if [ "$PHASE" = "1" ]; then
         echo "INFO: No prototype added (optional — run 021-prototype to generate one)."
     fi
 
-elif [ "$PHASE" = "2" ]; then
-    echo "Phase 2 (MVP Build): Running Full Code QA..."
+elif [ "$PHASE" = "1" ]; then
+    echo "Phase 1 (MVP Build): Running Full Code QA..."
     check_key_docs
     run_code_qa
     echo "PASS: Full QA Suite completed successfully."
 
-elif [ "$PHASE" = "3" ]; then
-    echo "Phase 3 (Growth): Running Full Code QA + Feedback checks..."
+elif [ "$PHASE" = "2" ]; then
+    echo "Phase 2 (Growth): Running Full Code QA + Feedback checks..."
     check_key_docs
     run_code_qa
     # Feedback loop: the Growth backlog is fed by 021-feedback issues (TDD §10).

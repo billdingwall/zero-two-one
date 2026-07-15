@@ -1,6 +1,6 @@
 # Project Backlog
 
-## Current Phase: Planning (Phase 1)
+## Current Phase: Planning (Phase 0)
 
 *Backlog ordering is roadmap-driven until the Growth phase. From Growth onward, **user value** — from feedback collected in refinement rounds and `021-feedback` issues — is the primary signal, and items are **promoted into releases** ([_releases/](_releases/_INDEX.md)) and implemented as their own SSD specs. See the [MVP → Growth transition workflow](../workflow/specific-workflows/mvp-to-growth-transition.md).*
 

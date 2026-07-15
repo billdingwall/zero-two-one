@@ -23,7 +23,7 @@ Init asks two tool questions (TDD §9): the **stack** — `claude` (Claude Code 
 
 1. `git init` and `npm init -y` if not already done (init completes hook/script wiring only when both exist; re-running is safe).
 2. `npx zero-two-one-init` — copies the framework surface, instantiates requirements + guiding docs from templates, installs the stack's assistant surface (default: `.claude/commands/021-*`), provisions `.ai/context/`, installs the refinement gate, merges the `021-*` npm scripts, writes `.zero-two-one.json` (mode: scaffold, phase: planning, tools per the stack/design answers).
-3. Continue with the Phase 1 getting-started steps (`workflow/workflows.md`, product lifecycle).
+3. Continue with the Phase 0 getting-started steps (`workflow/workflows.md`, product lifecycle).
 
 ## Migrate Flow (working project)
 

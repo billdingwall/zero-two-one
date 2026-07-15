@@ -2,7 +2,7 @@
 
 - **Type:** MVP release
 - **Status:** Planned (launch)
-- **Lifecycle Phase:** MVP Build (Phase 2) → Growth transition
+- **Lifecycle Phase:** MVP Build (Phase 1) → Growth transition
 - **Branch:** feature branches per spec, then the launch tag
 - **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md) · [04-BACKLOG.md](../04-BACKLOG.md)
 

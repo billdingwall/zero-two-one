@@ -108,7 +108,7 @@ The framework itself is dependency-free at runtime (Node built-ins only) and sta
 | [Git](https://git-scm.com) | ≥ 2.30 | Branch↔spec mapping, pre-commit refinement gate |
 | POSIX shell (`sh`) | — | `run-qa.sh`, git hooks (on Windows, use Git Bash/WSL) |
 
-### Required for Spec Kit feature delivery (MVP Build, Phase 2+)
+### Required for Spec Kit feature delivery (MVP Build, Phase 1+)
 
 | Dependency | Install | Used for |
 |---|---|---|

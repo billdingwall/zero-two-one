@@ -5,7 +5,7 @@
 ## The Process
 
 1. **Select**
-   The user names a design system (e.g. Material 3) or stays bespoke. Typically triggered during Planning (Phase 1) or by a refinement round; can also be chosen at init (`--design`).
+   The user names a design system (e.g. Material 3) or stays bespoke. Typically triggered during Planning (Phase 0) or by a refinement round; can also be chosen at init (`--design`).
 
 2. **Assess**
    Walk the decisions, gaps, and implications before committing:

@@ -5,7 +5,7 @@ Lifecycle automation for the Zero Two One framework. All scripts use Node built-
 ## Manifest
 
 - `workflow-status.js`: Detects the current lifecycle phase from repository state (`npm run 021-status`).
-- `run-qa.sh`: Phase-appropriate QA suite — docs validation (Phase 1), prototype checks (Phase 2), tests/a11y/spec compliance (Phase 3+) (`npm run 021-qa`).
+- `run-qa.sh`: Phase-appropriate QA suite — docs & optional-prototype validation (Phase 0), tests/a11y/spec compliance (Phase 1), + feedback checks (Phase 2) (`npm run 021-qa`).
 
 ### `speckit/` — Spec Kit integration
 

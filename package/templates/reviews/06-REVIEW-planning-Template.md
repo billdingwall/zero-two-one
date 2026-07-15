@@ -4,7 +4,7 @@
 - **Date:** [YYYY-MM-DD]
 - **Status:** [Draft / Applied]
 - **Round:** [Number]
-- **Lifecycle Phase:** Planning (Phase 1)
+- **Lifecycle Phase:** Planning (Phase 0)
 - **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Backlog](../04-BACKLOG.md) · [Roadmap](../05-ROADMAP.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
 
 ## Review Focus: Completing & Refining Key/Guiding Docs, Roadmap Definition & Optional Prototype

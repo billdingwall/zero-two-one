@@ -4,7 +4,7 @@
 
 **Captured:** 2026-07-12, from this repository (`mode: source`, branch `mvp-3-safe-install-and-manifest`). Output is real, not illustrative.
 
-> **Era note (r7):** the phase numbers in the captured blocks below reflect the **4-phase model** in force on the capture date. The framework is now **3-phase** (Planning · MVP Build · Growth), so MVP Build is **Phase 2** and the dogfood manifest currently reads `phase: planning`. The captured output is left verbatim as a dated record; the surrounding prose uses current-model terms.
+> **Era note (r7):** the phase numbers in the captured blocks below reflect the **4-phase model** in force on the capture date. The framework is now **3-phase** (Planning · MVP Build · Growth), so MVP Build is **Phase 1** and the dogfood manifest currently reads `phase: planning`. The captured output is left verbatim as a dated record; the surrounding prose uses current-model terms.
 
 ## What stakeholders are signing off on
 
