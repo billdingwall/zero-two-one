@@ -15,7 +15,7 @@
     "021-spec:verify": "node scripts/speckit/verify-spec-compliance.js",
     "lint": "find bin scripts -name '*.js' -print0 | xargs -0 -n1 node --check && sh -n hooks/pre-commit && sh -n scripts/run-qa.sh",
     "check:links": "node scripts/check-links.js",
-    "test": "node --test 'test/**/*.test.js' && node scripts/speckit/spec-status.js list && node scripts/workflow-status.js",
+    "test": "node --test $(find test -name '*.test.js') && node scripts/speckit/spec-status.js list && node scripts/workflow-status.js",
     "sync:package": "node scripts/sync-to-package.js",
     "publish:package": "npm run sync:package && cd package && npm publish"
   },
