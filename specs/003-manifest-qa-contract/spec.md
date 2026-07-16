@@ -20,6 +20,15 @@ Today three places decide "what phase is this project in," each differently: `ru
 - **Trigger:** any script that needs the project's phase or stack. Instead of re-parsing `.zero-two-one.json` or scraping another script, it calls the shared parser.
 - **Builds on:** the manifest written by specs 001/002. This feature does **not** change the manifest schema — it centralizes *reading* it.
 
+## Clarifications
+
+### Session 2026-07-16
+
+- **Q: Where should the no-manifest fallback/inference live (FR-006/FR-007)?**
+  A: **Move it into `lib.js`.** `manifestFacts()` owns the whole resolution — read manifest → else repo-state inference → else Planning. Every consumer gets identical behavior through one function; `run-qa.sh` keeps getting an inferred phase for a no-manifest repo (as it does today via the scrape). `workflow-status.js` becomes a thin presenter over it.
+- **Q: How does `run-qa.sh` invoke the parser?**
+  A: **A dedicated `lib.js` CLI subcommand** — `node scripts/speckit/lib.js phase` prints the phase number; `run-qa.sh` calls that. One clean, testable seam; no inline JS in the shell script. `lib.js` becomes library + tiny CLI.
+
 ## User Scenarios (Acceptance)
 
 1. **One parser** — *Given* a repo with a manifest, *when* any lifecycle script needs the phase, *then* it obtains it from `lib.js`'s manifest parser — no script re-implements manifest parsing or scrapes another script's stdout.
@@ -31,12 +40,12 @@ Today three places decide "what phase is this project in," each differently: `ru
 
 ## Functional Requirements
 
-- **FR-001 — Single manifest parser.** `scripts/speckit/lib.js` exposes one manifest reader — e.g. `readManifest(root)` → the parsed object or `null`, plus `manifestFacts(root)` → `{ phase, phaseNum, phaseLabel, stack, mode }` with the canonical mapping applied. It is the **only** place that opens `.zero-two-one.json` for phase/stack.
+- **FR-001 — Single manifest parser + resolution.** `scripts/speckit/lib.js` exposes one reader — `readManifest(root)` → the parsed object or `null` — and one resolver — `manifestFacts(root)` → `{ phase, phaseNum, phaseLabel, stack, mode }`. `manifestFacts` owns the **whole resolution**: manifest → else repo-state inference → else Planning *(clarified 2026-07-16)*. It is the **only** place that opens `.zero-two-one.json` or infers the phase. `lib.js` also exposes a tiny CLI (`node scripts/speckit/lib.js phase`) printing the resolved phase number, for shell consumers.
 - **FR-002 — Canonical vocabulary.** The phase vocabulary lives once in `lib.js`: `planning→0/Planning`, `mvp→1/MVP Build`, `growth→2/Growth`, with the legacy `prebuild→planning` alias (back-compat). Stacks: `claude|antigravity|kiro`. No consumer keeps its own copy of these maps.
-- **FR-003 — QA reads the contract.** `run-qa.sh` resolves the phase by invoking the `lib.js` parser directly (a single `node` call into the library), **not** by scraping `workflow-status.js --json`. The stdout-scraping one-liner is removed.
-- **FR-004 — Status delegates.** `workflow-status.js` reads the manifest and applies the phase/stack vocabulary via the `lib.js` parser instead of its own duplicated logic; its no-manifest inference remains its own responsibility but is the single documented fallback (FR-006).
+- **FR-003 — QA reads the contract.** `run-qa.sh` resolves the phase via the dedicated `lib.js` CLI subcommand (`node scripts/speckit/lib.js phase`) *(clarified 2026-07-16)*, **not** by scraping `workflow-status.js --json`. The stdout-scraping one-liner is removed.
+- **FR-004 — Status delegates fully.** `workflow-status.js` becomes a thin presenter over `manifestFacts` — the manifest read, the phase/stack vocabulary, **and** the no-manifest inference all move into `lib.js` *(clarified 2026-07-16)*. `workflow-status.js` keeps only its own output formatting (`--json`, human summary).
 - **FR-005 — Gate coherence.** `hooks/pre-commit`, where it needs phase/stack, uses the same parser — never an independent parse or scrape. (Today it needs neither; this fixes the contract so a future stack-aware gate message can't reintroduce a second parser.)
-- **FR-006 — One fallback rule.** When `.zero-two-one.json` is absent or unparseable, every consumer resolves to the **same** default — Planning (phase 0) — and emits a consistent warning. No divergent per-script defaults.
+- **FR-006 — One fallback rule.** The absent/unparseable-manifest path lives once in `lib.js` (`manifestFacts`): repo-state inference, else Planning (phase 0), with a consistent warning. No consumer keeps its own fallback *(clarified 2026-07-16)*.
 - **FR-007 — Behavior-preserving.** This is a consolidation: QA tier selection and gate outcomes at each phase are **unchanged**. The existing suite, `npm run 021-qa`, and `021-spec:verify` stay green.
 - **FR-008 — Zero runtime dependencies.** Node built-ins only; consistent with 001/002.
 
@@ -69,4 +78,4 @@ Today three places decide "what phase is this project in," each differently: `ru
 
 ## Open Questions
 
-*Deferred to clarify: whether `workflow-status.js`'s no-manifest inference should move **into** `lib.js` (so the fallback also lives in one place) or stay in the status script; and whether the QA phase read should shell into `lib.js` via a tiny `node -e` or a dedicated `lib.js` CLI subcommand. Neither changes the spec's shape.*
+*Resolved in the 2026-07-16 clarify session: the no-manifest inference **moves into `lib.js`** (whole resolution in one function), and `run-qa.sh` reads the phase via a dedicated **`lib.js phase` CLI subcommand**. No open items remain.*

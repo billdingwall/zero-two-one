@@ -4,11 +4,11 @@
 
 ## Approach
 
-1. **Add the parser to `lib.js`** — `readManifest(root)` (parse or null) and `manifestFacts(root)` → `{ phase, phaseNum, phaseLabel, stack, mode }`, applying the canonical vocabulary (with the `prebuild→planning` legacy alias). Export both.
-2. **Move the vocabulary into `lib.js`** — the single `PHASE` map (`planning|mvp|growth` + legacy) lives here; `workflow-status.js` deletes its copy and imports it.
-3. **Route `run-qa.sh` through the parser** — replace the `workflow-status.js --json | node -e '…JSON.parse…'` scrape with one `node -e "process.stdout.write(String(require('./scripts/speckit/lib').manifestFacts().phaseNum))"` (or a `lib.js` CLI subcommand — clarify). Same "Detected Lifecycle Phase: N" output.
-4. **Delegate `workflow-status.js`** — its manifest branch calls `manifestFacts`; the no-manifest inference stays here as the single documented fallback (FR-006).
-5. **Gate coherence** — `hooks/pre-commit` reads phase/stack (if/when needed) via the same parser; today it needs neither, so this is a guard rail + a comment pointing at the contract.
+1. **Add the parser + resolver to `lib.js`** — `readManifest(root)` (parse or null) and `manifestFacts(root)` → `{ phase, phaseNum, phaseLabel, stack, mode }`. `manifestFacts` owns the **whole resolution**: manifest → repo-state inference (moved here from `workflow-status.js`) → Planning fallback. The canonical `PHASE` vocabulary (`planning|mvp|growth` + `prebuild` legacy alias) lives here once.
+2. **Add a tiny CLI to `lib.js`** — `node scripts/speckit/lib.js phase` prints `manifestFacts().phaseNum` (a small `if (require.main === module)` block). `lib.js` = library + CLI.
+3. **Route `run-qa.sh` through the CLI** — replace the `workflow-status.js --json | node -e '…JSON.parse…'` scrape with `PHASE=$(node scripts/speckit/lib.js phase)`. Same "Detected Lifecycle Phase: N" output.
+4. **Reduce `workflow-status.js` to a presenter** — delete its manifest read, `PHASE_FROM_MANIFEST` map, and inference; call `manifestFacts` and keep only its `--json` / human formatting.
+5. **Gate coherence** — `hooks/pre-commit` reads phase/stack (if/when needed) via the same CLI/parser; today it needs neither, so this is a guard rail + a comment pointing at the contract.
 
 ## Design notes
 

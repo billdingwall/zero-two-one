@@ -13,9 +13,9 @@
 - [ ] T006 [P] No-manifest → same Planning fallback + warning from `run-qa.sh` and `021-status` (FR-006).
 
 ## Phase 3 — Implementation
-- [ ] T007 Add `readManifest` + `manifestFacts` + the canonical phase vocabulary to `scripts/speckit/lib.js` (FR-001/002).
-- [ ] T008 Route `run-qa.sh` phase read through `lib.js`; remove the `workflow-status.js --json` scrape (FR-003).
-- [ ] T009 Delegate `workflow-status.js` manifest branch to `manifestFacts`; keep the single no-manifest fallback (FR-004/006).
+- [ ] T007 Add `readManifest` + `manifestFacts` (whole resolution: manifest → inference → Planning) + the canonical phase vocabulary + the `node lib.js phase` CLI to `scripts/speckit/lib.js` (FR-001/002/006).
+- [ ] T008 Route `run-qa.sh` phase read through `node scripts/speckit/lib.js phase`; remove the `workflow-status.js --json` scrape (FR-003).
+- [ ] T009 Reduce `workflow-status.js` to a presenter over `manifestFacts` — delete its manifest read, `PHASE_FROM_MANIFEST`, and inference (moved to lib.js); keep only `--json`/human formatting (FR-004/006).
 - [ ] T010 `hooks/pre-commit` guard-rail + comment pointing at the contract (no second parser) (FR-005).
 
 ## Phase 4 — Verify & polish
