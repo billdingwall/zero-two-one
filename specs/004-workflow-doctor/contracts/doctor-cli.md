@@ -34,7 +34,7 @@ Zero Two One — workflow doctor
 |---|---|
 | `checkSpecIndex` | Every `_INDEX` row is compared to its spec's frontmatter; a missing spec dir or missing row is itself a (hard) finding. |
 | `checkSpecWork` | Only gate-passing/`Done` specs are checked for unchecked tasks; `In Progress` with open tasks is **not** drift (in-flight is legitimate). |
-| `checkReleaseSpecs` | Aggregate over a release's specs; "all Done" and "none started" are the only states that can disagree with the recorded Status. Advisory. |
+| `checkReleaseSpecs` | Aggregate over a release's specs; fires only on **advanceable** (all `Done`, Status not `done`) or **overclaimed** (Status `done`, a spec not `Done`). An in-flight release (no `Done` specs) is never flagged. Advisory. |
 | `checkRoadmapRelease` | Compares normalized statuses only; prose descriptions are ignored. Advisory. |
 | `checkBacklogRelease` | Release-level only — `Open` rows vs `Done` specs; no per-item spec attribution. Advisory. |
 | `checkManifestPhase` | Only fires when the manifest phase is authoritative (`source: manifest`) and disagrees with inference. Advisory, low-confidence. |

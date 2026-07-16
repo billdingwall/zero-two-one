@@ -47,7 +47,7 @@ Before r5, lifecycle state drifted silently — the manifest, backlog, and roadm
 - **FR-001 — `021-doctor` command.** A `npm run 021-doctor` entrypoint runs the drift report over the repo and prints a human-readable summary. It is **read-only** — it opens no file for writing, edits no working-tree file, and makes no commit (TDD §13 guardrails).
 - **FR-002 — Spec ↔ index reconciliation.** For every spec, compare `spec.md` frontmatter `status` against its `specs/_INDEX.md` row; report each mismatch with the proposed `_INDEX` value.
 - **FR-003 — Spec ↔ work reconciliation.** Flag a spec whose status is gate-passing/`Done` while its `tasks.md` has unchecked tasks (the advisory BACKLOG-vs-work drift), showing the unchecked count. (Reuses `lib.js` `countTasks`.)
-- **FR-004 — Release ↔ specs reconciliation.** For each `_releases/mvp-*.md`, compare its `Status` against the aggregate state of its specs (all `Done` ⇒ advanceable; none started ⇒ Planned); flag releases whose recorded Status lags reality, with a proposed Status.
+- **FR-004 — Release ↔ specs reconciliation.** For each `_releases/mvp-*.md`, compare its `Status` against the aggregate state of its specs, flagging only the two *real* mismatches *(narrowed via analyze A1)*: **advanceable** — every spec `Done` but Status not `Delivered`/`Done`; and **overclaimed** — Status `Delivered`/`Done` but a spec is not `Done`. A release with specs still in flight (none `Done` yet) is **not** flagged — that is a legitimate just-started release (R7). Advisory.
 - **FR-005 — Roadmap ↔ release reconciliation.** Compare each `05-ROADMAP.md` release-row Status against the matching `_releases/*.md` `Status`; flag disagreements.
 - **FR-006 — Backlog ↔ release reconciliation.** Group `04-BACKLOG.md` rows by their `Release` column; flag a release whose rows are still `Open` while that release's specs are all `Done` *(clarified 2026-07-16)*. Release-level and deterministic — no prose→spec item matching. **Advisory** severity.
 - **FR-007 — Manifest phase reconciliation.** Compare the manifest `phase` (`manifestFacts`, `source: manifest`) against the inferred phase; when they disagree, flag a *possible* stale phase — **advisory**, low-confidence, never asserted as wrong.
@@ -67,7 +67,7 @@ Before r5, lifecycle state drifted silently — the manifest, backlog, and roadm
 - `021-doctor` on a coherent repo prints "no drift" and exits 0; a repo with a seeded **hard** mismatch exits non-zero and names it; a repo with only **advisory** findings exits 0.
 - An `_INDEX` row that disagrees with a spec's frontmatter is flagged with the correct proposed value (the concrete drift this session hit).
 - A `Done` spec with unchecked tasks is flagged with its unchecked count.
-- A release whose specs are all `Done` but Status is `Planned`/`Next` is flagged advanceable.
+- A release whose specs are all `Done` but Status is `Planned`/`Next` is flagged advanceable; a release Status `Delivered` with a non-`Done` spec is flagged overclaimed; an in-flight release (no `Done` specs) is **not** flagged.
 - A roadmap row Status that disagrees with its release file is flagged.
 - A release whose backlog rows are `Open` while its specs are `Done` is flagged (advisory, release-level).
 - The reporter writes **nothing** (verified: working tree byte-identical after a run) and is absent from `hooks/pre-commit`.

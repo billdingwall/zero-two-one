@@ -11,13 +11,13 @@
 - [ ] T002 [P] Clean repo → zero findings, "no drift", exit 0 (FR-001/008).
 - [ ] T003 [P] Spec ↔ index mismatch → hard finding with proposed `_INDEX` value; missing row/dir also hard (FR-002).
 - [ ] T004 [P] `Done` spec with unchecked tasks → hard finding + count; `In Progress` + open tasks → **no** finding (FR-003; R7).
-- [ ] T005 [P] Release Status lags all-`Done` specs → advisory finding (FR-004).
+- [ ] T005 [P] Release ↔ specs: **advanceable** (all `Done`, Status not advanced) and **overclaimed** (Status `Delivered`, a spec not `Done`) both flagged; in-flight release (no `Done` specs) → **no** finding (FR-004 / analyze A1, A3).
 - [ ] T006 [P] Roadmap row Status disagrees with release file → advisory finding (FR-005).
 - [ ] T007 [P] Backlog release with `Open` rows while its specs are `Done` → advisory (release-level, no prose matching) (FR-006).
 - [ ] T008 [P] Manifest phase ≠ inferred (`source: manifest`) → advisory finding (FR-007).
 - [ ] T009 [P] `normalizeStatus` collapses glyphs (✅/🔜/◻) + words to `done|in-progress|open` (data-model §4; R8).
 - [ ] T010 [P] Exit code: non-zero iff a **hard** finding exists; advisory-only → 0 (FR-008/009).
-- [ ] T011 [P] Read-only: whole-tree snapshot unchanged after a run; `hooks/pre-commit` has no `doctor` reference (FR-009).
+- [ ] T011 [P] Read-only: whole-tree snapshot unchanged after a run; `hooks/pre-commit` has no `doctor` reference (FR-009). Grep-guard: `doctor.js` has no direct `.zero-two-one.json` read — phase comes via `manifestFacts` (FR-010 / analyze A2).
 
 ## Phase 3 — Implementation
 - [ ] T012 `normalizeStatus` + `_INDEX`/roadmap-table/release-`Status`/backlog-table parsers in `scripts/speckit/doctor.js` (tolerant; data-model §4).

@@ -30,7 +30,7 @@ One detected discrepancy. The checks return `DriftFinding[]`; nothing is persist
 |---|---|---|
 | `checkSpecIndex` | `specs/*/spec.md` frontmatter, `specs/_INDEX.md` | index row status ≠ frontmatter status |
 | `checkSpecWork` | spec status + `tasks.md` | status gate-passing/`Done` **and** unchecked tasks > 0 |
-| `checkReleaseSpecs` | specs' `release:` + `_releases/*.md` `Status:` | all specs `Done` but release Status not advanced; or none started but Status implies progress |
+| `checkReleaseSpecs` | specs' `release:` + `_releases/*.md` `Status:` | **advanceable** (all specs `Done`, Status not `done`) or **overclaimed** (Status `done`, a spec not `Done`); an in-flight release with no `Done` specs is **not** drift (A1/R7) |
 | `checkRoadmapRelease` | `05-ROADMAP.md` table rows, `_releases/*.md` `Status:` | normalized row status ≠ release-file status |
 | `checkBacklogRelease` | `04-BACKLOG.md` table (by `Release`), specs' state | a release has `Open` rows while its specs are all `Done` |
 | `checkManifestPhase` | `manifestFacts()` | `source==='manifest'` and `phaseNum` ≠ inferred phase's num |

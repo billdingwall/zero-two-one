@@ -58,7 +58,7 @@ Each `check*` is a pure function `root → DriftFinding[]`. Nothing writes; the 
 
 - **checkSpecIndex** — parse the `specs/_INDEX.md` table (Spec → Status column); for each spec, compare to `readStatus(spec)`; mismatch → finding (proposed: the frontmatter value).
 - **checkSpecWork** — for each gate-passing/`Done` spec, `countTasks(tasks.md)`; unchecked > 0 → finding.
-- **checkReleaseSpecs** — group specs by `release:` frontmatter; if all `Done` and the `_releases/<rel>.md` `Status` isn't a delivered/in-progress value → finding (proposed advance); none started but Status implies progress → finding.
+- **checkReleaseSpecs** — group specs by `release:` frontmatter; flag **advanceable** (all `Done` but `_releases/<rel>.md` `Status` not `done`) and **overclaimed** (`Status` `done` but a spec not `Done`). An in-flight release (no `Done` specs) is not flagged (A1/R7).
 - **checkRoadmapRelease** — parse the `05-ROADMAP` MVP table rows (release → Status glyph); compare to each `_releases/*.md` `Status:` line; disagreement → finding.
 - **checkBacklogRelease** — parse the `04-BACKLOG.md` table (Description · Status · Ownership · Release); group by `Release`; if a release has `Open` rows while its specs are all `Done` → advisory finding (release-level; no item↔spec matching).
 - **checkManifestPhase** — `manifestFacts()`; if `source === 'manifest'` and `phaseNum` ≠ the inferred phase's num → advisory finding (low severity).
