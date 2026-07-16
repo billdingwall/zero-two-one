@@ -1,5 +1,5 @@
 ---
-status: In Progress
+status: Done
 feature: Workflow-Manager — Read-Only Drift Reporter
 release: mvp-3
 branch: 004-workflow-doctor
