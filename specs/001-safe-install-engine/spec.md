@@ -1,5 +1,5 @@
 ---
-status: Draft
+status: In Progress
 feature: Safe Install & Merge Engine
 release: mvp-3
 branch: 001-safe-install-engine
