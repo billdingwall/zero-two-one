@@ -1,8 +1,8 @@
 # AI Assistant Instructions
 
 ## Context
-- The project is currently in the **Planning (Zero)** stage.
-- Once the key docs in `requirements/` are filled out, we will move to **Phase 2: Pre-build**.
+- The project is currently in the **Planning (Zero)** stage (which includes design & refinement).
+- Once the key docs in `requirements/` pass the Planning sign-off milestone, we will move to **Phase 1: MVP Build**.
 
 ## AI Instructions
 - Always rely on your internal memory first to understand the current phase and state of the project. Verify with `npm run 021-status`. When a `.zero-two-one.json` manifest is present at the repo root, read it to learn the lifecycle phase and tool stack instead of inferring from directory contents.

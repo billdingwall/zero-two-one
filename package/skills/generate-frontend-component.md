@@ -4,7 +4,7 @@
 Scaffolds a new UI component strictly adhering to the framework’s design system guidelines and existing component structure.
 
 **Usage Constraint:**
-Run this skill during Phase 3 (MVP Build) when a new Spec has been approved in `specs/`.
+Run this skill during Phase 1 (MVP Build) when a new Spec has been approved in `specs/`.
 
 **Execution Steps for AI Agent:**
 1. **Analyze Requirements:** Read the specific feature spec in `specs/NNN-feature-name/` to understand the component requirements.

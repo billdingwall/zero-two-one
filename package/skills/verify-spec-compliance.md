@@ -4,7 +4,7 @@
 Validate that generated front-end components or logic strictly adhere to the downloaded Speckit definitions, and that the spec artifact set itself is complete and cleared for implementation.
 
 **Usage Constraint:**
-Run after generating or modifying implementation code (Phase 3/4), before committing, and always before setting a spec's status to `Done`. The pre-commit hook runs the fast gate subset automatically; this skill is the full audit.
+Run after generating or modifying implementation code (Phase 1 MVP Build / Phase 2 Growth), before committing, and always before setting a spec's status to `Done`. The pre-commit hook runs the fast gate subset automatically; this skill is the full audit.
 
 **Execution Steps for AI Agent:**
 1. **Run the automated audit:** Execute `npm run 021-spec:verify` (i.e. `node scripts/speckit/verify-spec-compliance.js [spec] --json`). This checks: the spec resolves for the branch, a lifecycle status is declared and gate-passing, `plan.md`/`tasks.md` exist, no `[NEEDS CLARIFICATION]` markers remain, a `Done` spec has no unchecked tasks, and the `.ai/context` bundle is fresh.

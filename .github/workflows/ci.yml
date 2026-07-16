@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # No dependencies to install — the framework is zero-runtime-dependency
+      # (TDD §3) and dev checks are built-ins only (r7).
+
+      - name: Syntax check (JS + shell)
+        run: |
+          find bin scripts -name '*.js' -print0 | xargs -0 -n1 node --check
+          for f in hooks/pre-commit scripts/run-qa.sh; do sh -n "$f"; done
+
+      - name: Smoke test — npm test
+        run: npm test
+
+      - name: Smoke test — init into a fixture repo
+        run: |
+          FIXTURE="$(mktemp -d)"
+          git -C "$FIXTURE" init -q
+          # Seed a user-owned doc to prove non-destructive re-runs.
+          printf '# my code rules\n' > "$FIXTURE/CODE.md"
+          node bin/init.js "$FIXTURE"
+          test -f "$FIXTURE/requirements/01-PRD.md" || { echo "init did not scaffold key docs"; exit 1; }
+          test -f "$FIXTURE/.claude/commands/021-status.md" || { echo "init did not install slash commands"; exit 1; }
+          # Re-run must not clobber the user's CODE.md.
+          node bin/init.js "$FIXTURE"
+          grep -q 'my code rules' "$FIXTURE/CODE.md" || { echo "init overwrote a user-owned file"; exit 1; }
+          # A stray flag must be rejected, not treated as a target dir.
+          if node bin/init.js --nope 2>/dev/null; then echo "unknown flag was accepted"; exit 1; fi
+          test ! -e ./--nope || { echo "flag was scaffolded as a directory"; exit 1; }
+
+      - name: Markdown link check
+        run: node scripts/check-links.js
+
+      - name: Package sync drift check
+        run: npm run sync:package -- --check

@@ -4,7 +4,7 @@
 **Date:** 2026-07-10
 **Round:** r3
 **Findings addressed:** 1–4, 7 task breakdown
-**Target doc:** [../05-BACKLOG.md](../05-BACKLOG.md)
+**Target doc:** [../04-BACKLOG.md](../04-BACKLOG.md)
 
 ## Intent
 

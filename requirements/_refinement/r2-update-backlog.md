@@ -4,7 +4,7 @@
 **Date:** 2026-07-10
 **Round:** r2
 **Findings addressed:** 1–6 task breakdown; r3 tagging
-**Target doc:** [../05-BACKLOG.md](../05-BACKLOG.md)
+**Target doc:** [../04-BACKLOG.md](../04-BACKLOG.md)
 
 ## Intent
 

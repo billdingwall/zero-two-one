@@ -6,7 +6,7 @@
 - **Round:** 5
 - **Reviewer:** William Dingwall (billdingwall) + `/harden-docs` alignment audit
 - **Lifecycle Phase:** Pre-build → MVP Build hardening
-- **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../04-ROADMAP.md) · [Backlog](../05-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
+- **Related Docs:** [PRD](../01-PRD.md) · [EDD](../02-EDD.md) · [TDD](../03-TDD.md) · [Roadmap](../05-ROADMAP.md) · [Backlog](../04-BACKLOG.md) · [CODE](../../CODE.md) · [PRODUCT](../../PRODUCT.md) · [DESIGN](../../DESIGN.md)
 
 ## Scope
 

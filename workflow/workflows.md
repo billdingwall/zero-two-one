@@ -49,8 +49,8 @@ The core documentation that defines the product. These are **living documents** 
 | `02-EDD.md` | Experience Design Document (How - Experience). |
 | `03-TDD.md` | Technical Design Document (Architecture overview + locked decisions). |
 | `01-PRD.md` + `02-EDD.md` + `03-TDD.md` | Treated as **one cohesive set** (r4) — every surface referencing one includes all three. |
-| `04-ROADMAP.md` | Release-based plan: MVP releases now, Growth releases post-transition; summaries link to `_releases/`. |
-| `05-BACKLOG.md` | Planned backlog and project tracker. |
+| `05-ROADMAP.md` | Release-based plan: MVP releases now, Growth releases post-transition; summaries link to `_releases/`. |
+| `04-BACKLOG.md` | Planned backlog and project tracker. |
 | `_design/` | Holds design assets. |
 | `_notes/` | Unstructured research, analysis and background context. |
 | `_refinement/` | Tracks the refinement loop cycles (`r{x}-review.md`). |
@@ -92,17 +92,28 @@ AI prompts, skills, and tools used for generating project artifacts and driving 
 The framework's operations are broken down into specific workflows:
 
 ### Core Workflows
-- **[Product Lifecycle (PLC)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/product-lifecycle.md):** The overarching 4-phase lifecycle of the product.
+- **[Product Lifecycle (PLC)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/product-lifecycle.md):** The overarching 3-phase lifecycle of the product.
 - **[The Refinement Loop (RLP)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/refinement-loop.md):** The project-level change-control loop for maintaining living documents and the backlog.
 - **[Spec-Driven Delivery (SSD)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/spec-driven-delivery.md):** The tactical delivery mechanism utilizing GitHub Spec Kit and the Refinement Gate.
 - **[Init & Migration (INM)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/init-and-migration.md):** How the framework lands in a target repository — fresh scaffolds and non-destructive migrations into working projects.
 - **[Design-System Selection (DSS)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/design-system-selection.md):** Adopting or switching a design system — assessment, token mapping, and cascade into the EDD and prototype.
 
+### Refinement sync sub-workflows (r6 — mechanics of the Refinement Loop)
+- **[review-sync](specific-workflows/review-sync.md):** Review → per-doc update plans.
+- **[requirements-sync](specific-workflows/requirements-sync.md):** Apply approved plans to the key docs; cohesion cross-check.
+- **[guidance-sync](specific-workflows/guidance-sync.md):** Keep the guiding/role docs aligned with the key docs.
+- **[prototype-sync](specific-workflows/prototype-sync.md):** Keep an existing prototype in sync (optional).
+- **[backlog-sync](specific-workflows/backlog-sync.md):** Key-doc/review changes → `04-BACKLOG` table rows.
+- **[release-sync](specific-workflows/release-sync.md):** Maintain the canonical `_releases/` files.
+- **[roadmap-sync](specific-workflows/roadmap-sync.md):** Surface releases onto `05-ROADMAP` as a view.
+
 ### Transitional Flows
-- **[MVP > Growth Transition (MGT)](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/mvp-to-growth-transition.md):** How the roadmap and backlog change roles when the product leaves MVP and enters Growth.
-- **[Key Docs > Prototype](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/key-docs-to-prototype.md):** How the living documents drive an **optional** prototype, generated on demand via `021-prototype` (Phases 1 & 2).
-- **[Key Docs > Roadmap > Backlog > SSD](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/key-docs-to-ssd.md):** How high-level definitions mechanically translate into actionable code.
-- **[Review > Backlog > SSD](file:///Users/williamdingwall/Sites/zero-two-one/workflow/specific-workflows/review-to-ssd.md):** How user feedback and analytics continuously cycle into the development pipeline.
+- **[Planning > MVP Build (P2M)](specific-workflows/planning-to-mvp.md):** How the workflows shift when the Planning sign-off milestone passes (r6).
+- **[MVP > Growth Transition (MGT)](specific-workflows/mvp-to-growth-transition.md):** How the roadmap and backlog change roles when the product leaves MVP and enters Growth.
+- **[Release Launch](specific-workflows/release-launch.md):** Verify, publish, and record a completed release (r6).
+- **[Key Docs > Prototype](specific-workflows/key-docs-to-prototype.md):** How the living documents drive an **optional** prototype, generated on demand via `021-prototype` (Planning).
+- **[Key Docs > Roadmap > Backlog > SSD](specific-workflows/key-docs-to-ssd.md):** How high-level definitions mechanically translate into actionable code.
+- **[Review > Backlog > SSD](specific-workflows/review-to-ssd.md):** How user feedback and analytics continuously cycle into the development pipeline.
 
 ---
 

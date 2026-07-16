@@ -6,7 +6,7 @@ Many AI-assisted development projects fail due to a lack of structure. Without c
 Even structured projects decay: documents become stale and misaligned — requirements start to contradict the roadmap and backlog — and managing all these docs, requirements, and tasks becomes daunting because it is typically spread across multiple disconnected tools. Misaligned documents mislead AI agents just as badly as missing ones.
 
 ## 2. Product Vision
-Zero Two One is an agentic product framework that acts as the operating system for AI-driven software development. It provides a structured, 4-phase lifecycle (Idea → Pre-build → MVP → Growth) anchored by a strict "refinement gate" that prevents implementation code from landing until the feature spec is approved.
+Zero Two One is an agentic product framework that acts as the operating system for AI-driven software development. It provides a structured, 3-phase lifecycle (Planning → MVP → Growth) anchored by a strict "refinement gate" that prevents implementation code from landing until the feature spec is approved. Planning absorbs requirement definition, experience/architecture design, and refinement; a **Planning sign-off milestone** (every core scenario stakeholder-reviewable, architecture locked in the TDD) gates entry to MVP Build.
 
 It gives teams a comprehensive, flexible structure that manages **all product-lifecycle artifacts in one repository and keeps them in sync**. The framework ships basic tooling to bootstrap design while supporting bring-your-own design systems, and offers three supported AI-assistant + spec-driven-delivery pairings (`claude` default · `antigravity` · `kiro`) with room for more. The goal: a structured framework with the flexibility to plug in the tools that work best for each team.
 
@@ -38,7 +38,7 @@ It gives teams a comprehensive, flexible structure that manages **all product-li
    - **Framework naming convention**: every framework command — npm scripts (`021-status`, `021-qa`, `021-spec:*`) and assistant-side commands/skills/steering — follows the zero-two-one naming convention (`021-` namespace, recorded in `CODE.md`), avoiding conflicts with user projects and tool built-ins (e.g. Claude Code's own `/init`) by construction.
 
 8. **Feedback Loop**: `/021-feedback` (stack-rendered) lets any project using the package file feedback directly as a GitHub issue in the zero-two-one repo — feedback text, a link to the user's repo, plus manifest context (framework version, stack, lifecycle phase). Feeds the post-MVP backlog (TDD §10).
-9. **Optional Prototype**: the static prototype is **not required**. A dedicated `021-prototype` command generates a prototype in `prototype/` from the key docs (PRD/EDD + `DESIGN.md` tokens) on demand, and only then wires prototype steps into the Design, Refinement, and QA workflows (TDD §12). Until it is run, a project carries no prototype dependency — lifecycle progression never blocks on one.
+9. **Optional Prototype**: the static prototype is **not required**. A dedicated `021-prototype` command generates a prototype in `prototype/` from the key docs (PRD/EDD + `DESIGN.md` tokens) on demand, and only then wires prototype steps into the Design, Refinement, and QA workflows (TDD §12). Until it is run, a project carries no prototype dependency — lifecycle progression never blocks on one. Prototype work happens during **Planning**, ahead of the sign-off milestone.
 
 ## 5. Success Metrics
 
@@ -51,6 +51,7 @@ It gives teams a comprehensive, flexible structure that manages **all product-li
 - **Feedback Volume** *(GitHub issue count)*: Issues filed via `/021-feedback` from user repos — signal that the loop works and the backlog is user-driven.
 
 ## Changelog
+- **2026-07-15 (r6):** Lifecycle collapsed to **3 phases** (Planning → MVP → Growth); phase-1 name resolved from "Idea" to **Planning** (Pre-build merged in, with a Planning sign-off milestone gating MVP Build). Per [_refinement/r6-review.md](_refinement/r6-review.md).
 - **2026-07-12 (r5):** Added Feature 9 (Optional Prototype via `021-prototype`); Success Metrics reframed with explicit measurement sources (no telemetry) and Migration Success flagged as the hard target. Per [_refinement/r5-review.md](_refinement/r5-review.md).
 - **2026-07-12 (r4):** Problem statement gains artifact drift/staleness; vision expanded (artifact sync, BYO design system, three pairings); Feature 1 reframed as AI-led init walkthrough (LLM as core dependency); Feature 2 states the cohesive PRD/EDD/TDD set + install guarantee; Feature 7 gains `021-design`; new Feature 8 (Feedback Loop); Feedback Volume metric. Per [_refinement/r4-update-prd.md](_refinement/r4-update-prd.md).
 - **2026-07-10 (r3):** Added Core Feature 7 (Supported Tool Stacks: claude/antigravity/kiro + independent design-system role); stack/design questions in Feature 1; Feature 4 generalized to stack rendering; framework naming convention (`021-`); Stack Coverage metric. Per [_refinement/r3-update-prd.md](_refinement/r3-update-prd.md).

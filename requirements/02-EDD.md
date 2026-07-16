@@ -21,7 +21,7 @@ Init is a conversation, not a script: the assistant-led walkthrough (stack-rende
 - **System Response**: Reports the current lifecycle phase (e.g., "Planning") and highlights missing key documents (PRD, EDD, and TDD checked as one set).
 - **Experience Goal**: The AI should act as a proactive project manager, guiding the user to complete the necessary prerequisites before writing code.
 
-Review rounds are **stage-aware**: the refinement loop presents a review template matched to the lifecycle phase — Idea: completing the key and principle/guiding docs; Pre-build: refining key docs, roadmap definition, and (if one has been added) prototype reviews; MVP: code review and build testing; Growth: product review and user-feedback gathering.
+Review rounds are **stage-aware**: the refinement loop presents a review template matched to the lifecycle phase (3-phase model) — Planning: completing and refining the key and guiding docs, roadmap definition, and (if one has been added) prototype reviews; MVP: code review and build testing; Growth: product review and user-feedback gathering.
 
 ### Feature Implementation (Spec Kit)
 - **User Action**: The AI attempts to commit code for a new feature.
@@ -63,14 +63,15 @@ The `021` command surface is a first-class interface:
 | `021-design` (assistant) | Design-system selection | Automatic (walkthrough) |
 | `021-prototype` (assistant) | Prototype (optional) | On-demand (generates `prototype/`) |
 
-Assistant-side names are stack-rendered per TDD §9.2 (`/021-*` commands for `claude`, skills for `antigravity`, steering/agent for `kiro`). The full command ↔ skill ↔ script mapping is maintained in [`requirements/_design/command-design.md`](../_design/command-design.md); how hooks and workflows touch project files is in [`workflow-design.md`](../_design/workflow-design.md).
+Assistant-side names are stack-rendered per TDD §9.2 (`/021-*` commands for `claude`, skills for `antigravity`, steering/agent for `kiro`). The full command ↔ skill ↔ script mapping is maintained in [`requirements/_design/command-design.md`](_design/command-design.md); how hooks and workflows touch project files is in [`workflow-design.md`](_design/workflow-design.md).
 
 ## 4. Design Principles
 1. **Text as UI**: Markdown files are the primary interface. They must be highly readable by both humans and LLMs.
 2. **Invisible Enforcement**: The rules (like the refinement gate) should be invisible until violated, at which point they provide exact instructions for resolution.
-3. **Agent-First**: Context files (`CLAUDE.md`, `.ai/context/`) must prioritize LLM token efficiency and semantic clarity.
+3. **Agent-First**: Context files (the stack-rendered assistant entrypoint — `CLAUDE.md` for the `claude` stack, from the neutral `AGENTS.md` source — and `.ai/context/`) must prioritize LLM token efficiency and semantic clarity.
 4. **Ask, don't assume**: when a `021` command needs more context, it asks an interactive question presenting a recommended option (marked as such), sensible alternatives, and a free-text write-in option. Applies to init walkthrough questions, phase/stack confirmation, conflict resolution, and any future command needing input.
 
 ## Changelog
+- **2026-07-15 (r6):** Stage-aware review list collapsed to the 3-phase model (Idea + Pre-build → **Planning**); Agent-First principle notes the assistant entrypoint is stack-rendered from the neutral `AGENTS.md` source. Per [_refinement/r6-review.md](_refinement/r6-review.md).
 - **2026-07-12 (r5):** Added the optional "Adding a Prototype" workflow (`021-prototype`); CLI table gains the prototype command and a pointer to `_design/command-design.md` + `workflow-design.md`; design-system workflow re-themes the prototype only if one exists. Per [_refinement/r5-review.md](_refinement/r5-review.md).
 - **2026-07-12 (r4):** First dedicated EDD round — init split into scaffold/migrate experiences with the interactive walkthrough, content-preservation invariant, and archive/update/leave-alongside options; new CLI Experience section (command ↔ workflow table); new workflows for `021-feedback` and `021-design`; stage-aware reviews; "Ask, don't assume" principle; cohesive-set statement; changelog added. Per [_refinement/r4-update-edd.md](_refinement/r4-update-edd.md).

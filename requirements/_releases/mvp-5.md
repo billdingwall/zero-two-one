@@ -2,9 +2,9 @@
 
 - **Type:** MVP release
 - **Status:** Planned
-- **Lifecycle Phase:** MVP Build (Phase 3)
+- **Lifecycle Phase:** MVP Build (Phase 1)
 - **Branch:** feature branches per spec (`NNN-feature-name`)
-- **Roadmap:** [04-ROADMAP.md](../04-ROADMAP.md) · [05-BACKLOG.md](../05-BACKLOG.md)
+- **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md) · [04-BACKLOG.md](../04-BACKLOG.md)
 
 ## Goal
 

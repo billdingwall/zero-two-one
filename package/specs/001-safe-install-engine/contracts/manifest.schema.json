@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://zero-two-one.dev/schema/zero-two-one.json",
+  "title": ".zero-two-one.json install manifest",
+  "description": "Install manifest written to a target repo root by the Init v2 engine (spec 001). Extends TDD §7 with additive fields updatedAt and merged (flagged TDD follow-up).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "installedAt", "mode", "phase", "tools", "files"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Package version at install / last upgrade."
+    },
+    "installedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "First-install timestamp. Written once, preserved across re-runs/upgrades."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Additive. Refreshed on every re-run/--upgrade. Absent until the first re-run."
+    },
+    "mode": {
+      "enum": ["scaffold", "migrate", "source"],
+      "description": "spec 001 writes 'scaffold' and 'source'; 'migrate' is a sibling spec."
+    },
+    "phase": {
+      "enum": ["planning", "mvp", "growth"],
+      "description": "Scaffold default: planning."
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stack", "assistant", "ssd", "design"],
+      "properties": {
+        "stack": {
+          "enum": ["claude", "antigravity", "kiro"],
+          "description": "Not defaulted — supplied by the AI assistant driving init."
+        },
+        "assistant": { "enum": ["claude-code", "antigravity", "kiro"] },
+        "ssd": { "enum": ["github-speckit", "kiro-specs"] },
+        "design": {
+          "type": "string",
+          "description": "none | material-3 | <system>. Scaffold default: none."
+        }
+      }
+    },
+    "files": {
+      "type": "object",
+      "description": "Framework-owned files only. relpath -> sha256 of LF-normalized content.",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "merged": {
+      "type": "object",
+      "description": "Additive. Entries the framework contributed per merged file, so user deletions are respected on re-run.",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "examples": [
+        {
+          ".gitignore": ["node_modules/", ".ai/context/"],
+          "package.json.scripts": ["021-status", "021-qa", "021-spec:status"]
+        }
+      ]
+    }
+  }
+}

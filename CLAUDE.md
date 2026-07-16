@@ -16,16 +16,18 @@ After installation, use `/021-status` to check the current lifecycle phase at an
 
 This repository is built as a Zero Two One Agentic Starter Template using a phased lifecycle approach.
 
-## 4-Phase Project Lifecycle
+## 3-Phase Project Lifecycle
 
-The product lifecycle is canonically defined in [`workflow/specific-workflows/product-lifecycle.md`](workflow/specific-workflows/product-lifecycle.md).
+The product lifecycle is canonically defined in [`workflow/specific-workflows/product-lifecycle.md`](workflow/specific-workflows/product-lifecycle.md): **Planning → MVP Build → Growth** (r6 — the former Pre-build phase is merged into Planning, gated by a Planning sign-off milestone).
+
+*This file (`CLAUDE.md`) is the `claude`-stack rendering of the neutral `AGENTS.md` assistant entrypoint; other stacks render their own (TDD §9). It is the master router — it holds the "Wait" rule (outline the plan and confirm before complex multi-file changes) that `CODE.md` §4 defers to.*
 
 Your primary role as an AI assistant is to help the user navigate these phases by tracking the current state, reading the correct documents, and ensuring constraints are met. 
 
 ## Context
 
 * **DOGFOODING**: You are currently operating in the root repository of the `zero-two-one` framework itself. We are using the framework's own rules to refine and build the framework.
-* The project is transitioning into **Phase 2: Pre-build** (or actively refining Phase 2). The PRD, TDD, EDD, and Roadmap for the framework itself have been drafted in `requirements/`.
+* The project is in **Phase 0: Planning** (which now includes the former Pre-build refinement work; r6). The PRD, EDD, TDD, Roadmap, and Backlog for the framework itself have been drafted in `requirements/`.
 * **Important Boundary**: Development happens in the root. The `package/` directory is a clean snapshot for NPM publishing. When we change the framework mechanics (templates, scripts, skills), we run `npm run sync:package` to update the package.
 
 **Please update your memory to track that you are managing the zero-two-one framework development.**
@@ -33,9 +35,10 @@ Your primary role as an AI assistant is to help the user navigate these phases b
 ## Documentation Structure
 
 - **`requirements/`**: Contains the core documentation that defines the product (PRD, EDD, Technical Design, Roadmap).
-- **`requirements/_refinement/`**: Tracks the refinement loop cycles during the Pre-build and Growth phases.
+- **`requirements/_refinement/`**: Tracks the refinement loop cycles during the Planning and Growth phases.
 - **`requirements/_notes/`**: Holds unstructured research and background context.
 - **`requirements/_design/`**: Holds design assets.
+- **`requirements/_architecture/`**: Architecture diagrams, expanded data models, and decision records (ADRs) that back the TDD (created on first use; TDD §2 boundary).
 - **`workflow/`**: Documentation defining the overall project workflow and personas involved. `workflow/workflows.md` is the canonical process reference (Discovery, Design, Refinement, Speckit Implementation, QA, Release).
 - **`skills/`**: AI prompts used for generating project artifacts and specs, plus `tools.json` agent tool schemas.
 - **`scripts/`**: Lifecycle automation — `npm run 021-status`, `021-spec:status`, `021-spec:context`, `021-spec:verify`, `021-qa`.

@@ -1,6 +1,6 @@
 # Flow: Key Docs to Prototype
 
-**Scope:** Phase 1 & 2 (Planning & Pre-build) — **optional** (r5)
+**Scope:** Planning (Phase 0) — **optional** (r5)
 
 > The prototype is opt-in. This flow runs only when a team invokes **`021-prototype`** (TDD §12); until then a project has no prototype and none of the steps below apply. A prototype is never a lifecycle gate condition.
 

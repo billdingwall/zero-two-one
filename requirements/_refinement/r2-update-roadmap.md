@@ -4,7 +4,7 @@
 **Date:** 2026-07-10
 **Round:** r2
 **Findings addressed:** 6 (scope), r3 sequencing
-**Target doc:** [../04-ROADMAP.md](../04-ROADMAP.md)
+**Target doc:** [../05-ROADMAP.md](../05-ROADMAP.md)
 
 ## Intent
 

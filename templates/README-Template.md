@@ -6,11 +6,10 @@ This project is built using the **Zero Two One** agentic product framework, whic
 
 ## How it works
 
-Development follows a 4-phase lifecycle:
-1. **Planning**: Define the product in `requirements/01-PRD.md` and `03-TDD.md`.
-2. **Pre-build**: Design and refine the experience in `requirements/02-EDD.md` and `prototype/`.
-3. **MVP Build**: Implement features using Spec Kit branches.
-4. **Growth**: Continuously refine and ship enhancements.
+Development follows a 3-phase lifecycle:
+1. **Planning**: Define and refine the product — `requirements/01-PRD.md`, `02-EDD.md`, `03-TDD.md`, `04-BACKLOG.md`, `05-ROADMAP.md`, `DESIGN.md`, and an optional `prototype/` — through review rounds, gated by a sign-off milestone.
+2. **MVP Build**: Implement features using Spec Kit branches.
+3. **Growth**: Continuously refine and ship enhancements.
 
 ### The Refinement Gate
 No implementation code can land until the corresponding feature spec is approved. The installed `pre-commit` hook enforces this.

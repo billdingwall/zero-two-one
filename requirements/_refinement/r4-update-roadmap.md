@@ -4,7 +4,7 @@
 **Date:** 2026-07-12
 **Round:** r4
 **Findings addressed:** 6, 7, 8, 18 (+ Outcome goals)
-**Target doc:** [../04-ROADMAP.md](../04-ROADMAP.md)
+**Target doc:** [../05-ROADMAP.md](../05-ROADMAP.md)
 
 ## Intent
 

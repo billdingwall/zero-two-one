@@ -4,7 +4,7 @@
 **Date:** 2026-07-10
 **Round:** r3
 **Findings addressed:** 3 (stack model sequencing); open question (implementation timing)
-**Target doc:** [../04-ROADMAP.md](../04-ROADMAP.md)
+**Target doc:** [../05-ROADMAP.md](../05-ROADMAP.md)
 
 ## Intent
 

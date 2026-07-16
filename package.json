@@ -1,18 +1,21 @@
 {
   "name": "zero-two-one",
   "version": "1.1.0",
-  "description": "Zero Two One — an agentic product framework that takes new products from point 0 (idea) to point 1 (MVP) via project-level refinement loops and Spec Kit-driven feature delivery.",
-  "main": "index.js",
+  "private": true,
+  "description": "Zero Two One — an agentic product framework that takes new products from point 0 (idea) to point 1 (MVP) via project-level refinement loops and Spec Kit-driven feature delivery. (Root dev workspace — the publishable snapshot lives in package/.)",
   "bin": {
     "zero-two-one-init": "bin/init.js"
   },
   "scripts": {
     "021-status": "node scripts/workflow-status.js",
     "021-qa": "sh scripts/run-qa.sh",
+    "021-doctor": "node scripts/speckit/doctor.js",
     "021-spec:status": "node scripts/speckit/spec-status.js",
     "021-spec:context": "node scripts/speckit/fetch-speckit-context.js",
     "021-spec:verify": "node scripts/speckit/verify-spec-compliance.js",
-    "test": "node scripts/speckit/spec-status.js list && node scripts/workflow-status.js",
+    "lint": "find bin scripts -name '*.js' -print0 | xargs -0 -n1 node --check && sh -n hooks/pre-commit && sh -n scripts/run-qa.sh",
+    "check:links": "node scripts/check-links.js",
+    "test": "node --test $(find test -name '*.test.js') && node scripts/speckit/spec-status.js list && node scripts/workflow-status.js",
     "sync:package": "node scripts/sync-to-package.js",
     "publish:package": "npm run sync:package && cd package && npm publish"
   },
@@ -30,7 +33,7 @@
     "product-framework",
     "lifecycle"
   ],
-  "author": "",
+  "author": "William Dingwall (billdingwall)",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {

@@ -4,7 +4,7 @@
 **Date:** 2026-07-12
 **Round:** r4
 **Findings addressed:** 1, 4, 9, 12, 13, 14, 17, 18
-**Target doc:** [../05-BACKLOG.md](../05-BACKLOG.md)
+**Target doc:** [../04-BACKLOG.md](../04-BACKLOG.md)
 
 ## Intent
 

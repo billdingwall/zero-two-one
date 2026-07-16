@@ -18,6 +18,6 @@
 
 ## 3. Implementation Loop (Agent-Executed)
 
-1. **Context Generation:** Run `npm run 021-spec:context` to generate the `.ai/context/NNN-feature-name.md` bundle. This seamlessly injects `CODE.md`, `PRODUCT.md`, and `05-BACKLOG.md`.
+1. **Context Generation:** Run `npm run 021-spec:context` to generate the `.ai/context/NNN-feature-name.md` bundle. This seamlessly injects `CODE.md`, `PRODUCT.md`, and `04-BACKLOG.md`.
 2. **Execution:** Work through `tasks.md`.
 3. **Verification:** Run `npm run 021-spec:verify` after meaningful units of work to ensure spec compliance.

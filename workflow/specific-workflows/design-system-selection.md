@@ -5,7 +5,7 @@
 ## The Process
 
 1. **Select**
-   The user names a design system (e.g. Material 3) or stays bespoke. Typically triggered during Phase 2 (Pre-build) or by a refinement round; can also be chosen at init (`--design`).
+   The user names a design system (e.g. Material 3) or stays bespoke. Typically triggered during Planning (Phase 0) or by a refinement round; can also be chosen at init (`--design`).
 
 2. **Assess**
    Walk the decisions, gaps, and implications before committing:
@@ -14,7 +14,7 @@
    - **Accessibility defaults** the system guarantees (and where it doesn't).
    - **Platform export targets** (web CSS variables, Android, Flutter, React) and tooling (e.g. Material Theme Builder).
    - Licensing/brand constraints.
-   Unresolved items land in `05-BACKLOG.md`'s Open Questions register.
+   Unresolved items land in `04-BACKLOG.md`'s Open Questions register.
 
 3. **Map**
    Express the project's design decisions as **system-token role assignments** in `DESIGN.md` (for M3: project roles → `md.sys.*` tokens). Import exported token artifacts (Theme Builder JSON / CSS variables) into `requirements/_design/tokens/` and reference them from `DESIGN.md` — artifacts are checked in, not regenerated ad hoc.

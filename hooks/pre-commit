@@ -7,6 +7,10 @@
 # artifacts are always allowed — the gate blocks code, not refinement.
 #
 # Emergency bypass (hotfixes, WIP stashes): ZTO_SKIP_GATE=1 git commit ...
+#
+# Contract (spec 003): if this hook ever needs the project's phase/stack, read
+# it via `node scripts/speckit/lib.js phase` / manifestFacts — never a second
+# manifest parser or a stdout scrape.
 
 if [ "$ZTO_SKIP_GATE" = "1" ]; then
     echo "zero-two-one: gate skipped via ZTO_SKIP_GATE=1."
