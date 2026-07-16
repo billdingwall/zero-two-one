@@ -179,6 +179,85 @@ function extractCriteria(text) {
   return criteria;
 }
 
+// --- Manifest as QA contract (spec 003) ---------------------------------
+//
+// The single place the lifecycle scripts (run-qa.sh, workflow-status.js, the
+// gate) read the project's phase/stack. The install engine under scripts/init/
+// keeps its own manifest I/O (specs 001/002) and is out of scope here.
+
+/** Canonical phase vocabulary — the one copy (TDD §7). Labels are exact for parity. */
+const PHASE = {
+  planning: { num: 0, label: 'Planning (Zero)' },
+  prebuild: { num: 0, label: 'Planning (Zero)' }, // legacy alias → Planning (r6)
+  mvp: { num: 1, label: 'MVP Build (One)' },
+  growth: { num: 2, label: 'Growth' },
+};
+const PHASE_KEY_BY_NUM = { 0: 'planning', 1: 'mvp', 2: 'growth' };
+
+function manifestFile(root) {
+  return path.join(root || repoRoot(), '.zero-two-one.json');
+}
+
+/** Parsed `.zero-two-one.json`, or null when absent/unparseable. Never throws. */
+function readManifest(root = repoRoot()) {
+  const p = manifestFile(root);
+  if (!fs.existsSync(p)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(p, 'utf8'));
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Infer phase from repo state when there is no manifest (spec 003 FR-006).
+ * Preserves the former workflow-status.js heuristic: a top-level specs/*.md
+ * ⇒ MVP Build; otherwise Planning (the old PRD sub-check resolved to Planning
+ * either way, so it is elided without behavior change).
+ */
+function inferFacts(root) {
+  const dir = path.join(root, 'specs');
+  let hasSpecs = false;
+  if (fs.existsSync(dir)) {
+    hasSpecs = fs.readdirSync(dir).some((f) => f.endsWith('.md') && f !== '_INDEX.md');
+  }
+  const num = hasSpecs ? 1 : 0;
+  return {
+    phase: PHASE_KEY_BY_NUM[num],
+    phaseNum: num,
+    phaseLabel: num === 1 ? 'MVP Build (One)' : 'Planning (Zero)',
+    stack: null,
+    mode: null,
+    source: 'inferred',
+  };
+}
+
+/**
+ * The whole phase/stack resolution (spec 003 FR-001): manifest → inference →
+ * Planning. Always returns a fully-populated ManifestFacts. An unparseable
+ * manifest warns once (to stderr) and falls through to inference.
+ */
+function manifestFacts(root = repoRoot()) {
+  const p = manifestFile(root);
+  const manifest = readManifest(root);
+  if (fs.existsSync(p) && manifest === null) {
+    console.warn('⚠️  Could not parse .zero-two-one.json; falling back to inference.');
+  }
+  const key = manifest && typeof manifest.phase === 'string' ? manifest.phase.toLowerCase() : null;
+  if (key && PHASE[key]) {
+    const v = PHASE[key];
+    return {
+      phase: PHASE_KEY_BY_NUM[v.num],
+      phaseNum: v.num,
+      phaseLabel: v.label,
+      stack: (manifest.tools && manifest.tools.stack) || null,
+      mode: manifest.mode || null,
+      source: 'manifest',
+    };
+  }
+  return inferFacts(root);
+}
+
 module.exports = {
   STATUSES,
   GATE_PASSING,
@@ -194,4 +273,18 @@ module.exports = {
   isGatePassing,
   countTasks,
   extractCriteria,
+  PHASE,
+  readManifest,
+  manifestFacts,
 };
+
+// --- CLI (spec 003): `node scripts/speckit/lib.js phase` → phaseNum ---------
+if (require.main === module) {
+  const sub = process.argv[2];
+  if (sub === 'phase') {
+    process.stdout.write(String(manifestFacts().phaseNum) + '\n');
+    process.exit(0);
+  }
+  process.stderr.write('Usage: node scripts/speckit/lib.js phase\n');
+  process.exit(1);
+}

@@ -3,19 +3,17 @@
 # Quality Assurance & Testing Integration Script
 # Executes tailored automated checks depending on the current lifecycle phase.
 #
-# Phase model (3-phase, r6; this script remapped in r7):
-#   0 = Planning (Zero)    — docs tier
-#   1 = MVP Build (One)    — full code QA (tests, a11y, spec compliance)
-#   2 = Growth             — full code QA + feedback checks
+# Phase model (3-phase): 0 = docs tier; 1 = full code QA (tests, a11y, spec
+# compliance); 2 = full code QA + feedback checks. The canonical phase
+# vocabulary and resolution live once in scripts/speckit/lib.js (spec 003).
 #
-# Phase is read from `workflow-status.js --json` (machine-readable contract,
-# r7) — never scraped from the human-readable output.
+# Phase is read from `node scripts/speckit/lib.js phase` (the manifest
+# contract) — never scraped from another script's output.
 
 echo "Initiating Framework QA Suite..."
 
-PHASE=$(node scripts/workflow-status.js --json | node -e "
-let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{process.stdout.write(String(JSON.parse(d).phase))}catch(e){process.stdout.write('')}})
-")
+# Phase comes from the single manifest parser (spec 003) — no output scraping.
+PHASE=$(node scripts/speckit/lib.js phase)
 
 if [ -z "$PHASE" ]; then
     echo "WARN: could not determine lifecycle phase — defaulting to 0 (Planning)."
