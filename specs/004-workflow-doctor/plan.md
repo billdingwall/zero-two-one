@@ -2,6 +2,33 @@
 
 *The HOW for [spec.md](spec.md). A read-only report that runs a set of pure reconciliation checks over repo state and prints the drift. Reuses spec 003's `lib.js`; writes nothing.*
 
+## Technical Context
+
+| Dimension | Value |
+|---|---|
+| **Language / runtime** | Node.js (`scripts/speckit/doctor.js`) |
+| **Dependencies** | **None** — `fs`/`path` (+ `node:child_process` if any git read); reuses `lib.js` |
+| **Reuses** | spec 003: `manifestFacts`, `listSpecs`, `readStatus`, `countTasks`, `repoRoot` |
+| **Testing** | `node:test` over `doctor.js` against seeded fixture repos |
+| **Source of truth** | TDD §13 (Workflow Manager, read-only reporter first) |
+
+## Constraints check (must hold)
+
+- **Read-only** — opens no file for writing, edits no working-tree file, makes no commit; whole-tree snapshot identical after a run (FR-009).
+- **Out of the commit path** — never referenced by `hooks/pre-commit`; exit code advisory (non-zero on hard drift only), never gated (FR-009).
+- **No second parser** — phase/spec state comes through `lib.js` (FR-010), extending spec 003's single-reader discipline.
+- **Deterministic** — checks are pure functions of repo state; structured status only, no prose matching.
+- **Zero dependencies** — built-ins only (FR-011).
+
+## Design artifacts
+
+| Artifact | Purpose |
+|---|---|
+| [data-model.md](data-model.md) | `DriftFinding` shape, severity model, the six checks, status normalization |
+| [contracts/doctor-cli.md](contracts/doctor-cli.md) | `021-doctor` CLI + check contracts + exit-code + guardrails |
+| [research.md](research.md) | Decisions & rationale (rolls up the clarify session) + rejected alternatives |
+| [quickstart.md](quickstart.md) | Validation walkthrough (seed each drift, run, observe) |
+
 ## Approach
 
 ```
