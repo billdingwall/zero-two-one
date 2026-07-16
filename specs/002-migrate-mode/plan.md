@@ -2,6 +2,35 @@
 
 *The HOW for [spec.md](spec.md). A detection/interview/resolution layer **in front of** spec 001's engine — it does not re-implement the merge.*
 
+## Technical Context
+
+| Dimension | Value |
+|---|---|
+| **Language / runtime** | Node.js (extends the spec 001 engine under `scripts/init/`) |
+| **Dependencies** | **None** — built-ins only: `fs`, `path`, `node:crypto`, `node:readline` (prompts), `node:child_process` (git tag reads) |
+| **Reuses** | spec 001: `classifyAll`, `applyPlan`, `manifest.js`, `classes.js`, `hash.js`, `instantiate.js` |
+| **Testing** | `node:test` fixtures under `test/init/migrate/` (synthetic non-empty repos) |
+| **Interaction** | Interactive (`readline`) when TTY; fully flag-driven otherwise |
+| **Source of truth** | TDD §8 (detection + interview), §6 (import + duplicates), §7 (manifest) |
+
+## Constraints check (must hold at every step)
+
+- **Non-destructive** — inherits spec 001 FR-003; migrate only adds, creates-if-missing, updates-in-place-preserving, or archives-with-pointer. **Never removes content** (FR-010).
+- **Zero runtime dependencies** — `readline` for prompts, no packages (FR-013); enforced by `npm run lint`.
+- **CI never blocks** — no TTY ⇒ safe defaults, exit 0 (FR-012).
+- **Idempotent** — recorded decisions are manifest-driven; a re-run re-applies nothing (FR-011).
+- **Bounded determinism** — exact-dest duplicates only; fuzzy role-matching stays out (AI-reconcile sibling).
+
+## Design artifacts
+
+| Artifact | Purpose |
+|---|---|
+| [data-model.md](data-model.md) | Manifest `migrate` record, detection-signals model, duplicate-resolution + imported-docs structures |
+| [contracts/manifest-migrate.schema.json](contracts/manifest-migrate.schema.json) | JSON Schema for the additive `migrate` manifest block |
+| [contracts/cli-contract.md](contracts/cli-contract.md) | Migrate CLI flags (`--phase`/`--stack`/`--design`/`--dup`/`--yes`), exit codes, behaviors |
+| [research.md](research.md) | Decisions & rationale (rolls up the 3 clarify sessions) + rejected alternatives |
+| [quickstart.md](quickstart.md) | Manual validation walkthrough mapped to the acceptance criteria |
+
 ## Approach
 
 When `index.js` resolves `mode: migrate` (FR-001), it runs a migrate pre-pass before delegating the actual writes to spec 001's `classifyAll` → `applyPlan`:
