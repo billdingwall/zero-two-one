@@ -101,7 +101,8 @@ Written to the **target repo root** at install (user-visible state, not a genera
 ```json
 {
   "version": "<package version>",
-  "installedAt": "<ISO date>",
+  "installedAt": "<ISO date, first install>",
+  "updatedAt": "<ISO date, last re-run/upgrade>",
   "mode": "scaffold | migrate | source",
   "phase": "planning | mvp | growth",
   "tools": {
@@ -110,7 +111,8 @@ Written to the **target repo root** at install (user-visible state, not a genera
     "ssd": "github-speckit | kiro-specs",
     "design": "none | material-3 | <system>"
   },
-  "files": { "<path>": "<sha256 at install>" }
+  "files": { "<framework-owned path>": "<sha256 of LF-normalized content at install>" },
+  "merged": { "<merged file>": ["<framework-contributed entry>", "..."] }
 }
 ```
 
@@ -120,6 +122,7 @@ Written to the **target repo root** at install (user-visible state, not a genera
 - **QA contract (r7):** `workflow-status.js --json` emits `{ phase, status, source }`. Consumers (`scripts/run-qa.sh`, CI) read this machine-readable output — **never** scrape the human-readable block. Once the mvp-3 manifest write lands, `run-qa.sh` and `hooks/pre-commit` resolve phase/stack through a single parser in `scripts/speckit/lib.js`, permanently retiring the output-scraping coupling that caused the r6 `run-qa.sh` phase regression.
 - **`mode: source` (r5)**: the self-referential case for the framework's own repo, which is the source rather than an init target (`scaffold`/`migrate` both imply init ran on someone else's project). Init v2 **regenerates this repo's own manifest** — including the full `files` hash inventory — so the framework dogfoods its own manifest end-to-end rather than relying on the hand-authored `files: {}` stub (mvp-3).
 - `assistant`/`ssd` are **derived from `stack`** (kept for per-role tooling and r2 compatibility); `design` is chosen independently of the stack (§9.4). Additive since r2 — no schema break.
+- **Merge-engine fields (mvp-3, spec [`001-safe-install-engine`](../specs/001-safe-install-engine/spec.md)):** three additive members, no break. (a) **`updatedAt`** — refreshed on every re-run/`--upgrade`; `installedAt` is written once and preserved. (b) **`files` is framework-owned only** and hashed over **LF-normalized** content, so a Windows/`autocrlf` checkout doesn't spuriously conflict (user-owned/merged/generated classes are not hashed). (c) **`merged`** — records the entries the engine contributed to each merged file (`.gitignore` lines, `package.json` script keys), so a re-run distinguishes "never added" from "added then removed" and respects a user's deletion.
 
 ## 8. Migrate-Mode Detection & Phase Interview
 
@@ -207,6 +210,7 @@ Publishing is **CI-only, tag-triggered**, never a local one-liner:
 - **API surface (open, decide mvp-4):** `"main"` is removed from both manifests now (no dangling entry). Whether to expose a programmatic surface — `require('zero-two-one/speckit')` over `scripts/speckit/lib.js` via `exports` — is decided with the adapter seam in mvp-4; until then the package is CLI/content-only.
 
 ## Changelog
+- **2026-07-15 (mvp-3, spec 001):** §7 manifest gains three additive fields from the safe-install-engine spec — `updatedAt` (preserve `installedAt`, refresh on re-run/upgrade), framework-owned-only + LF-normalized `files`, and a `merged` contribution record (respects user deletions). No schema break. Per [specs/001-safe-install-engine](../specs/001-safe-install-engine/spec.md).
 - **2026-07-15 (r7):** §1 CLI Engine gains the interim v1 guards; §5 manifest updated (drop `prototype/` + generated `.ai` bundles + CI workflows from the package; add `LICENSE`, `CONTRIBUTING.md` root-only, `check-links.js` dev-only); §7 QA contract (`--json`, single-parser rule); §13 Workflow Manager → read-only reporter first; new **§14 Publish Pipeline** (CI-only, provenance, pre-publish gate) + `main`-removal / API-decision-at-mvp-4. Per [_refinement/r7-review.md](_refinement/r7-review.md).
 - **2026-07-15 (r6):** Lifecycle enum → `{ planning, mvp, growth }` (§7; `prebuild` merged into Planning); §2/§5/§8 key-doc numbering swapped to `04-BACKLOG`/`05-ROADMAP`; `_architecture/` boundary added (§2); new **§13 Workflow Manager** (fifth §1 component, built mvp-3); §12 Pre-build references → Planning sign-off milestone. Per [_refinement/r6-review.md](_refinement/r6-review.md).
 - **2026-07-12 (r5):** §10 feedback repo slug resolved to `billdingwall/zero-two-one`; §7 manifest-read implemented and dogfooded (`.zero-two-one.json` at root) with prototype dropped from inference; new §12 Optional Prototype Command (`021-prototype`). Per [_refinement/r5-review.md](_refinement/r5-review.md).

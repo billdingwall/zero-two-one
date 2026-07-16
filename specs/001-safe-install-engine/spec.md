@@ -96,7 +96,7 @@ Written as Given / When / Then so each maps to a fixture test.
 
 ## Key Entities
 
-- **Install manifest (`.zero-two-one.json`)** — user-visible install state at the target root. Schema per TDD §7 (`version`, `installedAt`, `mode`, `phase`, `tools{stack,assistant,ssd,design}`, `files{}`), plus two additive fields this spec introduces (TDD §7 follow-up): **`updatedAt`** (last re-run/upgrade timestamp) and a **merged-contribution record** naming the entries the framework added to each merged file. `files{}` holds framework-owned hashes only. Basis for idempotent re-run, `--upgrade`, and a future documented uninstall.
+- **Install manifest (`.zero-two-one.json`)** — user-visible install state at the target root. Schema per TDD §7 (`version`, `installedAt`, `mode`, `phase`, `tools{stack,assistant,ssd,design}`, `files{}`), plus two additive fields this spec introduces (now synced into TDD §7): **`updatedAt`** (last re-run/upgrade timestamp) and a **merged-contribution record** naming the entries the framework added to each merged file. `files{}` holds framework-owned hashes only. Basis for idempotent re-run, `--upgrade`, and a future documented uninstall.
 - **File class** — the ownership category (framework-owned / user-owned / merged / generated) that determines install, re-run, and upgrade behavior for a path.
 - **Action plan** — the per-file list of resolved actions (create / skip / merge / conflict / force / orphan / adopt — see [data-model.md](data-model.md) §3) that `--dry-run` prints and every run computes before acting.
 

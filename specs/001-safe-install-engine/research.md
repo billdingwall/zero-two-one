@@ -23,7 +23,7 @@
 
 - **`--json` report emission** — should follow the repo's `workflow-status.js --json` machine-readable contract; specified when a consumer needs it.
 - **Atomic apply / staging** — partial-write recovery currently relies on idempotent re-run; atomic staging is a later hardening (see plan Risks).
-- **TDD §7 sync** — `updatedAt` + `merged` contribution record + LF-hashing rule are additive extensions this spec introduced; fold into `requirements/03-TDD.md` so design and spec don't drift.
+- **TDD §7 sync** — *done.* `updatedAt` + `merged` contribution record + framework-owned-only LF-normalized `files` are now reflected in `requirements/03-TDD.md` §7 (mvp-3 changelog entry).
 
 ## Zero-dependency confirmation
 
