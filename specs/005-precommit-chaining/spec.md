@@ -1,5 +1,5 @@
 ---
-status: In Progress
+status: Done
 feature: Conflict-Aware Pre-commit Install (Chaining)
 release: mvp-3
 branch: 005-precommit-chaining
