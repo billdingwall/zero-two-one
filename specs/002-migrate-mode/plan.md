@@ -37,7 +37,8 @@ Every step is additive or create-if-missing; the spec 001 non-destructive invari
 ## Detection heuristics (FR-002/FR-004)
 
 - **Mode (clarified):** migrate when the target has **any non-framework content** (any file outside the framework surface, ignoring empty/`.git`-only dirs) and no `.zero-two-one.json`; else scaffold.
-- **Phase (clarified — strict precedence):** `growth` only if **all** of tests + CI config + release history (tags or `_releases/`); else `mvp` if substantial code but no framework key docs; else `planning`.
+- **Phase (clarified — strict precedence):** `growth` only if **all** of tests + CI config + release history (**git tags only**); else `mvp` if substantial code but no framework key docs; else `planning`.
+- **Re-run (clarified):** detection runs only on the first (no-manifest) pass. When a manifest exists, mode/phase/stack are **read from it**, not re-detected; recorded duplicate decisions are honored idempotently.
 - **Stack:** `.claude/`→claude, `.agents/`|`AGENTS.md`→antigravity, `.kiro/`→kiro; `.specify/`|populated `specs/`⇒ ssd github-speckit. Multiple surfaces ⇒ list, defer to interview/`--stack`.
 
 ## Interview (FR-003/FR-012, clarified)

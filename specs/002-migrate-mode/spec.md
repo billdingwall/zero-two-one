@@ -43,6 +43,15 @@ Running init on a real, populated repository is the adoption path that matters m
 - **Q: How does a re-run behave for import/archive decisions already made (FR-006/FR-011)?**
   A: **Manifest-driven skip.** Decisions in `manifest.migrate.duplicates` are not re-prompted or re-applied; `imported-docs.md` rows are keyed by path (no duplicates); archive skips if already archived. Fully idempotent.
 
+### Session 2026-07-16 — round 3
+
+- **Q: On a re-run (manifest already present), where do mode/phase/stack come from?**
+  A: **Recorded manifest wins.** Detection runs only on the first (no-manifest) pass; thereafter mode/phase/stack are read from `.zero-two-one.json`, and recorded duplicate decisions are honored idempotently.
+- **Q: During Spec Kit reuse, if a spec's status frontmatter is missing/invalid (FR-008)?**
+  A: **Report & skip anyway.** Warn about the offending spec(s) and still skip re-scaffolding; never touch the user's spec files. The fix is left to the user / Workflow-Manager.
+- **Q: What counts as "release history" for the strict growth signal (FR-002)?**
+  A: **git tags only** — version tags in git history. `_releases/` and CHANGELOG do not, by themselves, count.
+
 ## User Scenarios (Acceptance)
 
 1. **Detected migrate** — *Given* a repo with existing code and a `README.md` but no `.zero-two-one.json`, *when* the user runs init, *then* it engages migrate-mode (not scaffold) and reports what it detected before changing anything.
@@ -56,14 +65,14 @@ Running init on a real, populated repository is the adoption path that matters m
 
 ## Functional Requirements
 
-- **FR-001 — Mode detection.** The engine classifies the target as **migrate** when it holds **any non-framework content** — any file outside the framework surface, ignoring empty and `.git`-only dirs — and no framework manifest; an empty or framework-only target stays **scaffold** (spec 001) *(clarified 2026-07-16)*. The resolved mode is recorded in the manifest and reported before any change.
-- **FR-002 — Phase heuristics.** Migrate infers a likely lifecycle phase with a **strict precedence** *(clarified 2026-07-16)*: `growth` requires **all** of tests + CI + release history; failing that, substantial code (but no framework key docs) ⇒ `mvp`; otherwise ⇒ `planning`. The inference and its evidence are surfaced, never silently applied.
+- **FR-001 — Mode detection.** The engine classifies the target as **migrate** when it holds **any non-framework content** — any file outside the framework surface, ignoring empty and `.git`-only dirs — and no framework manifest; an empty or framework-only target stays **scaffold** (spec 001) *(clarified 2026-07-16)*. Detection runs only on the first pass; on a **re-run** (manifest present) mode/phase/stack are **read from the manifest**, not re-detected *(clarified 2026-07-16)*. The resolved mode is recorded in the manifest and reported before any change.
+- **FR-002 — Phase heuristics.** Migrate infers a likely lifecycle phase with a **strict precedence** *(clarified 2026-07-16)*: `growth` requires **all** of tests + CI + release history (**git tags**, clarified); failing that, substantial code (but no framework key docs) ⇒ `mvp`; otherwise ⇒ `planning`. The inference and its evidence are surfaced, never silently applied.
 - **FR-003 — Phase confirmation.** The inferred phase is confirmed via an interactive prompt (`node:readline`) when a TTY is present, or taken from `--phase <planning|mvp|growth>` non-interactively. The confirmed value is written to the manifest.
 - **FR-004 — Stack detection.** Existing tool surfaces propose the stack: `.claude/` ⇒ `claude`; `.agents/` or `AGENTS.md` ⇒ `antigravity`; `.kiro/` ⇒ `kiro`; `.specify/` or a populated `specs/` confirms `github-speckit`. Conflicting surfaces list what was found and defer to the interview; `--stack` sets it non-interactively. When the stack is ambiguous or absent and no TTY/`--stack` resolves it, migrate uses the documented default `claude` and proceeds *(clarified 2026-07-16)*.
 - **FR-005 — Design selection.** `--design <none|material-3|…>` is honored non-interactively; default `none`. (Design-system *installation* remains `021-design` / mvp-4 — this only records the choice.)
 - **FR-006 — Existing-doc import.** When a duplicate is resolved as **leave-alongside**, the user's file is kept in place and **cataloged** into `requirements/_notes/imported-docs.md` (path + description slot), which the framework's guiding docs link to. Imported content is **referenced, never moved or rewritten** (TDD §6). *(Scope, clarified: import operates on exact-dest collisions — see FR-007; discovering equivalent docs elsewhere in the tree is the AI-reconcile sibling's job.)*
 - **FR-007 — Duplicate resolution.** A **duplicate** is an **exact framework-dest collision** — the user already has a file where the framework would write (`CLAUDE.md`, `README.md`, `requirements/01-PRD.md`, …) *(clarified 2026-07-16)*. For each, migrate offers three choices — **archive** (move the user's file to `requirements/_notes/archive/` leaving a pointer, then instantiate the fresh template at the dest), **update-to-fit** (**wrap**: rewrite the dest to the framework template's structure with the user's existing content embedded verbatim in a marked "imported content" section), **leave-alongside** (keep the user's file; catalog it per FR-006; do not overwrite — and for the guiding/router docs `CLAUDE`/`CODE`/`PRODUCT`/`DESIGN`, also install the framework template alongside as `<name>.zero-two-one.md` so its content is still present *(clarified 2026-07-16)*; `README`/`requirements/*` leave = catalog only). The chosen action is applied and **recorded in the manifest**. Invariant: existing content is never removed — archive leaves a pointer, update embeds it verbatim, leave keeps it in place. Broader/fuzzy role-matching is out of scope (AI-reconcile sibling).
-- **FR-008 — Spec Kit reuse.** When `.specify/` or a populated `specs/` is present, migrate validates the existing spec frontmatter (resolvable `status:`), reports it, and **skips** duplicate Spec Kit setup instead of re-scaffolding.
+- **FR-008 — Spec Kit reuse.** When `.specify/` or a populated `specs/` is present, migrate validates the existing spec frontmatter (resolvable `status:`), reports it, and **skips** duplicate Spec Kit setup instead of re-scaffolding. A spec with missing/invalid frontmatter is **reported as a warning and skipped anyway** — migrate never modifies the user's spec files *(clarified 2026-07-16)*.
 - **FR-009 — Growth entry.** When the confirmed phase is `growth`, migrate scaffolds `05-ROADMAP.md`/`04-BACKLOG.md` in **post-transition shape** (Releases section active, MVP section frozen as history) per [mvp-to-growth-transition.md](../../workflow/specific-workflows/mvp-to-growth-transition.md).
 - **FR-010 — Non-destructive invariant.** Migrate never removes or overwrites existing content. Every write is additive, create-if-missing, an in-place structure-preserving update, or an archive-with-pointer. Inherits and must not weaken spec 001's user-owned protection.
 - **FR-011 — Manifest record & idempotency.** The manifest records `mode: migrate`, the confirmed `phase`/`tools`, and a **duplicate-resolution record** (per path → archive | update | leave). Re-runs are **manifest-driven**: recorded decisions are not re-prompted or re-applied; `imported-docs.md` rows are keyed by path (no duplicates); archive skips if already archived *(clarified 2026-07-16)*.
@@ -91,7 +100,8 @@ Running init on a real, populated repository is the adoption path that matters m
 - Growth entry scaffolds the post-transition roadmap/backlog shape.
 - Phase inference follows strict precedence: tests+CI **without** release history infers `mvp`/`planning`, not `growth`.
 - leave-alongside on a user's `CLAUDE.md` also writes `CLAUDE.zero-two-one.md` (framework version present), while their `CLAUDE.md` is untouched.
-- A second migrate run re-applies **nothing** (manifest-driven): no re-prompts, no duplicate `imported-docs.md` rows, no re-archiving.
+- A second migrate run re-applies **nothing** (manifest-driven): mode/phase/stack read from the manifest, no re-prompts, no duplicate `imported-docs.md` rows, no re-archiving.
+- A pre-existing spec with missing/invalid `status:` frontmatter is **reported and skipped**; the user's spec files are left untouched.
 - `npm run lint` passes; no runtime dependency added.
 
 ## Out of Scope
