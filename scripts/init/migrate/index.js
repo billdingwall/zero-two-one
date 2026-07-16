@@ -30,7 +30,7 @@ const CHECK = (b) => (b ? '✓' : '✗');
  * @returns {number} exit code
  */
 function migrateFramework(targetDir, opts, ctx) {
-  const { sourceDir, prevManifest, resolveTools, log } = ctx;
+  const { sourceDir, prevManifest, resolveTools, log, reportHook } = ctx;
   const reRun = !!prevManifest;
 
   // --- Detect / resolve (manifest-first on re-run, FR-001) ---
@@ -80,6 +80,7 @@ function migrateFramework(targetDir, opts, ctx) {
     tools: resolveTools({ stack, design: opts.design }, prevManifest),
     files: applied.files,
     merged: applied.merged,
+    hook: applied.hook,
     migrate,
     now: opts.now,
   });
@@ -91,9 +92,7 @@ function migrateFramework(targetDir, opts, ctx) {
     log('\nDuplicate resolution:');
     for (const [p, a] of decisions) log(`  ${p} → ${a}`);
   }
-  if (applied.hook === 'inactive-no-git') {
-    log('\nNote: target is not a git repo — pre-commit hook staged but inactive until `git init`.');
-  }
+  reportHook(applied, log);
   log(`\n✅ Migrated (${Object.keys(applied.files).length} framework files tracked).`);
   return 0;
 }
