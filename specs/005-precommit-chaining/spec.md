@@ -1,5 +1,5 @@
 ---
-status: Draft
+status: Approved
 feature: Conflict-Aware Pre-commit Install (Chaining)
 release: mvp-3
 branch: 005-precommit-chaining
