@@ -1,5 +1,5 @@
 ---
-status: Draft
+status: Approved
 feature: Manifest as QA Contract
 release: mvp-3
 branch: 003-manifest-qa-contract
