@@ -37,7 +37,7 @@ Every step is additive or create-if-missing; the spec 001 non-destructive invari
 ## Detection heuristics (FR-002/FR-004)
 
 - **Mode (clarified):** migrate when the target has **any non-framework content** (any file outside the framework surface, ignoring empty/`.git`-only dirs) and no `.zero-two-one.json`; else scaffold.
-- **Phase:** `growth` if tests + CI config + release history (tags or `_releases/`); `mvp` if substantial code but no framework key docs; else `planning`.
+- **Phase (clarified — strict precedence):** `growth` only if **all** of tests + CI config + release history (tags or `_releases/`); else `mvp` if substantial code but no framework key docs; else `planning`.
 - **Stack:** `.claude/`→claude, `.agents/`|`AGENTS.md`→antigravity, `.kiro/`→kiro; `.specify/`|populated `specs/`⇒ ssd github-speckit. Multiple surfaces ⇒ list, defer to interview/`--stack`.
 
 ## Interview (FR-003/FR-012, clarified)
@@ -50,8 +50,8 @@ Every step is additive or create-if-missing; the spec 001 non-destructive invari
 - **Resolution** per duplicate: `--dup <path>=<archive|update|leave>` (non-interactive), a prompt (TTY), or the safe default `leave`.
   - `archive` → move the user's file to `requirements/_notes/archive/<path>` + leave a pointer stub, then instantiate the fresh template at the dest.
   - `update` (**wrap**) → rewrite the dest to the framework template's structure with the user's original content embedded verbatim under a marked `## Imported content` section.
-  - `leave` → keep the user's file at the dest; append a row to `requirements/_notes/imported-docs.md` (path + description slot); do not overwrite.
-- Decisions recorded to `manifest.migrate.duplicates` (idempotent re-run).
+  - `leave` → keep the user's file at the dest; append a row to `requirements/_notes/imported-docs.md` (path + description slot); do not overwrite. For guiding/router docs (`CLAUDE`/`CODE`/`PRODUCT`/`DESIGN`) also write the framework template alongside as `<name>.zero-two-one.md` so its content is present; `README`/`requirements/*` catalog only.
+- Decisions recorded to `manifest.migrate.duplicates`. **Re-run is manifest-driven** (clarified): recorded decisions are not re-prompted/re-applied; `imported-docs.md` rows keyed by path; archive skips if already archived.
 
 ## Testing strategy
 
