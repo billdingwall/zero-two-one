@@ -11,11 +11,11 @@ installHook(targetDir)
   switch situation:
     already-installed → 'direct' (idempotent)
     none     → cp gate → .git/hooks/pre-commit  (FR-002, unchanged)          → 'direct'
-    plain    → cp gate → .git/hooks/pre-commit.zto; append guarded line to    → 'chain-plain'
-               the existing .git/hooks/pre-commit (FR-003)
-    husky    → cp gate → .git/hooks/pre-commit.zto; append guarded line to     → 'husky'
-               .husky/pre-commit (create if absent) (FR-004)
-    lefthook → register/report per clarify (FR-005)                            → 'lefthook' | 'manual'
+    plain    → cp gate → .git/hooks/pre-commit.zto; insert guarded block AFTER  → 'chain-plain'
+               the shebang of the existing .git/hooks/pre-commit (FR-003)
+    husky    → cp gate → .git/hooks/pre-commit.zto; insert guarded block after  → 'husky'
+               the shebang of .husky/pre-commit (create v9-style if absent) (FR-004)
+    lefthook → print the pre-commit command snippet; DO NOT edit the config      → 'manual'
   return strategy   // recorded in manifest.hook (FR-008)
 ```
 
@@ -41,12 +41,18 @@ A stable block, idempotent by marker presence:
 # <<< zero-two-one gate <<<
 ```
 
-`appendGuarded(file, block)` = create-or-append, skipping if the `>>> zero-two-one gate >>>` marker already appears. Chain order (append = after the user's steps, or prepend = before) is a clarify item.
+`insertGuarded(file, block)` (clarified: **gate-first**) = if the file exists, insert the block immediately **after the shebang line** (so a trailing `exit` in the user's hook can't bypass the gate); if absent (husky), create a minimal `#!/bin/sh` + block. Idempotent: skip when the `>>> zero-two-one gate >>>` marker already appears.
 
-## lefthook (FR-005, pending clarify)
+## lefthook (FR-005 — report-only, clarified)
 
-- **Automated**: append a `pre-commit.commands.zto-gate` block to the lefthook config (text insertion — fragile without a YAML parser; zero-dep constraint).
-- **Report-only**: print the exact snippet + set strategy `manual`; never edit the user's YAML.
+Detect lefthook, print the exact `pre-commit` command snippet for the user to add, set strategy `manual`, and **never edit** the config (safe under zero-dep + `yml/yaml/toml/json` variety). Snippet, e.g.:
+
+```yaml
+pre-commit:
+  commands:
+    zto-gate:
+      run: sh "$(git rev-parse --show-toplevel)/hooks/pre-commit"
+```
 
 ## Manifest (FR-008)
 

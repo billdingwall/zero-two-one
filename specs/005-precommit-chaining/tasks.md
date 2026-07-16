@@ -8,9 +8,9 @@
 ## Phase 2 — Tests first
 - [ ] T002 [P] `detectHookSituation` → none / plain / husky / lefthook / already-installed, with the documented precedence (FR-001).
 - [ ] T003 [P] none → gate installed directly at `.git/hooks/pre-commit` (spec 001 behavior unchanged) (FR-002).
-- [ ] T004 [P] plain → original bytes preserved + guarded line appended; `.git/hooks/pre-commit.zto` present + executable (FR-003).
-- [ ] T005 [P] husky → `.husky/pre-commit` gets the guarded block; `.git/hooks/pre-commit` not written (FR-004).
-- [ ] T006 [P] lefthook → chosen strategy (register/report) is non-lossy; config not truncated (FR-005).
+- [ ] T004 [P] plain → original lines preserved in order + guarded block inserted **after the shebang** (gate-first); `.git/hooks/pre-commit.zto` present + executable; gate still runs when the user's hook ends in `exit 0` (FR-003).
+- [ ] T005 [P] husky → `.husky/pre-commit` gets the guarded block after the shebang (v9-style if created); `.git/hooks/pre-commit` not written (FR-004).
+- [ ] T006 [P] lefthook → strategy `manual`; the config is **byte-unchanged**; the command snippet is printed (FR-005).
 - [ ] T007 [P] idempotent re-run → no duplicate guarded block (marker respected) (FR-006).
 - [ ] T008 [P] **sentinel guardrail**: a hook/config with a unique string is never overwritten or emptied by any strategy (FR-007).
 - [ ] T009 [P] `manifest.hook` records the applied strategy; `--dry-run` names it (FR-008).
@@ -18,7 +18,7 @@
 
 ## Phase 3 — Implementation
 - [ ] T011 `detectHookSituation(targetDir)` (read-only) + the gate marker check (FR-001).
-- [ ] T012 `appendGuarded(file, block)` — create-or-append, marker-idempotent (FR-003/004/006).
+- [ ] T012 `insertGuarded(file, block)` — insert after the shebang (gate-first), or create v9-style when absent; marker-idempotent (FR-003/004/006).
 - [ ] T013 Strategy functions: direct / chain-plain / husky / lefthook in `scripts/init/apply.js` (replace `installHook`) (FR-002…005).
 - [ ] T014 Persist `manifest.hook` (thread the strategy through `apply.js` → `buildManifest`) + `--dry-run` strategy report (FR-008/007).
 
