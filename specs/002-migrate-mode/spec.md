@@ -21,12 +21,25 @@ Running init on a real, populated repository is the adoption path that matters m
 - **Trigger:** `npx zero-two-one-init` on a target the engine classifies as **migrate** (pre-existing project content), rather than scaffold.
 - **Builds on:** spec 001's classify → apply → manifest engine, ownership classes, and non-destructive invariant. This feature adds the detection, interview, import, and duplicate-resolution layers **in front of** that engine; it does not re-implement the merge.
 
+## Clarifications
+
+### Session 2026-07-16
+
+- **Q: What triggers migrate-mode instead of scaffold (FR-001)?**
+  A: **Any non-framework content.** If the target holds any file that isn't part of the framework surface (ignoring empty and `.git`-only dirs), it's migrate — erring toward the non-destructive flow whenever there's anything to protect.
+- **Q: How is a "duplicate" detected (FR-007)?**
+  A: **Exact framework-dest collisions only** — the user already has a file where the framework would write (`CLAUDE.md`, `README.md`, `requirements/01-PRD.md`). Deterministic and predictable. Broader role-matching of docs elsewhere (e.g. `docs/product.md → PRODUCT`) is **deferred to the AI-led reconcile sibling**.
+- **Q: Non-interactive (CI, no TTY) behavior when a decision isn't resolved by a flag?**
+  A: **Safe defaults, proceed.** leave-alongside for duplicates; the documented default stack (`claude`) when the stack is ambiguous/absent. CI never blocks; nothing is destroyed.
+- **Q: What does deterministic "update-to-fit" do (FR-007)?**
+  A: **Wrap.** Rewrite the file to the framework template's structure and embed the user's existing content verbatim in a clearly-marked "imported content" section — deterministic, content fully preserved, no AI.
+
 ## User Scenarios (Acceptance)
 
 1. **Detected migrate** — *Given* a repo with existing code and a `README.md` but no `.zero-two-one.json`, *when* the user runs init, *then* it engages migrate-mode (not scaffold) and reports what it detected before changing anything.
 2. **Phase proposed & confirmed** — *Given* a repo with tests + CI + a release history, *when* migrate runs, *then* it proposes `growth`, and the user confirms (or overrides) — interactively, or non-interactively with `--phase`.
 3. **Stack proposed from surfaces** — *Given* a repo containing `.kiro/`, *when* migrate runs, *then* it proposes the `kiro` stack; conflicting surfaces (e.g. both `.claude/` and `.kiro/`) list what was found and defer to the interview / `--stack`.
-4. **Existing docs imported, not moved** — *Given* a repo with an authored `docs/product.md`, *when* migrate runs, *then* it catalogs it in `requirements/_notes/imported-docs.md` (path + description slot) and the fresh templates link to it; the original file is untouched.
+4. **Existing docs imported, not moved** — *Given* the user has their own `requirements/01-PRD.md` (an exact framework-dest collision), *when* migrate runs and the user picks **leave-alongside**, *then* it catalogs the file in `requirements/_notes/imported-docs.md` (path + description slot) and the guiding docs link to it; the original file is left byte-unchanged.
 5. **Duplicate resolved by choice** — *Given* the user has a `README.md` that duplicates the framework README role, *when* migrate runs, *then* it offers **archive / update-to-fit / leave-alongside**, applies the chosen one, and records the decision in the manifest — never removing the user's content.
 6. **Spec Kit reuse** — *Given* a repo already carrying `.specify/` or a populated `specs/`, *when* migrate runs, *then* it validates the existing spec frontmatter and **skips** duplicate Spec Kit setup rather than re-scaffolding it.
 7. **Non-interactive adoption** — *Given* CI runs `init --phase mvp --stack claude --design none`, *when* there is no TTY, *then* migrate completes with zero prompts and zero user-file overwrites.
@@ -34,18 +47,18 @@ Running init on a real, populated repository is the adoption path that matters m
 
 ## Functional Requirements
 
-- **FR-001 — Mode detection.** The engine classifies the target as **migrate** when it holds pre-existing project content (code, docs, or a tool surface) and no framework manifest; an empty or framework-only target stays **scaffold** (spec 001). The resolved mode is recorded in the manifest and reported before any change.
+- **FR-001 — Mode detection.** The engine classifies the target as **migrate** when it holds **any non-framework content** — any file outside the framework surface, ignoring empty and `.git`-only dirs — and no framework manifest; an empty or framework-only target stays **scaffold** (spec 001) *(clarified 2026-07-16)*. The resolved mode is recorded in the manifest and reported before any change.
 - **FR-002 — Phase heuristics.** Migrate infers a likely lifecycle phase: tests + CI + release history ⇒ `growth`; substantial code but no framework docs ⇒ `mvp` (mid-build); otherwise ⇒ `planning`. The inference and its evidence are surfaced, never silently applied.
 - **FR-003 — Phase confirmation.** The inferred phase is confirmed via an interactive prompt (`node:readline`) when a TTY is present, or taken from `--phase <planning|mvp|growth>` non-interactively. The confirmed value is written to the manifest.
-- **FR-004 — Stack detection.** Existing tool surfaces propose the stack: `.claude/` ⇒ `claude`; `.agents/` or `AGENTS.md` ⇒ `antigravity`; `.kiro/` ⇒ `kiro`; `.specify/` or a populated `specs/` confirms `github-speckit`. Conflicting surfaces list what was found and defer to the interview; `--stack` sets it non-interactively.
+- **FR-004 — Stack detection.** Existing tool surfaces propose the stack: `.claude/` ⇒ `claude`; `.agents/` or `AGENTS.md` ⇒ `antigravity`; `.kiro/` ⇒ `kiro`; `.specify/` or a populated `specs/` confirms `github-speckit`. Conflicting surfaces list what was found and defer to the interview; `--stack` sets it non-interactively. When the stack is ambiguous or absent and no TTY/`--stack` resolves it, migrate uses the documented default `claude` and proceeds *(clarified 2026-07-16)*.
 - **FR-005 — Design selection.** `--design <none|material-3|…>` is honored non-interactively; default `none`. (Design-system *installation* remains `021-design` / mvp-4 — this only records the choice.)
-- **FR-006 — Existing-doc import.** Pre-existing user-owned docs the framework would otherwise instantiate are **cataloged** into `requirements/_notes/imported-docs.md` (path + description slot), and the freshly-instantiated templates link to that catalog. Imported content is **referenced, never moved or rewritten** (TDD §6).
-- **FR-007 — Duplicate resolution.** For each user doc that duplicates a framework-file role, migrate offers three choices — **archive** (move to `requirements/_notes/archive/` leaving a pointer), **update-to-fit** (restructure in place; content preserved), **leave-alongside** (the FR-006 catalog + cross-link). The chosen action is applied and **recorded in the manifest**. Invariant: existing content is never removed (archive leaves a pointer; update preserves content).
+- **FR-006 — Existing-doc import.** When a duplicate is resolved as **leave-alongside**, the user's file is kept in place and **cataloged** into `requirements/_notes/imported-docs.md` (path + description slot), which the framework's guiding docs link to. Imported content is **referenced, never moved or rewritten** (TDD §6). *(Scope, clarified: import operates on exact-dest collisions — see FR-007; discovering equivalent docs elsewhere in the tree is the AI-reconcile sibling's job.)*
+- **FR-007 — Duplicate resolution.** A **duplicate** is an **exact framework-dest collision** — the user already has a file where the framework would write (`CLAUDE.md`, `README.md`, `requirements/01-PRD.md`, …) *(clarified 2026-07-16)*. For each, migrate offers three choices — **archive** (move the user's file to `requirements/_notes/archive/` leaving a pointer, then instantiate the fresh template at the dest), **update-to-fit** (**wrap**: rewrite the dest to the framework template's structure with the user's existing content embedded verbatim in a marked "imported content" section), **leave-alongside** (keep the user's file; catalog it per FR-006; do not overwrite). The chosen action is applied and **recorded in the manifest**. Invariant: existing content is never removed — archive leaves a pointer, update embeds it verbatim, leave keeps it in place. Broader/fuzzy role-matching is out of scope (AI-reconcile sibling).
 - **FR-008 — Spec Kit reuse.** When `.specify/` or a populated `specs/` is present, migrate validates the existing spec frontmatter (resolvable `status:`), reports it, and **skips** duplicate Spec Kit setup instead of re-scaffolding.
 - **FR-009 — Growth entry.** When the confirmed phase is `growth`, migrate scaffolds `05-ROADMAP.md`/`04-BACKLOG.md` in **post-transition shape** (Releases section active, MVP section frozen as history) per [mvp-to-growth-transition.md](../../workflow/specific-workflows/mvp-to-growth-transition.md).
 - **FR-010 — Non-destructive invariant.** Migrate never removes or overwrites existing content. Every write is additive, create-if-missing, an in-place structure-preserving update, or an archive-with-pointer. Inherits and must not weaken spec 001's user-owned protection.
 - **FR-011 — Manifest record.** The manifest records `mode: migrate`, the confirmed `phase`/`tools`, and a **duplicate-resolution record** (per path → archive | update | leave) so the decisions are auditable and a re-run is idempotent.
-- **FR-012 — Non-interactive completeness.** With `--phase` (and, where detection is ambiguous, `--stack`/`--design`) supplied and no TTY, migrate completes with **zero prompts**. Prompts appear only when a decision is genuinely unresolved and a TTY exists.
+- **FR-012 — Non-interactive completeness.** With no TTY, migrate completes with **zero prompts**, resolving anything not fixed by a flag via **safe defaults**: leave-alongside for duplicates, and the documented default stack (`claude`) when ambiguous/absent *(clarified 2026-07-16)*. Flags (`--phase`/`--stack`/`--design`/`--dup`) override the defaults. CI never blocks; nothing is destroyed.
 - **FR-013 — Zero runtime dependencies.** Prompts via `node:readline`, hashing via `node:crypto`, files via `fs`/`path`. No new packages.
 
 ## Key Entities
@@ -64,13 +77,15 @@ Running init on a real, populated repository is the adoption path that matters m
 - Each duplicate-resolution choice (archive/update/leave) behaves per FR-007 and is recorded in the manifest; **no existing content is removed** (archive leaves a pointer).
 - A repo with `.specify/`/populated `specs/` has its spec frontmatter validated and Spec Kit setup skipped.
 - `--phase … --stack … --design …` with no TTY completes with zero prompts.
+- With **no flags and no TTY**, migrate still completes non-destructively via safe defaults (leave-alongside duplicates; default `claude` stack) and exits 0.
+- **update-to-fit** rewrites the dest to the template's structure with the user's content embedded verbatim in a marked "imported content" section (nothing lost).
 - Growth entry scaffolds the post-transition roadmap/backlog shape.
 - `npm run lint` passes; no runtime dependency added.
 
 ## Out of Scope
 
 - **The merge engine itself** — classify/apply/manifest/hashing are spec 001; this feature consumes them.
-- **Assistant-led "review & fit to framework" reconcile command** — the guided, AI-driven doc reconciliation is a sibling spec (surfaced by 001 FR-014). FR-007 here is the *bounded, deterministic* archive/update/leave resolution, not an AI review.
+- **Assistant-led "review & fit to framework" reconcile command** — the guided, AI-driven doc reconciliation is a sibling spec (surfaced by 001 FR-014). FR-007 here is the *bounded, deterministic* archive/update/leave resolution over **exact-dest collisions only**; discovering equivalent docs elsewhere in the tree and fuzzy/role-based matching (e.g. `docs/product.md → PRODUCT`) is the AI-reconcile sibling's job *(clarified 2026-07-16)*.
 - **Manifest-as-QA-contract** (single `lib.js` parser) — sibling spec 003.
 - **Workflow-Manager reporter** (`021-doctor`) — sibling spec 004.
 - **Conflict-aware `pre-commit` chaining** (husky/lefthook) — sibling spec.
@@ -85,4 +100,4 @@ Running init on a real, populated repository is the adoption path that matters m
 
 ## Open Questions
 
-*Deferred to clarify: the precise migrate-vs-scaffold detection threshold; whether ambiguous stack with no `--stack` in non-interactive mode should error or pick a documented default; and the exact `--yes`/`--non-interactive` ergonomics. None block the spec's shape.*
+*Resolved in the 2026-07-16 clarify session: migrate threshold (any non-framework content), duplicate detection (exact-dest collisions), non-interactive behavior (safe defaults, proceed), and update-to-fit (wrap). Remaining minor item for the plan pass: the exact `--dup <path>=<action>` / `--yes` flag ergonomics — a surface detail, not a shape question.*

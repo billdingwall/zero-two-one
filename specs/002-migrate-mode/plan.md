@@ -36,18 +36,22 @@ Every step is additive or create-if-missing; the spec 001 non-destructive invari
 
 ## Detection heuristics (FR-002/FR-004)
 
-- **Mode:** migrate when the target has non-framework content (source files, docs, or a tool surface) and no `.zero-two-one.json`; else scaffold.
+- **Mode (clarified):** migrate when the target has **any non-framework content** (any file outside the framework surface, ignoring empty/`.git`-only dirs) and no `.zero-two-one.json`; else scaffold.
 - **Phase:** `growth` if tests + CI config + release history (tags or `_releases/`); `mvp` if substantial code but no framework key docs; else `planning`.
 - **Stack:** `.claude/`→claude, `.agents/`|`AGENTS.md`→antigravity, `.kiro/`→kiro; `.specify/`|populated `specs/`⇒ ssd github-speckit. Multiple surfaces ⇒ list, defer to interview/`--stack`.
 
-## Interview (FR-003/FR-012)
+## Interview (FR-003/FR-012, clarified)
 
-`node:readline` prompts only when `process.stdout.isTTY` and the value is unresolved by a flag. Each prompt shows the inferred value as the default. Non-interactive: `--phase`/`--stack`/`--design` fully determine the run; a genuinely-ambiguous stack with no `--stack` and no TTY resolves to a documented default (open question — clarify).
+`node:readline` prompts only when `process.stdout.isTTY` and the value is unresolved by a flag. Each prompt shows the inferred value as the default. **Non-interactive (no TTY): safe defaults, proceed** — anything not fixed by a flag resolves to a non-destructive default (leave-alongside for duplicates; documented default `claude` when the stack is ambiguous/absent). CI never blocks.
 
-## Import & duplicate resolution (FR-006/FR-007)
+## Import & duplicate resolution (FR-006/FR-007, clarified)
 
-- **Import:** for a user-owned doc the framework would instantiate but the project already has an equivalent, append a row to `requirements/_notes/imported-docs.md` (path + description slot); the instantiated template links to the catalog.
-- **Duplicates:** per duplicate, the resolution is `--dup <path>=<archive|update|leave>` (non-interactive) or a prompt. `archive` → move to `requirements/_notes/archive/<path>` + leave a pointer stub; `update` → structure-preserving in-place edit; `leave` → the import behavior. Decisions recorded to `manifest.migrate.duplicates`.
+- **Duplicate = exact framework-dest collision:** the user already has a file where the framework would write (`CLAUDE.md`, `README.md`, `requirements/01-PRD.md`, …). Broader/role-based matching of docs elsewhere is the AI-reconcile sibling's job, not here.
+- **Resolution** per duplicate: `--dup <path>=<archive|update|leave>` (non-interactive), a prompt (TTY), or the safe default `leave`.
+  - `archive` → move the user's file to `requirements/_notes/archive/<path>` + leave a pointer stub, then instantiate the fresh template at the dest.
+  - `update` (**wrap**) → rewrite the dest to the framework template's structure with the user's original content embedded verbatim under a marked `## Imported content` section.
+  - `leave` → keep the user's file at the dest; append a row to `requirements/_notes/imported-docs.md` (path + description slot); do not overwrite.
+- Decisions recorded to `manifest.migrate.duplicates` (idempotent re-run).
 
 ## Testing strategy
 
