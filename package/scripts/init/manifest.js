@@ -41,7 +41,7 @@ function loadManifest(targetDir) {
  *   merged     - { file: [contributed entries] }
  *   now        - ISO timestamp (injectable for tests)
  */
-function buildManifest({ prev, version, mode, phase, tools, files, merged, migrate, now }) {
+function buildManifest({ prev, version, mode, phase, tools, files, merged, hook, migrate, now }) {
   const ts = now || new Date().toISOString();
   const installedAt = prev && prev.installedAt ? prev.installedAt : ts;
   const manifest = {
@@ -53,6 +53,8 @@ function buildManifest({ prev, version, mode, phase, tools, files, merged, migra
     files,
     merged,
   };
+  // hook strategy — how the gate was installed/chained (spec 005 FR-008).
+  if (hook) manifest.hook = hook;
   // migrate block — present only in mode:migrate (spec 002 FR-011).
   if (migrate) manifest.migrate = migrate;
   // updatedAt is present only from the first re-run onward (FR-009).
@@ -61,7 +63,7 @@ function buildManifest({ prev, version, mode, phase, tools, files, merged, migra
 }
 
 /** Field order for a stable, diff-friendly on-disk manifest. */
-const FIELD_ORDER = ['version', 'installedAt', 'updatedAt', 'mode', 'phase', 'tools', 'files', 'merged', 'migrate'];
+const FIELD_ORDER = ['version', 'installedAt', 'updatedAt', 'mode', 'phase', 'tools', 'files', 'merged', 'hook', 'migrate'];
 
 function orderFields(manifest) {
   const out = {};

@@ -55,6 +55,24 @@ function validateForce(force) {
   return null;
 }
 
+/** Log hook-install notes per the applied strategy (spec 005). */
+function reportHook(applied, log) {
+  switch (applied.hook) {
+    case 'inactive-no-git':
+      log('\nNote: target is not a git repo — pre-commit hook staged but inactive until `git init`.');
+      break;
+    case 'chain-plain':
+      log('\nNote: an existing pre-commit hook was chained — the refinement gate runs first, then your hook.');
+      break;
+    case 'husky':
+      log('\nNote: husky detected — the gate was wired into .husky/pre-commit (`.git/hooks` left untouched).');
+      break;
+    case 'manual':
+      log('\nNote: lefthook detected — add this to your lefthook config to enable the gate:\n\n' + (applied.hookMessage || '') + '\n');
+      break;
+  }
+}
+
 /**
  * Run the install engine.
  * @param {string} targetDir - absolute target path
@@ -77,7 +95,7 @@ function initFramework(targetDir, opts = {}) {
   // Migrate-mode (spec 002): detection/interview/import/duplicate-resolution
   // layered in front of this engine. Scaffold/source fall through unchanged.
   if (mode === 'migrate') {
-    return migrateFramework(targetDir, opts, { sourceDir, prevManifest, resolveTools, log });
+    return migrateFramework(targetDir, opts, { sourceDir, prevManifest, resolveTools, log, reportHook });
   }
 
   const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts });
@@ -98,16 +116,15 @@ function initFramework(targetDir, opts = {}) {
     tools: resolveTools(opts, prevManifest),
     files: applied.files,
     merged: applied.merged,
+    hook: applied.hook,
     now: opts.now,
   });
   writeManifest(targetDir, manifest);
 
   log(renderPlan(plan, { dryRun: false }));
-  if (applied.hook === 'inactive-no-git') {
-    log('\nNote: target is not a git repo — pre-commit hook staged but inactive until `git init`.');
-  }
+  reportHook(applied, log);
   log(`\n✅ ${mode === 'source' ? 'Manifest regenerated' : 'Framework installed'} (${manifest.files ? Object.keys(manifest.files).length : 0} framework files tracked).`);
   return 0;
 }
 
-module.exports = { initFramework, resolveTools, validateForce };
+module.exports = { initFramework, resolveTools, validateForce, reportHook };

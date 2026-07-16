@@ -15,6 +15,7 @@ const { ACTION } = require('./classify');
 const { instantiate } = require('./instantiate');
 const { hashFile } = require('./hash');
 const { mergeGitignore, mergePackageJson } = require('./merge');
+const { installHook } = require('./hook');
 
 function copyFile(src, dest) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
@@ -63,9 +64,9 @@ function applyPlan({ sourceDir, targetDir, plan, prevManifest }) {
     if (h) files[a.path] = h;
   }
 
-  const hook = installHook(targetDir);
+  const hookResult = installHook(targetDir);
 
-  return { files, merged, hook };
+  return { files, merged, hook: hookResult.strategy, hookMessage: hookResult.message };
 }
 
 function applyMerge(rel, targetDir, prevMerged, mergedOut) {
@@ -81,21 +82,6 @@ function applyMerge(rel, targetDir, prevMerged, mergedOut) {
     if (res.changed) fs.writeFileSync(abs, res.text);
     mergedOut['package.json.scripts'] = res.contributed;
   }
-}
-
-/** Install the pre-commit gate into .git/hooks when the target is a git repo. */
-function installHook(targetDir) {
-  const gitHooks = path.join(targetDir, '.git', 'hooks');
-  const src = path.join(targetDir, 'hooks', 'pre-commit');
-  if (!fs.existsSync(src)) return 'no-source';
-  if (!fs.existsSync(gitHooks)) return 'inactive-no-git';
-  const dest = path.join(gitHooks, 'pre-commit');
-  if (fs.existsSync(dest)) {
-    fs.copyFileSync(dest, `${dest}.backup`);
-  }
-  fs.copyFileSync(src, dest);
-  fs.chmodSync(dest, 0o755);
-  return 'installed';
 }
 
 module.exports = { applyPlan };
