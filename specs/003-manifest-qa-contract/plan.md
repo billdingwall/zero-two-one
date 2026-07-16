@@ -2,6 +2,32 @@
 
 *The HOW for [spec.md](spec.md). A consolidation refactor — one manifest reader in `lib.js`, every consumer routed through it, no behavior change.*
 
+## Technical Context
+
+| Dimension | Value |
+|---|---|
+| **Language / runtime** | Node.js (`scripts/speckit/lib.js`) + POSIX `sh` (`run-qa.sh`, `hooks/pre-commit`) |
+| **Dependencies** | **None** — `fs`/`path` only (matches `lib.js` today) |
+| **Touches** | `scripts/speckit/lib.js` (+CLI), `scripts/run-qa.sh`, `scripts/workflow-status.js`, `hooks/pre-commit` |
+| **Testing** | `node:test` over `lib.js`; a shell parity check for `run-qa.sh` |
+| **Source of truth** | TDD §7 (manifest); the r7 audit |
+
+## Constraints check (must hold)
+
+- **Behavior-preserving** — QA tier selection, `021-status` output, and gate outcomes at each phase are **unchanged** (FR-007). Parity against a pre-refactor baseline is the definition of done.
+- **Single reader** — `.zero-two-one.json` is opened / the phase inferred in exactly one module (`lib.js`); no other script parses or scrapes (FR-001).
+- **Zero dependencies** — built-ins only (FR-008); `npm run lint` stays green.
+- **No schema change** — 003 changes only how the manifest is read (001/002 own the schema).
+
+## Design artifacts
+
+| Artifact | Purpose |
+|---|---|
+| [data-model.md](data-model.md) | The `ManifestFacts` shape, the phase vocabulary, and the resolution order |
+| [contracts/lib-api.md](contracts/lib-api.md) | `lib.js` API (`readManifest`/`manifestFacts`) + the `phase` CLI contract |
+| [research.md](research.md) | Decisions & rationale (rolls up the clarify session) + rejected alternatives |
+| [quickstart.md](quickstart.md) | Parity-validation walkthrough mapped to the acceptance criteria |
+
 ## Approach
 
 1. **Add the parser + resolver to `lib.js`** — `readManifest(root)` (parse or null) and `manifestFacts(root)` → `{ phase, phaseNum, phaseLabel, stack, mode }`. `manifestFacts` owns the **whole resolution**: manifest → repo-state inference (moved here from `workflow-status.js`) → Planning fallback. The canonical `PHASE` vocabulary (`planning|mvp|growth` + `prebuild` legacy alias) lives here once.
