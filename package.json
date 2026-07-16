@@ -9,6 +9,7 @@
   "scripts": {
     "021-status": "node scripts/workflow-status.js",
     "021-qa": "sh scripts/run-qa.sh",
+    "021-doctor": "node scripts/speckit/doctor.js",
     "021-spec:status": "node scripts/speckit/spec-status.js",
     "021-spec:context": "node scripts/speckit/fetch-speckit-context.js",
     "021-spec:verify": "node scripts/speckit/verify-spec-compliance.js",

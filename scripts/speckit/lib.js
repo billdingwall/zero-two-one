@@ -28,8 +28,8 @@ function repoRoot() {
   }
 }
 
-function specsDir() {
-  return path.join(repoRoot(), 'specs');
+function specsDir(root = repoRoot()) {
+  return path.join(root, 'specs');
 }
 
 function contextDir() {
@@ -47,8 +47,8 @@ function currentBranch() {
 }
 
 /** All spec directories following the NNN-feature-name convention, sorted. */
-function listSpecs() {
-  const dir = specsDir();
+function listSpecs(root = repoRoot()) {
+  const dir = specsDir(root);
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir, { withFileTypes: true })
@@ -80,16 +80,16 @@ function resolveSpec(idOrName) {
   return null;
 }
 
-function specPath(name) {
-  return path.join(specsDir(), name);
+function specPath(name, root = repoRoot()) {
+  return path.join(specsDir(root), name);
 }
 
 /**
  * Read the lifecycle status from a spec's spec.md.
  * Returns null when spec.md is missing, 'Draft' when no status is declared.
  */
-function readStatus(name) {
-  const specFile = path.join(specPath(name), 'spec.md');
+function readStatus(name, root = repoRoot()) {
+  const specFile = path.join(specPath(name, root), 'spec.md');
   if (!fs.existsSync(specFile)) return null;
   const text = fs.readFileSync(specFile, 'utf8');
 
@@ -276,6 +276,7 @@ module.exports = {
   PHASE,
   readManifest,
   manifestFacts,
+  inferFacts,
 };
 
 // --- CLI (spec 003): `node scripts/speckit/lib.js phase` → phaseNum ---------
