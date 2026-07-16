@@ -20,6 +20,17 @@ Before r5, lifecycle state drifted silently — the manifest, backlog, and roadm
 - **Trigger:** `npm run 021-doctor` (assistant-side or post-commit helper). It is **not** a `pre-commit` hook and never blocks a commit.
 - **Builds on:** spec 003's `scripts/speckit/lib.js` — `manifestFacts` (phase), `listSpecs`/`readStatus`/`countTasks` (spec state). No duplicate manifest or spec parsing.
 
+## Clarifications
+
+### Session 2026-07-16
+
+- **Q: How should the reporter reconcile `04-BACKLOG.md`?**
+  A: **Release-level check.** Group backlog rows by their `Release` column and flag a release whose rows are still `Open` while that release's specs are `Done`. Deterministic; catches the current real drift; no fuzzy prose→spec matching (item-level attribution is deferred).
+- **Q: What is the exit-code contract?**
+  A: **Non-zero only on hard drift.** Exit 0 when clean *or* only advisory findings (manifest-phase hint, release-level backlog); non-zero on hard mismatches (spec↔`_INDEX`, spec↔tasks). Driven by the `DriftFinding` severity. Never wired into the commit gate.
+- **Q: Do `021-status`/`021-qa` surface a drift hint?**
+  A: **No — standalone only.** `021-doctor` is its own command; status/QA neither call it nor mention drift, keeping the reporter fully outside the QA/commit path.
+
 ## User Scenarios (Acceptance)
 
 1. **Clean repo** — *Given* lifecycle state is coherent, *when* `021-doctor` runs, *then* it reports "no drift" and writes nothing.
@@ -27,8 +38,9 @@ Before r5, lifecycle state drifted silently — the manifest, backlog, and roadm
 3. **Spec ↔ work drift** — *Given* a spec marked `Done` with unchecked tasks, *when* the report runs, *then* it flags the spec as `Done`-but-incomplete and shows the unchecked count.
 4. **Release ↔ specs drift** — *Given* every spec in a release is `Done` but the `_releases/*.md` Status is still `Planned`/`Next`, *when* the report runs, *then* it flags the release as advanceable and proposes the status change.
 5. **Roadmap ↔ release drift** — *Given* the `05-ROADMAP` row status for a release disagrees with that release file's Status, *when* the report runs, *then* it flags the row.
-6. **Manifest phase drift** — *Given* the manifest `phase` disagrees with the inferred phase, *when* the report runs, *then* it flags a possible stale phase (advisory only).
-7. **Never blocks** — *Given* drift exists, *when* a commit is made, *then* the commit is unaffected — the reporter is not in the gate.
+6. **Backlog ↔ release drift** — *Given* a release's `04-BACKLOG` rows are still `Open` while its specs are all `Done`, *when* the report runs, *then* it flags that release's backlog as lagging (advisory).
+7. **Manifest phase drift** — *Given* the manifest `phase` disagrees with the inferred phase, *when* the report runs, *then* it flags a possible stale phase (advisory only).
+8. **Never blocks** — *Given* drift exists, *when* a commit is made, *then* the commit is unaffected — the reporter is not in the gate, and advisory-only drift exits 0.
 
 ## Functional Requirements
 
@@ -37,25 +49,27 @@ Before r5, lifecycle state drifted silently — the manifest, backlog, and roadm
 - **FR-003 — Spec ↔ work reconciliation.** Flag a spec whose status is gate-passing/`Done` while its `tasks.md` has unchecked tasks (the advisory BACKLOG-vs-work drift), showing the unchecked count. (Reuses `lib.js` `countTasks`.)
 - **FR-004 — Release ↔ specs reconciliation.** For each `_releases/mvp-*.md`, compare its `Status` against the aggregate state of its specs (all `Done` ⇒ advanceable; none started ⇒ Planned); flag releases whose recorded Status lags reality, with a proposed Status.
 - **FR-005 — Roadmap ↔ release reconciliation.** Compare each `05-ROADMAP.md` release-row Status against the matching `_releases/*.md` `Status`; flag disagreements.
-- **FR-006 — Manifest phase reconciliation.** Compare the manifest `phase` (`manifestFacts`, `source: manifest`) against the inferred phase; when they disagree, flag a *possible* stale phase — advisory, low-confidence, never asserted as wrong.
-- **FR-007 — Report format.** Findings are grouped by check; each shows location, the actual vs expected value, and a one-line **proposed correction**. A clean run prints an explicit "no drift" line. Output is deterministic and di-friendly.
-- **FR-008 — Guardrails (normative).** The reporter is **advisory only**: never invoked by `hooks/pre-commit`, never in the blocking commit path, never auto-commits, never edits the working tree (this increment is detect-only; applying corrections is a later increment). Its exit code signals drift for CI *visibility* (0 = clean, non-zero = drift found) but is **not** wired into the gate.
-- **FR-009 — Reuse the contract.** Phase comes from `manifestFacts`; spec state from `lib.js` (`listSpecs`/`readStatus`/`countTasks`). No second manifest/spec parser (extends the spec 003 single-reader discipline).
-- **FR-010 — Zero runtime dependencies.** `fs`/`path` (+ `node:child_process` for any git read); no packages.
+- **FR-006 — Backlog ↔ release reconciliation.** Group `04-BACKLOG.md` rows by their `Release` column; flag a release whose rows are still `Open` while that release's specs are all `Done` *(clarified 2026-07-16)*. Release-level and deterministic — no prose→spec item matching. **Advisory** severity.
+- **FR-007 — Manifest phase reconciliation.** Compare the manifest `phase` (`manifestFacts`, `source: manifest`) against the inferred phase; when they disagree, flag a *possible* stale phase — **advisory**, low-confidence, never asserted as wrong.
+- **FR-008 — Report format & severity.** Each `DriftFinding` carries a `severity` of **hard** (spec↔`_INDEX`, spec↔tasks) or **advisory** (backlog, manifest phase). Findings are grouped by check; each shows location, actual vs expected, and a one-line **proposed correction**. A clean run prints an explicit "no drift" line. Output is deterministic and diff-friendly.
+- **FR-009 — Guardrails (normative) & exit code.** The reporter is **advisory only**: never invoked by `hooks/pre-commit`, never in the blocking commit path, never auto-commits, never edits the working tree (detect-only this increment; applying corrections is a later increment). Its exit code is **non-zero only when a *hard*-severity finding exists** *(clarified 2026-07-16)* — clean or advisory-only runs exit 0 — and is **never** wired into the gate.
+- **FR-010 — Reuse the contract.** Phase comes from `manifestFacts`; spec state from `lib.js` (`listSpecs`/`readStatus`/`countTasks`). No second manifest/spec parser (extends the spec 003 single-reader discipline).
+- **FR-011 — Zero runtime dependencies.** `fs`/`path` (+ `node:child_process` for any git read); no packages.
 
 ## Key Entities
 
-- **DriftFinding** — one detected discrepancy: `{ check, location, actual, expected, proposedFix, severity }`. `severity` distinguishes a hard mismatch (spec↔index) from an advisory hint (manifest phase).
-- **Doctor report** — the grouped, ordered collection of findings + a summary line (count, or "no drift"). The command's entire output; nothing is persisted.
-- **Reconciliation checks** — the five comparisons (FR-002…FR-006), each a pure function of repo state returning `DriftFinding[]`.
+- **DriftFinding** — one detected discrepancy: `{ check, location, actual, expected, proposedFix, severity }`. `severity` is **hard** (spec↔`_INDEX`, spec↔tasks — drives non-zero exit) or **advisory** (backlog, manifest phase — informational).
+- **Doctor report** — the grouped, ordered collection of findings + a summary line (count by severity, or "no drift"). The command's entire output; nothing is persisted.
+- **Reconciliation checks** — the six comparisons (FR-002…FR-007), each a pure function of repo state returning `DriftFinding[]`.
 
 ## Acceptance Criteria
 
-- `021-doctor` on a coherent repo prints "no drift" and exits 0; a repo with a seeded mismatch exits non-zero and names it.
+- `021-doctor` on a coherent repo prints "no drift" and exits 0; a repo with a seeded **hard** mismatch exits non-zero and names it; a repo with only **advisory** findings exits 0.
 - An `_INDEX` row that disagrees with a spec's frontmatter is flagged with the correct proposed value (the concrete drift this session hit).
 - A `Done` spec with unchecked tasks is flagged with its unchecked count.
 - A release whose specs are all `Done` but Status is `Planned`/`Next` is flagged advanceable.
 - A roadmap row Status that disagrees with its release file is flagged.
+- A release whose backlog rows are `Open` while its specs are `Done` is flagged (advisory, release-level).
 - The reporter writes **nothing** (verified: working tree byte-identical after a run) and is absent from `hooks/pre-commit`.
 - Runs green against this repo's actual state (or reports only true, explainable drift).
 - `npm test`/`npm run lint` pass; no runtime dependency added.
@@ -64,7 +78,8 @@ Before r5, lifecycle state drifted silently — the manifest, backlog, and roadm
 
 - **Applying corrections** — auto-editing the working tree to fix drift is the *next* Workflow-Manager increment (TDD §13); this spec is detect-only.
 - **Auto-commit / pre-commit integration** — forbidden by the §13 guardrails; the deterministic refinement gate stays the only commit-path check.
-- **Fuzzy prose reconciliation** — matching free-text release *descriptions* or backlog narrative; the reporter compares **statuses and structured state**, not prose.
+- **Fuzzy prose reconciliation** — matching free-text release *descriptions*, or **item-level** backlog↔spec attribution by description; the reporter compares **statuses and structured state** (backlog is reconciled at the release level only, clarified), not prose.
+- **`021-status`/`021-qa` drift hints** — the reporter is standalone; status/QA do not call it (clarified).
 - **The manifest schema / QA-contract parser** — owned by specs 001/002/003; 004 only *reads* via them.
 
 ## Dependencies & References
@@ -75,4 +90,4 @@ Before r5, lifecycle state drifted silently — the manifest, backlog, and roadm
 
 ## Open Questions
 
-*Deferred to clarify: whether the report also reconciles `04-BACKLOG.md` item statuses (or defers backlog to the apply-increment); the exact exit-code contract (always-0 vs non-zero-on-drift for CI); and whether `021-status`/`021-qa` should surface a one-line drift hint or keep the reporter fully standalone. None change the spec's shape.*
+*Resolved in the 2026-07-16 clarify session: backlog is reconciled at the **release level** (Open rows vs Done specs, no prose matching); exit code is **non-zero only on hard drift** (advisory-only runs exit 0); and the reporter is **standalone** (no `021-status`/`021-qa` hint). No open items remain.*

@@ -11,9 +11,10 @@
   findings.push(...checkSpecWork(root))      // FR-003: Done spec w/ unchecked tasks
   findings.push(...checkReleaseSpecs(root))  // FR-004: release Status vs its specs' aggregate
   findings.push(...checkRoadmapRelease(root))// FR-005: roadmap row Status vs release file
-  findings.push(...checkManifestPhase(root)) // FR-006: manifest phase vs inferred (advisory)
-  render(findings)                           // FR-007: grouped, proposed fixes, or "no drift"
-  process.exit(findings.length ? 1 : 0)      // FR-008: advisory exit code, NOT gated
+  findings.push(...checkBacklogRelease(root))// FR-006: backlog Open rows vs Done specs (advisory)
+  findings.push(...checkManifestPhase(root)) // FR-007: manifest phase vs inferred (advisory)
+  render(findings)                           // FR-008: grouped, proposed fixes, severity, "no drift"
+  process.exit(findings.some(hard) ? 1 : 0)  // FR-009: non-zero only on HARD drift, NOT gated
 ```
 
 Each `check*` is a pure function `root → DriftFinding[]`. Nothing writes; the command's only effect is stdout + an exit code.
@@ -32,9 +33,10 @@ Each `check*` is a pure function `root → DriftFinding[]`. Nothing writes; the 
 - **checkSpecWork** — for each gate-passing/`Done` spec, `countTasks(tasks.md)`; unchecked > 0 → finding.
 - **checkReleaseSpecs** — group specs by `release:` frontmatter; if all `Done` and the `_releases/<rel>.md` `Status` isn't a delivered/in-progress value → finding (proposed advance); none started but Status implies progress → finding.
 - **checkRoadmapRelease** — parse the `05-ROADMAP` MVP table rows (release → Status glyph); compare to each `_releases/*.md` `Status:` line; disagreement → finding.
+- **checkBacklogRelease** — parse the `04-BACKLOG.md` table (Description · Status · Ownership · Release); group by `Release`; if a release has `Open` rows while its specs are all `Done` → advisory finding (release-level; no item↔spec matching).
 - **checkManifestPhase** — `manifestFacts()`; if `source === 'manifest'` and `phaseNum` ≠ the inferred phase's num → advisory finding (low severity).
 
-Status parsing is tolerant (glyphs like ✅/🔜/◻ and words like Done/Planned map to a small normalized set) — a shared `normalizeStatus` keeps the comparisons stable.
+Each finding is **hard** (spec↔`_INDEX`, spec↔tasks) or **advisory** (backlog, manifest phase); `hard = (f) => f.severity === 'hard'` drives the exit code. Status parsing is tolerant (glyphs like ✅/🔜/◻ and words like Done/Open/Planned map to a small normalized set) — a shared `normalizeStatus` keeps the comparisons stable.
 
 ## Testing strategy
 

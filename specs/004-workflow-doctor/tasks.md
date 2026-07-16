@@ -11,16 +11,17 @@
 - [ ] T004 [P] `Done` spec with unchecked tasks flagged + count (FR-003).
 - [ ] T005 [P] Release Status lags all-`Done` specs → advanceable finding (FR-004).
 - [ ] T006 [P] Roadmap row Status disagrees with release file → flagged (FR-005).
-- [ ] T007 [P] Manifest phase ≠ inferred → advisory finding (FR-006).
-- [ ] T008 [P] Read-only: whole-tree snapshot unchanged after a run; `hooks/pre-commit` does not reference the doctor (FR-008).
-- [ ] T009 [P] Exit code: 0 clean / non-zero on drift (FR-008).
+- [ ] T006b [P] Backlog release with `Open` rows while its specs are `Done` → advisory finding (release-level, no prose matching) (FR-006).
+- [ ] T007 [P] Manifest phase ≠ inferred → advisory finding (FR-007).
+- [ ] T008 [P] Read-only: whole-tree snapshot unchanged after a run; `hooks/pre-commit` does not reference the doctor (FR-009).
+- [ ] T009 [P] Exit code: non-zero only on **hard** drift (spec↔index/tasks); advisory-only → exit 0 (FR-008/009).
 
 ## Phase 3 — Implementation
 - [ ] T010 `normalizeStatus` + `_INDEX`/roadmap-table/release-`Status` parsers in `scripts/speckit/doctor.js` (tolerant of glyphs + words).
 - [ ] T011 `checkSpecIndex` + `checkSpecWork` (reuse `lib.js` `listSpecs`/`readStatus`/`countTasks`) (FR-002/003/009).
-- [ ] T012 `checkReleaseSpecs` + `checkRoadmapRelease` (FR-004/005).
-- [ ] T013 `checkManifestPhase` via `manifestFacts` (FR-006/009).
-- [ ] T014 `render` (grouped findings + proposed fixes + "no drift") + CLI (`require.main`) + `021-doctor` npm script (FR-007/001).
+- [ ] T012 `checkReleaseSpecs` + `checkRoadmapRelease` + `checkBacklogRelease` (backlog table parse, group by Release) (FR-004/005/006).
+- [ ] T013 `checkManifestPhase` via `manifestFacts` (FR-007/010).
+- [ ] T014 `render` (findings grouped, severity, proposed fixes, "no drift") + severity-aware exit + CLI (`require.main`) + `021-doctor` npm script (FR-008/009/001).
 
 ## Phase 4 — Verify & polish
 - [ ] T015 Run `021-doctor` against this repo; reconcile any true drift it surfaces.
