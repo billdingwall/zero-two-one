@@ -20,7 +20,7 @@ installHook(targetDir) → strategy   // 'direct' | 'chain-plain' | 'husky' | 'm
 
 1. **No user file overwritten** — a sentinel string in any pre-existing hook/manager file is present, in order, after install (the guardrail test).
 2. **Gate always runs** — the block sits after the shebang; a hook ending in `exit 0` still triggers the gate.
-3. **Idempotent** — a second `installHook` adds no second block (marker check) and rewrites nothing.
+3. **Idempotent** — a second `installHook` detects the prior install (`already-installed`, via the direct-gate marker **or** the chained guard-marker block), adds no second block, and rewrites nothing.
 4. **Manager-safe** — `husky`/`lefthook` situations never write `.git/hooks/pre-commit`.
 5. **Spec 001 parity** — the `none` path is byte-for-byte the old direct install; 001's hook tests pass unchanged.
 6. **Reported** — `--dry-run` names the strategy; `manual` (lefthook) prints the snippet and writes nothing.

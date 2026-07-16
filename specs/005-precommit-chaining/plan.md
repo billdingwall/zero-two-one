@@ -50,7 +50,7 @@ installHook(targetDir)
 
 ## Detection (FR-001)
 
-- **already-installed**: `.git/hooks/pre-commit` exists and contains the gate marker (`Zero Two One pre-commit hook`).
+- **already-installed**: the direct-gate marker (`Zero Two One pre-commit hook`) **or** the chained block marker (`>>> zero-two-one gate >>>`) appears in `.git/hooks/pre-commit` or `.husky/pre-commit` (A1 — so chained re-runs short-circuit, not re-classify as plain/husky).
 - **husky**: `.husky/` directory exists.
 - **lefthook**: `lefthook.{yml,yaml,toml,json}` or a `lefthook` key in `package.json`.
 - **plain**: `.git/hooks/pre-commit` exists (and isn't the marker) — after husky/lefthook are ruled out, since a manager may also drop a `.git/hooks/pre-commit` shim.

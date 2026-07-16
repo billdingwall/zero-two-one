@@ -13,10 +13,10 @@
 - [ ] T004 [P] plain → original lines preserved in order + guarded block inserted **after the shebang**; `.git/hooks/pre-commit.zto` present + executable; gate still runs when the user's hook ends in `exit 0` (FR-003).
 - [ ] T005 [P] husky → `.husky/pre-commit` gets the guarded block after the shebang (v9-style if created); `.git/hooks/pre-commit` not written (FR-004).
 - [ ] T006 [P] lefthook → strategy `manual`; `lefthook.yml` **byte-unchanged**; the command snippet is printed (FR-005).
-- [ ] T007 [P] idempotent re-run → no duplicate guarded block (marker respected); no hook-file rewrite (FR-006).
+- [ ] T007 [P] idempotent re-run → detected as `already-installed` (direct **and** chained), no duplicate guarded block, no hook-file rewrite (FR-006 / analyze A1).
 - [ ] T008 [P] **sentinel guardrail**: a hook/config with a unique string is never overwritten or emptied by any strategy (FR-007).
 - [ ] T009 [P] `manifest.hook` records the applied strategy; `--dry-run` names it (FR-008/007).
-- [ ] T010 [P] spec 001's hook tests (T016 non-git / T016b direct install) stay green (FR-002/009 regression).
+- [ ] T010 [P] spec 001's hook tests (T016 non-git / T016b direct install) stay green, and `index.js`'s `applied.hook === 'inactive-no-git'` log path still works with the new strategy strings (`direct`/`chain-plain`/…) (FR-002/009 regression / analyze A3).
 
 ## Phase 3 — Implementation
 - [ ] T011 `scripts/init/hook.js`: `detectHookSituation` (read-only) + the gate-marker check (FR-001).

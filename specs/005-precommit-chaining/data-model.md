@@ -8,7 +8,7 @@ The detected state of the target's hook setup — chooses the strategy. Resolved
 
 | Situation | Detected by | Strategy |
 |---|---|---|
-| `already-installed` | `.git/hooks/pre-commit` contains the gate marker | no-op (`direct`, idempotent) |
+| `already-installed` | direct-gate marker (`Zero Two One pre-commit hook`) **or** the chained guard-marker block (`>>> zero-two-one gate >>>`) in `.git/hooks/pre-commit` / `.husky/pre-commit` (A1) | no-op (idempotent) |
 | `husky` | `.husky/` directory exists | insert block in `.husky/pre-commit` |
 | `lefthook` | `lefthook.{yml,yaml,toml,json}` or a `lefthook` key in `package.json` | report snippet (`manual`) |
 | `plain` | a non-marker `.git/hooks/pre-commit` exists | `.zto` gate + insert block in the hook |
