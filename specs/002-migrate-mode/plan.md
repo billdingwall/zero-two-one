@@ -44,11 +44,17 @@ migrate(targetDir, opts)
   5. importDocs(targetDir, plan)                    // catalog pre-existing docs → imported-docs.md
   6. duplicates= resolveDuplicates(targetDir, plan, opts)  // archive | update | leave (per file)
   7. applyPlan(...)                                 // spec 001 apply (non-destructive)
-  8. if phase == growth: growthEntry(targetDir)     // post-transition roadmap/backlog shape
-  9. writeManifest(... mode:migrate, phase, tools, migrate:{duplicates} )
+  8. if phase == growth: growthEntry(targetDir)     // post-transition variant; dup-resolution still governs
+  9. writeManifest(... mode:migrate, phase, tools, migrate:{duplicates,imported,archived} )
 ```
 
 Every step is additive or create-if-missing; the spec 001 non-destructive invariant is inherited and must not be weakened (FR-010).
+
+**Integration invariant (analyze A5):** the migrate branch is added *in front of* spec 001's `index.js` mode logic, which becomes **manifest-first** — `mode` comes from an existing manifest (re-run), else detection (`migrate` vs `source` vs `scaffold`). The existing **scaffold path and its tests must stay unchanged**.
+
+**Growth-entry precedence (analyze A1):** `growthEntry` only chooses the *post-transition template variant* for `05-ROADMAP`/`04-BACKLOG`; if the user already has those files, duplicate resolution (step 6) governs — growth-entry never overwrites them.
+
+**Catalog atomicity (analyze A6):** the import step writes the `imported-docs.md` row **and** the `migrate.imported` manifest entry together, so the user-facing catalog and the idempotency key never drift.
 
 ## New modules (`scripts/init/migrate/`)
 

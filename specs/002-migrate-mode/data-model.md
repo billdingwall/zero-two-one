@@ -24,7 +24,7 @@ Gathered before any decision (FR-002/FR-004); never mutate the repo.
 | `hasTests` | a test dir/glob (`test/`, `*.test.*`, `__tests__/`) | phase |
 | `hasCI` | `.github/workflows/` or a known CI config | phase |
 | `hasReleaseHistory` | **git tags** (`git tag` non-empty) | phase (growth requires all three) |
-| `hasSubstantialCode` | source files present beyond config | phase (mvp) |
+| `hasSubstantialCode` | ≥1 source file outside config/docs/tests dirs (analyze A2) | phase (mvp) |
 | `stackSurfaces` | `.claude/` / `.agents/`\|`AGENTS.md` / `.kiro/` / `.specify/`\|`specs/` | stack |
 
 Phase precedence (strict): `growth` iff `hasTests && hasCI && hasReleaseHistory`; else `hasSubstantialCode ⇒ mvp`; else `planning`.
