@@ -2,6 +2,33 @@
 
 *The HOW for [spec.md](spec.md). Replaces spec 001's `installHook` (`scripts/init/apply.js`) with a strategy chooser; reuses the apply pipeline + manifest.*
 
+## Technical Context
+
+| Dimension | Value |
+|---|---|
+| **Language / runtime** | Node.js (`scripts/init/apply.js` + a small `scripts/init/hook.js`) |
+| **Dependencies** | **None** — `fs`/`path`; no YAML/TOML/JSON hook-config libraries (FR-010) |
+| **Reuses** | spec 001 apply pipeline + `manifest.js`; the gate script is the framework-owned `hooks/pre-commit` |
+| **Testing** | `node:test` fixtures (temp `.git/hooks`, `.husky/`, `lefthook.yml`, sentinel hooks) |
+| **Source of truth** | TDD §1.3 (Refinement Gate — conflict-aware installation) |
+
+## Constraints check (must hold)
+
+- **Never overwrite / truncate / reorder** a user hook or manager config — insert-a-block or report only (FR-007). Asserted with a sentinel string.
+- **Gate always runs** — inserted after the shebang (gate-first), so a trailing `exit` can't bypass it (FR-003).
+- **Idempotent** — a guard marker makes re-runs no-ops (FR-006).
+- **Spec 001 unchanged for the no-hook path** — direct install + its tests stay green (FR-002).
+- **Zero dependencies** — text manipulation only; lefthook is report-only (FR-005/010).
+
+## Design artifacts
+
+| Artifact | Purpose |
+|---|---|
+| [data-model.md](data-model.md) | `HookSituation`, the strategy table, the guarded block, `manifest.hook` |
+| [contracts/hook-install.md](contracts/hook-install.md) | `detectHookSituation` + `installHook` contract + guarantees |
+| [research.md](research.md) | Decisions & rationale (rolls up clarify) + rejected alternatives |
+| [quickstart.md](quickstart.md) | Per-situation validation walkthrough (seed a hook, install, observe) |
+
 ## Approach
 
 ```
