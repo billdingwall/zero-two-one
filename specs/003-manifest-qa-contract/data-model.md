@@ -49,3 +49,5 @@ Step 3 is the current `workflow-status.js` inference, moved verbatim into `lib.j
 | `scripts/run-qa.sh` | `node scripts/speckit/lib.js phase` → `phaseNum` | its QA-tier `case` on the number |
 | `scripts/workflow-status.js` | `manifestFacts()` | only `--json` / human formatting |
 | `hooks/pre-commit` | (none today) — contract-ready | the spec-status gate |
+
+*Out of scope (analyze A1): the install engine `scripts/init/` (`manifest.js`, `migrate/detect.js`) keeps its own manifest read/write — specs 001/002 own that persistence. The single-reader contract covers only the lifecycle **phase-read** path above.*

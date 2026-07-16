@@ -8,11 +8,11 @@
 - [ ] T001 Capture the parity baseline (quickstart "Baseline"): `run-qa.sh` "Detected Lifecycle Phase" + `workflow-status.js --json` for `planning|mvp|growth` manifests and the no-manifest case. This is the diff target for FR-007.
 
 ## Phase 2 — Tests first
-- [ ] T002 [P] `manifestFacts` maps each phase value (`planning|mvp|growth` + legacy `prebuild`) → `phaseNum`/`phaseLabel` (data-model §2; FR-002).
+- [ ] T002 [P] `manifestFacts` maps each phase value (`planning|mvp|growth` + legacy `prebuild`) → `phaseNum`/exact `phaseLabel` (`Planning (Zero)`/`MVP Build (One)`/`Growth`); also asserts `stack` (from `tools.stack`, `null` when no manifest) and `mode` (data-model §1–2; FR-002 / analyze A2, A3).
 - [ ] T003 [P] Resolution order: manifest → inference (`specs/` → mvp; `01-PRD>1KB` → planning; else planning) → Planning; `source` is `manifest`/`inferred` (data-model §3; FR-001/006).
 - [ ] T004 [P] `readManifest` → `null` on missing/corrupt manifest (never throws); unparseable → one stderr warning + inference (FR-001/006).
 - [ ] T005 [P] CLI: `node scripts/speckit/lib.js phase` prints only the `phaseNum` to stdout; warning (if any) to stderr; unknown subcommand → non-zero (contract; FR-003).
-- [ ] T006 [P] Grep-guard: `.zero-two-one.json` is opened / phase inferred in `lib.js` only; `run-qa.sh` has no `workflow-status.js --json` pipe (FR-001).
+- [ ] T006 [P] Grep-guard over the lifecycle scripts (`run-qa.sh`, `workflow-status.js`, `speckit/`, `hooks/`; **excluding `scripts/init/`**, analyze A1): `.zero-two-one.json` is opened / phase inferred in `lib.js` only, and `run-qa.sh` has no `workflow-status.js --json` pipe (FR-001).
 - [ ] T007 [P] `--json` shape preserved: `workflow-status.js --json` still emits `{ phase:<num>, status:<label>, source }` (FR-004; contract §4).
 
 ## Phase 3 — Implementation

@@ -16,10 +16,10 @@ git checkout .zero-two-one.json   # restore
 
 ## After the refactor
 
-### 1. Single reader
+### 1. Single reader (lifecycle scripts; `scripts/init/` excluded — analyze A1)
 ```sh
-grep -rl "zero-two-one.json" scripts bin hooks | sort   # expect: scripts/speckit/lib.js only
-grep -n "workflow-status.js --json" scripts/run-qa.sh    # expect: no match
+grep -rl "zero-two-one.json" scripts hooks --exclude-dir=init | sort  # expect: scripts/speckit/lib.js only
+grep -n "workflow-status.js --json" scripts/run-qa.sh                  # expect: no match
 ```
 
 ### 2. The CLI
