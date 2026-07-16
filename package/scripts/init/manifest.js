@@ -41,7 +41,7 @@ function loadManifest(targetDir) {
  *   merged     - { file: [contributed entries] }
  *   now        - ISO timestamp (injectable for tests)
  */
-function buildManifest({ prev, version, mode, phase, tools, files, merged, now }) {
+function buildManifest({ prev, version, mode, phase, tools, files, merged, migrate, now }) {
   const ts = now || new Date().toISOString();
   const installedAt = prev && prev.installedAt ? prev.installedAt : ts;
   const manifest = {
@@ -53,13 +53,15 @@ function buildManifest({ prev, version, mode, phase, tools, files, merged, now }
     files,
     merged,
   };
+  // migrate block — present only in mode:migrate (spec 002 FR-011).
+  if (migrate) manifest.migrate = migrate;
   // updatedAt is present only from the first re-run onward (FR-009).
   if (prev) manifest.updatedAt = ts;
   return manifest;
 }
 
 /** Field order for a stable, diff-friendly on-disk manifest. */
-const FIELD_ORDER = ['version', 'installedAt', 'updatedAt', 'mode', 'phase', 'tools', 'files', 'merged'];
+const FIELD_ORDER = ['version', 'installedAt', 'updatedAt', 'mode', 'phase', 'tools', 'files', 'merged', 'migrate'];
 
 function orderFields(manifest) {
   const out = {};

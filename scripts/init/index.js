@@ -19,8 +19,21 @@ const { applyPlan } = require('./apply');
 const { loadManifest, buildManifest, writeManifest } = require('./manifest');
 const { isSourceRepo } = require('./sources');
 const { renderPlan } = require('./report');
+const { detectMode } = require('./migrate/detect');
+const { migrateFramework } = require('./migrate');
 
 const PACKAGE_ROOT = path.join(__dirname, '..', '..');
+
+/**
+ * Resolve the run mode. Manifest-first (a recorded mode wins on re-run,
+ * spec 002 FR-001); else the framework's own repo is `source`; else detect
+ * migrate (pre-existing project content) vs scaffold (empty/framework-only).
+ */
+function resolveMode(targetDir, sourceDir, prevManifest) {
+  if (prevManifest && prevManifest.mode) return prevManifest.mode;
+  if (isSourceRepo(targetDir)) return 'source';
+  return detectMode(targetDir, sourceDir, null);
+}
 
 /** stack → derived assistant/ssd (TDD §7); design is independent. */
 function resolveTools(opts, prev) {
@@ -59,7 +72,13 @@ function initFramework(targetDir, opts = {}) {
   }
 
   const prevManifest = loadManifest(targetDir);
-  const mode = isSourceRepo(targetDir) ? 'source' : 'scaffold';
+  const mode = resolveMode(targetDir, sourceDir, prevManifest);
+
+  // Migrate-mode (spec 002): detection/interview/import/duplicate-resolution
+  // layered in front of this engine. Scaffold/source fall through unchanged.
+  if (mode === 'migrate') {
+    return migrateFramework(targetDir, opts, { sourceDir, prevManifest, resolveTools, log });
+  }
 
   const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts });
 

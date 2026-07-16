@@ -30,14 +30,20 @@ const USAGE = [
   '  --phase <p>        planning | mvp | growth   (scaffold default: planning)',
   '  --design <system>  none | material-3 | <system>   (default: none)',
   '  --stack <s>        claude | antigravity | kiro   (default: claude)',
+  '  --dup <path=act>   Pre-resolve a migrate duplicate: archive|update|leave (repeatable)',
+  '  --yes              Accept inferred defaults; no prompts (migrate)',
   '  --help             Show this help and exit',
   '  --version          Print the framework version and exit',
 ].join('\n');
 
+const PHASES = ['planning', 'mvp', 'growth'];
+const STACKS = ['claude', 'antigravity', 'kiro'];
+const DUP_ACTIONS = ['archive', 'update', 'leave'];
+
 function parseArgs(argv) {
-  const opts = { force: [] };
+  const opts = { force: [], dup: {} };
   const positionals = [];
-  const takesValue = new Set(['--force', '--phase', '--design', '--stack']);
+  const takesValue = new Set(['--force', '--phase', '--design', '--stack', '--dup']);
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -45,17 +51,28 @@ function parseArgs(argv) {
     if (arg === '--version' || arg === '-v') return { version: true };
     if (arg === '--dry-run') opts.dryRun = true;
     else if (arg === '--upgrade') opts.upgrade = true;
+    else if (arg === '--yes' || arg === '-y') opts.yes = true;
     else if (takesValue.has(arg)) {
       const val = argv[++i];
       if (val === undefined) return { error: `Option ${arg} requires a value.` };
       if (arg === '--force') opts.force.push(val);
-      else opts[arg.slice(2)] = val;
+      else if (arg === '--dup') {
+        const eq = val.indexOf('=');
+        const p = eq === -1 ? '' : val.slice(0, eq);
+        const act = eq === -1 ? '' : val.slice(eq + 1);
+        if (!p || !DUP_ACTIONS.includes(act)) {
+          return { error: `--dup expects <path>=<${DUP_ACTIONS.join('|')}>, got: ${val}` };
+        }
+        opts.dup[p] = act;
+      } else opts[arg.slice(2)] = val;
     } else if (arg.startsWith('-')) {
       return { error: `Unknown option: ${arg}` };
     } else {
       positionals.push(arg);
     }
   }
+  if (opts.phase && !PHASES.includes(opts.phase)) return { error: `--phase must be one of ${PHASES.join('|')}` };
+  if (opts.stack && !STACKS.includes(opts.stack)) return { error: `--stack must be one of ${STACKS.join('|')}` };
   if (positionals.length > 1) {
     return { error: `Expected at most one target directory, got: ${positionals.join(' ')}` };
   }

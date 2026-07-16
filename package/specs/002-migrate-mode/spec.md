@@ -1,5 +1,5 @@
 ---
-status: Approved
+status: Done
 feature: Migrate-Mode — Detection, Interview & Doc Import
 release: mvp-3
 branch: 002-migrate-mode
