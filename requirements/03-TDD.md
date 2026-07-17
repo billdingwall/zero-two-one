@@ -143,6 +143,8 @@ The framework runs on one of **three supported stacks** (free assistant × SSD p
 
 The **install surface itself is stack-parameterized** (r9): `classes.js`/`sources.js` resolve which dirs and guiding docs install from the manifest `tools.stack` — only the chosen stack's Layer-2 surface is written (repo-refactor §3.1). The **shared command contract across all stacks is the `021` CLI** (`bin/021` — `021 status|qa|doctor|spec …`, a built-in-only dispatcher over the existing scripts; npm scripts stay as aliases). Every adapter's rendered instructions (Claude commands, Antigravity `SKILL.md`, Kiro steering) reference `021 …`, so all three stacks issue identical commands — the deterministic POSIX surface without a Makefile dependency (r9; replaces the audit's Makefile proposal).
 
+> **Name disambiguation (r9, open — spec 009 clarify):** the bare token `021` is now claimed twice — this shell CLI (`bin/021`) and the Kiro **agent** identifier `.kiro/agents/021.json` "invoked as `021`" (§9.2). They live in different invocation contexts (a PATH binary vs Kiro's agent runner), but the shared spelling is a footgun. Spec 009 decides the CLI's actual bin name against the naming convention's "bare `021` only where a tool requires a single identifier" clause (§6) — candidates `021` / `zto` / `zero-two-one`; if the CLI takes a distinct name, the adapter-instruction references above and the PRD §4.7 Kiro row update in the same spec.
+
 ### 9.2 Supported stacks
 
 All command surfaces follow the naming convention (§6):

@@ -71,7 +71,7 @@ Mechanical, no behavior change; precedent for in-round tooling fixes is r5/r6/r7
 ## Open Questions (carried from the plan §7 — resolve at the named clarify passes)
 
 1. **Stack switching on re-init** — remove / leave / archive the old stack's rendered surface? → spec 006 clarify (the spec-001 orphan mechanism likely covers it).
-2. **CLI bin name** — `021` (leading digit, unusual in PATH) vs `zto` vs `zero-two-one`? → spec 009 clarify.
+2. **CLI bin name** — `021` (leading digit, unusual in PATH) vs `zto` vs `zero-two-one`? **Plus a name collision (surfaced by the r9 roadmap↔requirements review):** the Kiro adapter already claims bare `021` as its agent identifier (`.kiro/agents/021.json`, TDD §9.2); the cross-stack CLI wanting the same token is a footgun. → spec 009 clarify (TDD §9.1 note records the disambiguation).
 3. **Seeded `specs/_INDEX.md`** — should init seed an empty specs index (user-owned, template-instantiated), or leave `specs/` entirely to Spec Kit? → spec 006 clarify.
 4. **Package README split** — separate installer-facing `package/README.md` vs sync-time transform? → mvp-6 publish spec.
 
