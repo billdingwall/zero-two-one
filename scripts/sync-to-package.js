@@ -37,11 +37,11 @@ const packageDir = path.join(rootDir, 'package');
  */
 const dirsToCopy = [
   '.github',
+  path.join('.claude', 'commands'), // single-sourced from root (r9/W2)
   'bin',
   'hooks',
   'scripts',
   'skills',
-  'specs',
   'templates',
   'workflow',
 ];
@@ -56,7 +56,6 @@ const filesToCopy = [
 /** Files/dirs in package/ that should NOT be overwritten by sync */
 const preserveInPackage = [
   'package.json',
-  '.claude',
   'node_modules',
 ];
 
@@ -157,11 +156,16 @@ fs.mkdirSync(aiContextDir, { recursive: true });
 fs.writeFileSync(path.join(aiContextDir, '.gitkeep'), '');
 console.log('  📁 .ai/ (empty scaffold — generated bundles excluded)');
 
-// Drop directories that no longer ship (r7): prototype/ is generated on demand.
-const prototypeDir = path.join(packageDir, 'prototype');
-if (fs.existsSync(prototypeDir)) {
-  removeDir(prototypeDir);
-  console.log('  🗑  prototype/ removed (generated on demand by 021-prototype)');
+// Drop directories that no longer ship: prototype/ is generated on demand (r7);
+// specs/ holds the framework's own internal feature specs — never installed
+// (the engine excludes specs/ from the install surface, spec 001/A3), so it is
+// tarball bloat (r9/P1).
+for (const stale of ['prototype', 'specs']) {
+  const staleDir = path.join(packageDir, stale);
+  if (fs.existsSync(staleDir)) {
+    removeDir(staleDir);
+    console.log(`  🗑  ${stale}/ removed (not shipped)`);
+  }
 }
 
 // Sync guiding files
@@ -189,8 +193,9 @@ for (const item of preserveInPackage) {
 
 // ---------------------------------------------------------------------------
 // --check mode (r7): fail on drift. Because the sync above is deterministic,
-// any resulting change under package/ means the snapshot was stale. Preserved
-// surfaces aren't synced, so .claude/commands/ is compared explicitly.
+// any resulting change under package/ means the snapshot was stale. All shipped
+// surfaces (incl. .claude/commands/, single-sourced r9) are now synced and
+// tracked, so the working-tree-vs-index diff covers everything.
 // ---------------------------------------------------------------------------
 if (process.argv.includes('--check')) {
   const { execSync } = require('child_process');
@@ -208,22 +213,6 @@ if (process.argv.includes('--check')) {
   } catch (err) {
     console.error(`--check requires git (${err.message})`);
     process.exit(1);
-  }
-
-  // package/.claude is preserved, not synced — diff it against root explicitly.
-  const rootCmds = path.join(rootDir, '.claude', 'commands');
-  const pkgCmds = path.join(packageDir, '.claude', 'commands');
-  if (fs.existsSync(rootCmds) && fs.existsSync(pkgCmds)) {
-    const names = new Set([...fs.readdirSync(rootCmds), ...fs.readdirSync(pkgCmds)]);
-    for (const name of names) {
-      const a = path.join(rootCmds, name);
-      const b = path.join(pkgCmds, name);
-      if (!fs.existsSync(a) || !fs.existsSync(b)) {
-        drift.push(`.claude/commands/${name} exists on only one side (root vs package)`);
-      } else if (fs.readFileSync(a, 'utf8') !== fs.readFileSync(b, 'utf8')) {
-        drift.push(`.claude/commands/${name} differs between root and package`);
-      }
-    }
   }
 
   if (drift.length) {
