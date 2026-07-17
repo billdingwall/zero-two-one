@@ -46,18 +46,17 @@ The canonical contract for what crosses the root ↔ `package/` boundary. `scrip
 | `workflow/` | Lifecycle, refinement, and SSD process docs |
 | `skills/` | Agent prompts and `tools.json` |
 | `scripts/` | Lifecycle tooling only — dev-only scripts excluded (`sync-to-package.js`, `check-links.js`) |
-| `specs/` | Empty scaffold with `_INDEX.md` |
+| `.claude/commands/` | Claude slash commands — **single-sourced from root** (r9/W2); no longer a package-only copy |
 | `.ai/` | **Empty** `context/` scaffold only — generated bundles never ship (r7) |
 | `.github/` | Issue templates only — CI `workflows/` excluded (r7) |
 | `README.md`, `LICENSE`, `.gitignore` | Starting-point files (r7: LICENSE added) |
 
-`prototype/` is **not** shipped (r7): it is generated on demand by `021-prototype` (§12), including its `_INDEX.md`.
+**Not shipped:** `prototype/` (r7 — generated on demand by `021-prototype`, §12) and `specs/` (r9/P1 — the framework's own internal feature specs are never installed, since the engine excludes `specs/` from the install surface, §6; shipping them was pure tarball bloat). Whether init seeds an empty `specs/_INDEX.md` into a user repo (template-instantiated, user-owned) is an open question for the mvp-4 source-layer spec.
 
 ### Package-only (never overwritten by sync)
 | Path | Notes |
 |---|---|
 | `package/package.json` | Publish config (`files`, `publishConfig`, cleaned scripts) |
-| `package/.claude/` | Claude Code slash commands shipped to users |
 
 ### Root-only (development workspace, excluded from sync)
 | Path | Notes |
@@ -124,6 +123,8 @@ Written to the **target repo root** at install (user-visible state, not a genera
 - `assistant`/`ssd` are **derived from `stack`** (kept for per-role tooling and r2 compatibility); `design` is chosen independently of the stack (§9.4). Additive since r2 — no schema break.
 - **Merge-engine fields (mvp-3, spec [`001-safe-install-engine`](../specs/001-safe-install-engine/spec.md)):** three additive members, no break. (a) **`updatedAt`** — refreshed on every re-run/`--upgrade`; `installedAt` is written once and preserved. (b) **`files` is framework-owned only** and hashed over **LF-normalized** content, so a Windows/`autocrlf` checkout doesn't spuriously conflict (user-owned/merged/generated classes are not hashed). (c) **`merged`** — records the entries the engine contributed to each merged file (`.gitignore` lines, `package.json` script keys), so a re-run distinguishes "never added" from "added then removed" and respects a user's deletion.
 
+- **State-store boundary (r9, normative):** the framework has exactly **two durable state stores**, read through **one parser** (`scripts/speckit/lib.js` — `manifestFacts`/`readStatus`): this manifest (project identity + lifecycle phase + stack) and spec `status:` frontmatter (work-item state, the gate's input, §9.3). A **third, agent-writable state store (e.g. a `.workflow/state.json`) is explicitly rejected** — it reintroduces the multi-parser split-brain drift that specs 003/004 eliminated. Refinement-round state rides existing machinery: `status:` frontmatter on `_refinement/r{n}-*.md`, surfaced advisorily by `021-doctor` (§13). Runtime write-gates for non-git-hook assistants and a `.workflow/` scoped-loop engine are Growth-phase candidates, not MVP.
+
 ## 8. Migrate-Mode Detection & Phase Interview
 
 - **Heuristics first**: tests + CI + release history → likely Growth; code present but no framework docs → likely mid-MVP; otherwise Planning.
@@ -139,6 +140,8 @@ The framework runs on one of **three supported stacks** (free assistant × SSD p
 ### 9.1 Source layer (tool-neutral)
 
 `templates/ASSISTANT-Template.md` (generalized from `CLAUDE-Template.md`; **`AGENTS.md` is the neutral default output name**), `skills/*.md` prompts, the key docs, and `skills/tools.json` schemas. Renderers are template transforms in `bin/init.js` — built-in `fs`/`path` only, YAML frontmatter emitted as plain text (zero-dependency constraint holds).
+
+The **install surface itself is stack-parameterized** (r9): `classes.js`/`sources.js` resolve which dirs and guiding docs install from the manifest `tools.stack` — only the chosen stack's Layer-2 surface is written (repo-refactor §3.1). The **shared command contract across all stacks is the `021` CLI** (`bin/021` — `021 status|qa|doctor|spec …`, a built-in-only dispatcher over the existing scripts; npm scripts stay as aliases). Every adapter's rendered instructions (Claude commands, Antigravity `SKILL.md`, Kiro steering) reference `021 …`, so all three stacks issue identical commands — the deterministic POSIX surface without a Makefile dependency (r9; replaces the audit's Makefile proposal).
 
 ### 9.2 Supported stacks
 
@@ -210,6 +213,7 @@ Publishing is **CI-only, tag-triggered**, never a local one-liner:
 - **API surface (open, decide mvp-4):** `"main"` is removed from both manifests now (no dangling entry). Whether to expose a programmatic surface — `require('zero-two-one/speckit')` over `scripts/speckit/lib.js` via `exports` — is decided with the adapter seam in mvp-4; until then the package is CLI/content-only.
 
 ## Changelog
+- **2026-07-16 (r9):** §5 package manifest — `specs/` no longer shipped (framework's own internal specs, never installed; P1) and `.claude/commands/` single-sourced from root (W2); §9.1 — install surface is stack-parameterized + the **`021` CLI** shared command contract (replaces the Makefile idea); §7 — normative **state-store boundary** (two stores, one parser; a parallel `.workflow/state.json` is rejected). Per [_refinement/r9-review.md](_refinement/r9-review.md) (source: [_notes/repo-refactor.md](_notes/repo-refactor.md)).
 - **2026-07-15 (mvp-3, spec 001):** §7 manifest gains three additive fields from the safe-install-engine spec — `updatedAt` (preserve `installedAt`, refresh on re-run/upgrade), framework-owned-only + LF-normalized `files`, and a `merged` contribution record (respects user deletions). No schema break. Per [specs/001-safe-install-engine](../specs/001-safe-install-engine/spec.md).
 - **2026-07-15 (r7):** §1 CLI Engine gains the interim v1 guards; §5 manifest updated (drop `prototype/` + generated `.ai` bundles + CI workflows from the package; add `LICENSE`, `CONTRIBUTING.md` root-only, `check-links.js` dev-only); §7 QA contract (`--json`, single-parser rule); §13 Workflow Manager → read-only reporter first; new **§14 Publish Pipeline** (CI-only, provenance, pre-publish gate) + `main`-removal / API-decision-at-mvp-4. Per [_refinement/r7-review.md](_refinement/r7-review.md).
 - **2026-07-15 (r6):** Lifecycle enum → `{ planning, mvp, growth }` (§7; `prebuild` merged into Planning); §2/§5/§8 key-doc numbering swapped to `04-BACKLOG`/`05-ROADMAP`; `_architecture/` boundary added (§2); new **§13 Workflow Manager** (fifth §1 component, built mvp-3); §12 Pre-build references → Planning sign-off milestone. Per [_refinement/r6-review.md](_refinement/r6-review.md).

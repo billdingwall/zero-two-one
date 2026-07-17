@@ -1,6 +1,6 @@
 # Project Backlog
 
-## Current Phase: Planning (Phase 0)
+## Current Phase: MVP Build (Phase 1)
 
 *Backlog ordering is roadmap-driven until the Growth phase. From Growth onward, **user value** — from feedback collected in refinement rounds and `021-feedback` issues — is the primary signal, and items are **promoted into releases** ([_releases/](_releases/_INDEX.md)) and implemented as their own SSD specs. See the [MVP → Growth transition workflow](../workflow/specific-workflows/mvp-to-growth-transition.md).*
 
@@ -28,28 +28,31 @@
 | **r7 E**: old-phase-label sweep (repo+package: `cli-walkthrough-demo.md`, history era-notes) + CI grep gate | Done | PM | mvp-2 |
 | **r7 F**: README stack-availability labels (Antigravity/Kiro land mvp-4) | Done | PM | mvp-2 |
 | **r7 H**: `CONTRIBUTING.md` (refinement loop + gate + local checks) | Done | PM | mvp-2 |
-| Ownership-based merge engine in `bin/init.js` (file classes per TDD §6; create-if-missing) | Open | Eng | mvp-3 |
-| `--dry-run` classified action plan; `--force <path>` overwrite opt-in | Open | Eng | mvp-3 |
-| Idempotent re-run (skip present-and-unmodified; complete missing pieces only) | Open | Eng | mvp-3 |
-| Conflict-aware `pre-commit` install (plain-hook chaining; husky/lefthook detection) | Open | Eng | mvp-3 |
-| `.zero-two-one.json` manifest write (full file-hash inventory) + `--upgrade` (scoped, TDD §7) | Open | Eng | mvp-3 |
-| **r6 `init.js` mapping** uses `04-BACKLOG`/`05-ROADMAP` + `{planning,mvp,growth}` phase schema | Open | Eng | mvp-3 |
-| **Workflow Manager (TDD §13)** — read-only `021-doctor` drift reporter first (no auto-apply); advisory, never blocks/auto-commits (r7) | Open | Eng | mvp-3 |
-| **r7 G**: manifest as QA contract — `run-qa.sh`/pre-commit read phase/stack from `.zero-two-one.json` via `lib.js` (no output scraping) | Open | Eng | mvp-3 |
-| **r7 G**: automated tests for `bin/init.js` + `hooks/pre-commit` on a non-empty fixture (moved from mvp-6; acceptance test = definition of done) | Open | Eng | mvp-3 |
-| Migrate-mode detection + phase interview (`--phase` non-interactive); Growth entry scaffolds post-transition shape | Open | Eng | mvp-3 |
-| Existing-doc import + duplicate resolution (archive / update-to-fit / leave-alongside) recorded in manifest | Open | Eng | mvp-3 |
-| Spec Kit reuse: detect `.specify/`/populated `specs/`, validate frontmatter, skip duplicate guidance | Open | Eng | mvp-3 |
-| Migration acceptance test on a non-empty fixture repo (zero user-file overwrites) | Open | Eng | mvp-3 |
-| Adapter interface seam: rendering + SSD paths resolved through the stack adapter layer (TDD §9) | Open | Eng | mvp-3 |
-| Regenerate the framework's own `.zero-two-one.json` (`mode: source`, full hash inventory) | Open | Eng | mvp-3 |
+| Ownership-based merge engine in `bin/init.js` (file classes per TDD §6; create-if-missing) | Done | Eng | mvp-3 |
+| `--dry-run` classified action plan; `--force <path>` overwrite opt-in | Done | Eng | mvp-3 |
+| Idempotent re-run (skip present-and-unmodified; complete missing pieces only) | Done | Eng | mvp-3 |
+| Conflict-aware `pre-commit` install (plain-hook chaining; husky/lefthook detection) | Done | Eng | mvp-3 |
+| `.zero-two-one.json` manifest write (full file-hash inventory) + `--upgrade` (scoped, TDD §7) | Done | Eng | mvp-3 |
+| **r6 `init.js` mapping** uses `04-BACKLOG`/`05-ROADMAP` + `{planning,mvp,growth}` phase schema | Done | Eng | mvp-3 |
+| **Workflow Manager (TDD §13)** — read-only `021-doctor` drift reporter first (no auto-apply); advisory, never blocks/auto-commits (r7) | Done | Eng | mvp-3 |
+| **r7 G**: manifest as QA contract — `run-qa.sh`/pre-commit read phase/stack from `.zero-two-one.json` via `lib.js` (no output scraping) | Done | Eng | mvp-3 |
+| **r7 G**: automated tests for `bin/init.js` + `hooks/pre-commit` on a non-empty fixture (moved from mvp-6; acceptance test = definition of done) | Done | Eng | mvp-3 |
+| Migrate-mode detection + phase interview (`--phase` non-interactive); Growth entry scaffolds post-transition shape | Done | Eng | mvp-3 |
+| Existing-doc import + duplicate resolution (archive / update-to-fit / leave-alongside) recorded in manifest | Done | Eng | mvp-3 |
+| Spec Kit reuse: detect `.specify/`/populated `specs/`, validate frontmatter, skip duplicate guidance | Done | Eng | mvp-3 |
+| Migration acceptance test on a non-empty fixture repo (zero user-file overwrites) | Done | Eng | mvp-3 |
+| Adapter interface seam: rendering + SSD paths resolved through the stack adapter layer (TDD §9) | Done | Eng | mvp-3 |
+| Regenerate the framework's own `.zero-two-one.json` (`mode: source`, full hash inventory) | Done | Eng | mvp-3 |
+| **r9**: package distribution fixes — stop shipping internal specs (P1: 128→90 tarball files); single-source `.claude/commands` (W2); `.DS_Store` hygiene | Done | Eng | mvp-3 |
 | AI-led init walkthrough (TDD §1) driving the engine via flags; ask-don't-assume interview | Open | Eng | mvp-4 |
 | Source-layer generalization: `CLAUDE-Template.md` → `ASSISTANT-Template.md`; `AGENTS.md` neutral default | Open | Eng | mvp-4 |
 | `antigravity` stack: `AGENTS.md` rendering; `.agents/skills/021-<name>/SKILL.md`; MCP guidance; Spec Kit pairing | Open | Eng | mvp-4 |
 | `kiro` stack: `.kiro/steering/021-*` + `.kiro/agents/021.json`; `kiro-specs` `status:` injection; engine-dispatch | Open | Eng | mvp-4 |
 | Design-system adapter (TDD §9.4): `DESIGN.md` token-mapping + `_design/tokens/`; `material-3` binding | Open | Design | mvp-4 |
 | Init integration: `--stack`/`--design` flags; migrate-mode stack detection; manifest `tools.*` | Open | Eng | mvp-4 |
-| **Acceptance matrix: 3 stacks × {none, material-3}** — gate green + `021-status`/`021-qa` in all six cells (reuses mvp-3 fixture harness) | Open | Eng | mvp-4 |
+| **Acceptance matrix: 3 stacks × {none, material-3}** — gate green + `021 status`/`021 qa` in all six cells; **+ neutral-core invariant** (only adapter paths differ across stacks) (r9; reuses mvp-3 fixture harness) | Open | Eng | mvp-4 |
+| **r9**: stack-parameterized install surface — `classes.js`/`sources.js` resolve dirs + guiding docs from manifest `tools.stack` (spec 006) | Open | Eng | mvp-4 |
+| **r9**: the `021` CLI — single assistant-agnostic command surface (`021 status\|qa\|doctor\|spec …`) over existing scripts; adapters reference it (spec 009; replaces Makefile idea) | Open | Eng | mvp-4 |
 | **r7 G**: programmatic-API decision — expose `scripts/speckit/lib.js` via `exports` (`zero-two-one/speckit`)? (TDD §14) | Open | Eng | mvp-4 |
 | **r7 F**: remove README stack-availability caveats once `--stack antigravity\|kiro` is real | Open | PM | mvp-4 |
 | `021-feedback` (TDD §10): `gh` / pre-filled issue URL to `billdingwall/zero-two-one`; issue template | Open | Eng | mvp-5 |
@@ -64,7 +67,9 @@
 
 ## v2 / Growth Backlog
 
-*Empty (r5). All previously-listed v2 work was pulled into the MVP releases above. The v2 feature set is **defined in the Growth phase**, after MVP ships (mvp-6 exit gate) — driven by user value from `021-feedback` and field-test findings. The three former "Other v2 items" (native MCP server support, additional templates, issue-tracker integration) were **dropped** at r5; re-propose them here from real usage if warranted.*
+*Empty of committed rows (r5) — the v2 feature set is **defined in the Growth phase**, after MVP ships (mvp-6 exit gate), driven by user value from `021-feedback` and field-test findings. The three former "Other v2 items" (native MCP server support, additional templates, issue-tracker integration) were **dropped** at r5; re-propose from real usage if warranted.*
+
+**Design-noted Growth candidates (r9, [_notes/repo-refactor.md](_notes/repo-refactor.md) §5.4):** deferred here deliberately, not scheduled — (a) **scoped/hydrated refinement-loop instances** (multi-tier `.workflow/` per initiative — the standards-audit is the design note); (b) **runtime write-guards** for non-git-hook assistants (Kiro `beforeFileWrite` etc. enforcing the same spec-status gate); (c) **`021-doctor` apply-mode** (TDD §13 increment 2 — corrective, not just advisory). Revisit when real multi-team/multi-assistant usage warrants.
 
 ## Open Questions & Blockers
 
@@ -90,6 +95,7 @@
 - **r7** (2026-07-15, Applied): repo/package hardening audit — interim `init.js` safety, manifest/distribution hygiene (LICENSE, drop `main`/dummies/`prototype/`), `run-qa.sh` 3-phase fix + `--json`, CI + sync-drift + lint/link checks, phase-label sweep, three-stacks-at-MVP clarity, release re-scoping (tests→mvp-3, publish pipeline→mvp-6), CONTRIBUTING. [_refinement/r7-review.md](_refinement/r7-review.md).
 
 ## Changelog
+- **2026-07-16 (r9):** Closed the 15 delivered mvp-3 rows (Open→Done — the standing `021-doctor` advisory); phase header → MVP Build (Phase 1); added the r9 package-fix Done row, mvp-4 stack-parameterized-surface + `021`-CLI rows, neutral-core invariant on the acceptance-matrix row; recorded r9 Growth candidates (scoped loops, runtime write-guards, doctor apply-mode). Per [_refinement/r9-review.md](_refinement/r9-review.md).
 - **2026-07-15 (r7):** Added r7 in-round fix rows (A–F, H, Done under mvp-2); moved init/hook tests mvp-6→mvp-3; added mvp-3 QA-contract + read-only Workflow-Manager reporter rows, mvp-4 API-decision row, mvp-6 CI-publish-pipeline row; closed the npm-published question; added the r7 cycle row. Per [_refinement/r7-review.md](_refinement/r7-review.md).
 - **2026-07-15 (r6):** Renamed `05-BACKLOG.md` → **`04-BACKLOG.md`**; converted the release-grouped checklists to a **table** (description·status·ownership·release); added the r6 structural-migration items + the Workflow-Manager (mvp-3) item; phase header → Planning (3-phase); closed the 4-vs-3 / numbering open question; added the r6 refinement-cycle row. Per [_refinement/r6-review.md](_refinement/r6-review.md).
 - **2026-07-12 (r5):** Backlog regrouped by the six MVP releases in dependency order; v2/Growth backlog emptied (items pulled to MVP or dropped); added manifest dogfood, status-script fix, design docs, and `021-prototype`; feedback repo slug resolved; six open questions closed. Per [_refinement/r5-review.md](_refinement/r5-review.md).

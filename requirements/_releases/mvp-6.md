@@ -20,7 +20,7 @@ Prove the framework in the field, review the whole MVP, and only then ship it. *
    - Google Antigravity + GitHub Spec Kit;
    - Kiro CLI + IDE.
 3. [ ] **Feedback loop live** — `021-feedback` issues flowing from the test repos into this repo, seeding the Growth backlog.
-4. [ ] **CI publish pipeline built** (r7, TDD §14): tag-triggered, `npm run sync:package -- --check` then `npm publish --provenance` from `package/`; **pre-publish gate** fails on a dangling `main`, missing `LICENSE`, `.ai/context` dummies in the tarball, or broken links. Manual `publish:package` is a documented fallback only. *(Built and dry-run here; fired in step 6.)*
+4. [ ] **CI publish pipeline built** (r7, TDD §14): tag-triggered, `npm run sync:package -- --check` then `npm publish --provenance` from `package/`; **pre-publish gate** fails on a dangling `main`, missing `LICENSE`, `.ai/context` dummies in the tarball, or broken links. **Plus (r9): a tarball-content audit** — no internal feature specs (`specs/00N-*`) or dev files in the tarball (the spec 001–005 P1 regression check); **an install-focused shipped README** (not the repo/contributor README — split decision at the publish spec); and **a fresh-install smoke test per stack** (claude/antigravity/kiro) from the packed tarball. Manual `publish:package` is a documented fallback only. *(Built and dry-run here; fired in step 6.)*
 5. [ ] **Pre-publish review** — a full-work audit across **all** MVP releases (mvp-1…mvp-6): QA green end-to-end, every spec `Done`, field test + feedback digested. **This is the decision point for whether one more MVP spec is needed before shipping** — if the review surfaces a gap, an additional MVP spec lands *here*, before publish (r8). Only a clean review opens step 6.
 6. [ ] **Publish `zero-two-one` v1.1.x — the final MVP spec.** Fire the pipeline (name verified unclaimed — npm 404, r7). Nothing ships after this; passing it is the MVP→Growth trigger.
 
@@ -33,6 +33,7 @@ Steps 1–5 complete (field test run, feedback arriving, **pre-publish review cl
 *Summary written at release close.*
 
 ## Changelog
+- **2026-07-16 (r9):** Pre-publish gate extended (step 4) — tarball-content audit (no internal specs/dev files, the P1 regression check), install-focused shipped README, and per-stack fresh-install smoke test from the packed tarball. Per [_refinement/r9-review.md](../_refinement/r9-review.md).
 - **2026-07-16 (r8):** Scope re-sequenced so **publish is the terminal MVP spec** — field test + feedback moved *before* publish (against the locally-packed tarball), and a **pre-publish review** step added as the decision point for one additional MVP spec before shipping. Per [_refinement/r8-update-roadmap.md](../_refinement/r8-update-roadmap.md).
 - **2026-07-15 (r7):** Init/hook unit tests moved forward to mvp-3; publish rewritten as a CI-only, tag-triggered `--provenance` pipeline with a pre-publish gate (TDD §14). Per [_refinement/r7-review.md](../_refinement/r7-review.md).
 - **2026-07-12 (r5):** New launch release — publish moved out of the backlog top into this gated final release; three-repo field test and feedback-loop activation consolidated here.

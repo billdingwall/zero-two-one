@@ -4,6 +4,8 @@
 
 **Goal:** Compare the `r{n}-review.md` feedback against the living key docs and produce one update plan per affected document.
 
+**Round state (r9):** every `r{n}-review.md` and `r{n}-update-*.md` carries YAML frontmatter — `status: Draft | Pending approval | Applied | Closed` (and `round: N`) — so tooling reads round state instead of parsing prose. `021-doctor` flags a round whose review is `Applied`/`Closed` while an update plan still says `Pending approval` (advisory; TDD §13). Rounds before r9 stay prose-only (not retrofitted).
+
 ## Steps
 1. Read `r{n}-review.md` (and any inline `CHANGE:` notes queued in living docs) alongside the current key docs (`01-PRD`, `02-EDD`, `03-TDD`, `04-BACKLOG`, `05-ROADMAP`).
 2. For each review item, identify which doc(s) it changes and why (the intent), following the cohesive-set rule: anything touching one of PRD/EDD/TDD is checked against all three.

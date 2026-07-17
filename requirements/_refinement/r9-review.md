@@ -1,5 +1,5 @@
 ---
-status: Draft
+status: Applied
 round: 9
 ---
 
@@ -7,7 +7,7 @@ round: 9
 
 ## Review Meta Data
 - **Date:** 2026-07-16
-- **Status:** Draft — **Pending approval** (RLP step 2: no living document is edited until the update plans are approved)
+- **Status:** Applied (2026-07-16) — approved and cascaded (RLP steps 3–6); six update plans in this directory, all `Applied`.
 - **Round:** 9
 - **Reviewer:** William Dingwall (billdingwall) + repo-refactor architecture review
 - **Lifecycle Phase:** MVP Build (Phase 1) — post-mvp-3, pre-mvp-4
