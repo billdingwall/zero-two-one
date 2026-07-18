@@ -1,3 +1,8 @@
+---
+name: 021-fetch-speckit-context
+description: Fetch and assemble the Spec Kit context bundle for a feature before implementation.
+---
+
 # Skill: Fetch Speckit Context
 
 **Description:**

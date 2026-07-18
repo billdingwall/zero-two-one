@@ -102,15 +102,18 @@ test('T006 neutral core is byte-identical across stacks; only Layer-2 differs', 
   install(cl, 'claude');
   install(ag, 'antigravity');
 
-  // Exclude Layer-2 (entrypoints + .claude surface) and the non-content
+  // Exclude Layer-2 (entrypoints + .claude/.agents surfaces) and the non-content
   // carve-outs from the byte-identical assertion: the manifest + empty
   // .ai/context (analyze A1), and the MERGED files (.gitignore, package.json)
   // which carry target-specific identity like the project name (analyze A7).
+  // The .agents/ skills surface is antigravity's Layer-2 (spec 007).
   const isLayer2OrCarveOut = (rel) =>
     rel === 'CLAUDE.md' ||
     rel === 'AGENTS.md' ||
     rel === '.claude' ||
     rel.startsWith('.claude/') ||
+    rel === '.agents' ||
+    rel.startsWith('.agents/') ||
     rel === '.zero-two-one.json' ||
     rel === '.ai' ||
     rel.startsWith('.ai/') ||

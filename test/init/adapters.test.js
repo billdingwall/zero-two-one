@@ -29,6 +29,22 @@ test('T003 getAdapter: claude/antigravity resolve; absent/unknown → claude; ki
   assert.throws(() => getAdapter('kiro'), /not yet supported/, 'reserved stack fails loudly (analyze A5)');
 });
 
+// --- T004 (spec 007) · antigravity adapter shape ----------------------------
+test('T004 antigravity adapter carries surfaceRenders + entrypoint.honored (spec 007)', () => {
+  const ag = getAdapter('antigravity');
+  assert.deepEqual(ag.entrypoint.honored, ['GEMINI.md'], 'GEMINI.md honored (FR-004)');
+  assert.equal(ag.surfaceRenders.length, 2, 'skills + commands descriptors');
+  const kinds = ag.surfaceRenders.map((r) => r.kind).sort();
+  assert.deepEqual(kinds, ['command', 'skill']);
+  const skill = ag.surfaceRenders.find((r) => r.kind === 'skill');
+  assert.equal(skill.toDir, '.agents/skills');
+  assert.deepEqual(skill.exclude, ['_INDEX.md']);
+
+  // claude stays pure/unchanged — no rendered surface, no honored alternates.
+  assert.equal(getAdapter('claude').surfaceRenders, undefined, 'claude unchanged (no surfaceRenders)');
+  assert.equal(getAdapter('claude').entrypoint.honored, undefined, 'claude unchanged (no honored)');
+});
+
 // --- T007 · classify is stack-aware -----------------------------------------
 test('T007 classify: Layer-2 paths depend on the active stack', () => {
   // claude owns .claude/commands and CLAUDE.md

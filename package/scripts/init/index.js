@@ -75,6 +75,29 @@ function reportHook(applied, log) {
 }
 
 /**
+ * Stack-specific post-install notes (spec 007). Sibling to `reportHook`. For
+ * `antigravity`, print MCP/tool registration guidance — the config lives at a
+ * user-global path, so the engine never writes it; it only tells the user how
+ * (FR-009).
+ */
+function reportStackNotes(stack, sourceDir, log) {
+  if (stack !== 'antigravity') return;
+  let toolCount = 0;
+  try {
+    const tools = require(path.join(sourceDir, 'skills', 'tools.json'));
+    toolCount = Array.isArray(tools.tools) ? tools.tools.length : 0;
+  } catch {
+    /* tools.json optional — still print the guidance */
+  }
+  log(
+    '\nNote (Antigravity MCP): to register the framework tools with Gemini, add them to ' +
+      '`~/.gemini/config/mcp_config.json`' +
+      (toolCount ? ` — ${toolCount} tool schema(s) are defined in \`skills/tools.json\`.` : '.') +
+      '\n(Not written automatically — that path is outside this project.)'
+  );
+}
+
+/**
  * Run the install engine.
  * @param {string} targetDir - absolute target path
  * @param {object} opts - { dryRun, upgrade, force:[], phase, design, stack, sourceDir, now, quiet }
@@ -137,6 +160,7 @@ function initFramework(targetDir, opts = {}) {
 
   log(renderPlan(plan, { dryRun: false }));
   reportHook(applied, log);
+  reportStackNotes(stack, sourceDir, log);
   log(`\n✅ ${mode === 'source' ? 'Manifest regenerated' : 'Framework installed'} (${manifest.files ? Object.keys(manifest.files).length : 0} framework files tracked).`);
   return 0;
 }

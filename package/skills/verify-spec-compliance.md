@@ -1,3 +1,8 @@
+---
+name: 021-verify-spec-compliance
+description: Validate generated code and the spec artifact set against the Spec Kit definitions.
+---
+
 # Skill: Verify Spec Compliance
 
 **Description:**

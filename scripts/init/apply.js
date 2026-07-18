@@ -54,7 +54,14 @@ function applyPlan({ sourceDir, targetDir, plan, prevManifest, stack = 'claude' 
       case ACTION.CREATE:
       case ACTION.REFRESH:
         if (a.class === 'framework-owned') {
-          copyFile(path.join(sourceDir, a.path), path.join(targetDir, a.path));
+          if (a.content !== undefined) {
+            // Rendered Layer-2 surface (spec 007): produced by a transform, no source file.
+            const dest = path.join(targetDir, a.path);
+            fs.mkdirSync(path.dirname(dest), { recursive: true });
+            fs.writeFileSync(dest, a.content);
+          } else {
+            copyFile(path.join(sourceDir, a.path), path.join(targetDir, a.path));
+          }
         } else if (a.class === 'user-owned') {
           writeUserDoc(a, sourceDir, targetDir, stack);
         } else if (a.class === 'generated') {

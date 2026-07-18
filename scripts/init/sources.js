@@ -14,7 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { frameworkDirs, toPosix } = require('./classes');
+const { frameworkSourceDirs, toPosix } = require('./classes');
 const { getAdapter } = require('./adapters');
 
 /** Recursively list files under `dir`, as paths relative to `root`. */
@@ -33,10 +33,15 @@ function walk(root, dir, acc) {
   return acc;
 }
 
-/** All framework-owned file paths shipped by the source root for `stack`, sorted. */
+/**
+ * All framework-owned file paths shipped by the source root for `stack`, sorted.
+ * Walks only the stack's **source** dirs (Layer-1 + verbatim-copy surface dirs);
+ * the rendered Layer-2 surface (`.agents/skills/**`) is source-absent and is
+ * produced by `surface.renderSurface`, not enumerated here (spec 007).
+ */
 function frameworkFiles(sourceDir, stack = 'claude') {
   const files = [];
-  for (const dir of frameworkDirs(stack)) walk(sourceDir, dir, files);
+  for (const dir of frameworkSourceDirs(stack)) walk(sourceDir, dir, files);
   return files.sort();
 }
 

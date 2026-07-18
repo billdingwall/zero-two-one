@@ -1,3 +1,8 @@
+---
+name: 021-check-framework-compliance
+description: Check that work adheres to the Zero Two One framework rules and conventions.
+---
+
 # Skill: Check Framework Compliance
 
 **Description:**

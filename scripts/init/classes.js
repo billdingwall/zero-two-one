@@ -56,14 +56,39 @@ const GENERATED_DIRS = [path.join('.ai', 'context')];
 /** Excluded from the install surface entirely (analyze A3). */
 const EXCLUDED_DIRS = ['bin', 'specs', 'node_modules', '.git'];
 
-/** Framework-owned dirs for a stack = Layer-1 base + the stack's Layer-2 surface dirs. */
-function frameworkDirs(stack) {
+/**
+ * Framework dirs that exist **in the source** for a stack = Layer-1 base + the
+ * stack's verbatim-copy surface dirs. These are walked to enumerate framework
+ * files (sources.js) and are framework-owned (spec 007 — split from the rendered
+ * surface, whose dest dirs are source-absent).
+ */
+function frameworkSourceDirs(stack) {
   return [...LAYER1_DIRS, ...getAdapter(stack).surfaceDirs];
 }
 
-/** User-owned guiding docs for a stack = the rendered entrypoint + the common set. */
+/** Dest dirs of the stack's rendered Layer-2 surface (owned, but NOT source dirs). */
+function renderToDirs(stack) {
+  return (getAdapter(stack).surfaceRenders || []).map((r) => r.toDir);
+}
+
+/**
+ * All framework-**owned** dirs for a stack = source dirs + rendered-surface dest
+ * dirs. `classify` uses this for ownership; `frameworkFiles` uses only
+ * `frameworkSourceDirs` (it can't walk a source-absent render dest, spec 007).
+ * For claude (no `surfaceRenders`) this equals `frameworkSourceDirs` — unchanged.
+ */
+function frameworkDirs(stack) {
+  return [...frameworkSourceDirs(stack), ...renderToDirs(stack)];
+}
+
+/**
+ * User-owned guiding docs for a stack = the rendered entrypoint (plus any
+ * `honored` alternatives, e.g. antigravity's `GEMINI.md` — spec 007 FR-004) +
+ * the common set.
+ */
 function userFiles(stack) {
-  return [getAdapter(stack).entrypoint.dest, ...USER_FILES_COMMON];
+  const { entrypoint } = getAdapter(stack);
+  return [entrypoint.dest, ...(entrypoint.honored || []), ...USER_FILES_COMMON];
 }
 
 /** Normalize a relative path to POSIX separators for stable comparison/keys. */
@@ -107,6 +132,8 @@ module.exports = {
   MERGED_FILES,
   GENERATED_DIRS,
   EXCLUDED_DIRS,
+  frameworkSourceDirs,
+  renderToDirs,
   frameworkDirs,
   userFiles,
   classify,

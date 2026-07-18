@@ -14,11 +14,23 @@
  */
 
 /**
+ * @typedef {object} RenderDescriptor
+ * @property {string} fromDir  Source dir (relpath under the source root) holding the input files.
+ * @property {string} match    Filename pattern — a built-in suffix/prefix mini-matcher, not a glob
+ *   dependency (`*.md`, `021-*.md`); interpreted by surface.js (spec 007, analyze A6).
+ * @property {string[]} [exclude]  Basenames to skip (e.g. `_INDEX.md`).
+ * @property {string} toDir    Framework-owned dest dir the surface writes into (`.agents/skills`).
+ * @property {'skill'|'command'} kind  Transform selector (surface.js). 008 adds `steering`/`agent-json`.
+ *
  * @typedef {object} StackAdapter
- * @property {{ template: string, dest: string }} entrypoint
- *   Neutral source template (under `templates/`) → rendered entrypoint dest.
+ * @property {{ template: string, dest: string, honored?: string[] }} entrypoint
+ *   Neutral source template (under `templates/`) → rendered entrypoint dest. `honored` lists
+ *   target files that, when present, are the entrypoint instead of `dest` (spec 007 FR-004).
  * @property {string[]} surfaceDirs
- *   Layer-2 command/skill dirs this stack owns (framework-owned when chosen).
+ *   Layer-2 command/skill dirs this stack owns, copied verbatim (framework-owned when chosen).
+ * @property {RenderDescriptor[]} [surfaceRenders]
+ *   Rendered Layer-2 surfaces — files produced by a transform, not copied from a source dir
+ *   (spec 007 FR-001). Their `toDir`s are framework-owned but are NOT walked as source dirs.
  */
 
 /** @type {Record<string, StackAdapter>} */
@@ -28,9 +40,14 @@ const ADAPTERS = {
     surfaceDirs: ['.claude/commands'],
   },
   antigravity: {
-    // Skills tree (.agents/skills/021-*) is spec 007; 006 renders the entrypoint only.
-    entrypoint: { template: 'ASSISTANT-Template.md', dest: 'AGENTS.md' },
+    // Entrypoint: AGENTS.md, or an existing GEMINI.md is honored in its place (spec 007 FR-004).
+    entrypoint: { template: 'ASSISTANT-Template.md', dest: 'AGENTS.md', honored: ['GEMINI.md'] },
     surfaceDirs: [],
+    // The skills library + lifecycle commands render into .agents/skills/021-*/SKILL.md (spec 007).
+    surfaceRenders: [
+      { fromDir: 'skills', match: '*.md', exclude: ['_INDEX.md'], toDir: '.agents/skills', kind: 'skill' },
+      { fromDir: '.claude/commands', match: '021-*.md', toDir: '.agents/skills', kind: 'command' },
+    ],
   },
   // kiro — reserved; populated by spec 008 (steering + .kiro/agents + kiro-specs dispatch).
 };
