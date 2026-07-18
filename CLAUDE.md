@@ -41,12 +41,12 @@ Your primary role as an AI assistant is to help the user navigate these phases b
 - **`requirements/_architecture/`**: Architecture diagrams, expanded data models, and decision records (ADRs) that back the TDD (created on first use; TDD §2 boundary).
 - **`workflow/`**: Documentation defining the overall project workflow and personas involved. `workflow/workflows.md` is the canonical process reference (Discovery, Design, Refinement, Speckit Implementation, QA, Release).
 - **`skills/`**: AI prompts used for generating project artifacts and specs, plus `tools.json` agent tool schemas.
-- **`scripts/`**: Lifecycle automation — `npm run 021-status`, `021-spec:status`, `021-spec:context`, `021-spec:verify`, `021-qa`.
-- **`.ai/context/`**: Generated Speckit context bundles (gitignored; rebuild with `npm run 021-spec:context`).
+- **`scripts/`**: Lifecycle automation — `npx 021 status`, `021-spec:status`, `021-spec:context`, `021-spec:verify`, `021-qa`.
+- **`.ai/context/`**: Generated Speckit context bundles (gitignored; rebuild with `npx 021 spec context`).
 
 ## AI Instructions
-- Always rely on your internal memory first to understand the current phase and state of the project. If unsure, ask the user. Verify with `npm run 021-status`.
+- Always rely on your internal memory first to understand the current phase and state of the project. If unsure, ask the user. Verify with `npx 021 status`.
 - Respect the dual workflow: project-level changes happen via the refinement loop in `requirements/`, while feature-level implementation uses the Spec Kit workflow.
-- Before implementing a feature, run `npm run 021-spec:context` and load `.ai/context/NNN-feature-name.md`. Do not write implementation code unless the spec status is `Approved` or `Ready for Dev` — the pre-commit hook enforces this gate, and only the user can authorize the status change (`npm run 021-spec:status -- set <spec> Approved`).
-- After generating code, run `npm run 021-spec:verify` and follow `skills/verify-spec-compliance.md` before marking work complete.
+- Before implementing a feature, run `npx 021 spec context` and load `.ai/context/NNN-feature-name.md`. Do not write implementation code unless the spec status is `Approved` or `Ready for Dev` — the pre-commit hook enforces this gate, and only the user can authorize the status change (`npx 021 spec status set <spec> Approved`).
+- After generating code, run `npx 021 spec verify` and follow `skills/verify-spec-compliance.md` before marking work complete.
 - Do not assume domain specifics; adapt to the project as it is defined in the key documents.

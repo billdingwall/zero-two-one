@@ -28,21 +28,19 @@ The framework's central enforcement: **no implementation code lands until the fe
 
 ## Install with your AI assistant
 
-Init is assistant-led — an LLM is the framework's core dependency, including setup. Copy the prompt for your stack and paste it into your assistant inside the target repository:
-
-> **Stack availability:** all three stacks (Claude Code, Antigravity, Kiro) are **MVP scope**. **Claude Code works today.** The `--stack antigravity|kiro` flag, stack rendering, and the interactive walkthrough land in **mvp-4** (see [`05-ROADMAP.md`](requirements/05-ROADMAP.md)) — until then the Antigravity/Kiro prompts below describe the intended experience, and `npx zero-two-one-init` installs the `claude` surface. The `--dry-run`/`--force` and safe merge behavior land in **mvp-3**.
+Init is assistant-led — an LLM is the framework's core dependency, including setup. Copy the prompt for your stack and paste it into your assistant inside the target repository. All three stacks install a real surface — `--stack claude|antigravity|kiro` — and safe `--dry-run`/`--force` merge behavior is in place.
 
 **Claude Code** (default stack — pairs with GitHub Spec Kit):
 
-> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `claude` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and `workflow/workflows.md`, then report the lifecycle phase with `npm run 021-status`.
+> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `claude` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and `workflow/workflows.md`, then report the lifecycle phase with `npx 021 status`.
 
 **Google Antigravity** (pairs with GitHub Spec Kit):
 
-> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `antigravity` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and `AGENTS.md`, then report the lifecycle phase with `npm run 021-status`.
+> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `antigravity` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and `AGENTS.md`, then report the lifecycle phase with `npx 021 status`.
 
 **Kiro** (assistant + specs in one):
 
-> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `kiro` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and the `.kiro/steering/021-*.md` files, then report the lifecycle phase with `npm run 021-status`.
+> Install the zero-two-one framework in this repository. Run `npx zero-two-one-init --dry-run` first and review the plan with me, then run `npx zero-two-one-init` with stack `kiro` and walk me through the setup questions (design system, lifecycle phase, and any file conflicts) one at a time with a recommendation for each. When done, read `.zero-two-one.json` and the `.kiro/steering/021-*.md` files, then report the lifecycle phase with `npx 021 status`.
 
 On an existing project the install is non-destructive: your files may be added to, renamed, or updated, but existing content is never removed (see [`workflow/specific-workflows/init-and-migration.md`](workflow/specific-workflows/init-and-migration.md)).
 
@@ -61,24 +59,24 @@ Then:
 
 1. Fill in `requirements/01-PRD.md`, `02-EDD.md`, `03-TDD.md`, `04-BACKLOG.md`, and `05-ROADMAP.md` — one cohesive set (your AI assistant can drive this from `templates/`).
 2. Ask your assistant to record the current lifecycle phase in its memory, and update `CLAUDE.md` + this README with project specifics.
-3. Check where you stand any time: `npm run 021-status`.
+3. Check where you stand any time: `npx 021 status`.
 
 ## Tooling reference
 
 | Command | Purpose |
 |---|---|
-| `npm run 021-status` | Detect the current lifecycle phase from repo state |
-| `npm run 021-qa` | Phase-appropriate QA suite (docs → prototype → tests/a11y/spec compliance) |
-| `npm run 021-spec:status -- list` | All feature specs with status and gate state |
-| `npm run 021-spec:status -- set <spec> <status>` | Advance a spec through its lifecycle |
-| `npm run 021-spec:context` | Pull the active feature's Spec Kit artifacts into AI-readable bundles (`.ai/context/`) |
-| `npm run 021-spec:verify` | Spec compliance audit — gate status, artifact completeness, unresolved clarifications, task truthfulness (`--gate`, `--json`) |
+| `npx 021 status` | Detect the current lifecycle phase from repo state |
+| `npx 021 qa` | Phase-appropriate QA suite (docs → prototype → tests/a11y/spec compliance) |
+| `npx 021 spec status list` | All feature specs with status and gate state |
+| `npx 021 spec status set <spec> <status>` | Advance a spec through its lifecycle |
+| `npx 021 spec context` | Pull the active feature's Spec Kit artifacts into AI-readable bundles (`.ai/context/`) |
+| `npx 021 spec verify` | Spec compliance audit — gate status, artifact completeness, unresolved clarifications, task truthfulness (`--gate`, `--json`) |
 
 ## AI agent integration
 
 - **`skills/tools.json`** — tool schemas (Anthropic tool-use format) for `fetch_speckit_context`, `verify_spec_compliance`, and `set_spec_status`, each mapped to a local CLI.
 - **`skills/*.md`** — step-by-step skills the agent follows for context fetching, compliance verification, component generation, and doc generation.
-- **`.ai/context/`** — generated per-feature context bundles: one markdown file an agent loads in a single read, plus a structured JSON artifact (status, gate state, acceptance criteria, data-model entities, task progress). Gitignored; rebuild with `npm run 021-spec:context`.
+- **`.ai/context/`** — generated per-feature context bundles: one markdown file an agent loads in a single read, plus a structured JSON artifact (status, gate state, acceptance criteria, data-model entities, task progress). Gitignored; rebuild with `npx 021 spec context`.
 - **`CLAUDE.md` / `CODE.md`** — session context and the coding constitution that governs all generated work.
 
 ## Repository structure
@@ -138,7 +136,7 @@ This repository serves as both the framework source and its own refinement works
 ### Workflow
 
 1. Edit framework files in the root directory (the working copy)
-2. Test changes locally with `npm run 021-status` and `npm run 021-qa`
+2. Test changes locally with `npx 021 status` and `npx 021 qa`
 3. Sync to package: `npm run sync:package`
 4. Bump the version manually in `package/package.json`
 5. Publish: `npm run publish:package`
@@ -166,5 +164,5 @@ The published package includes Claude Code slash commands in `.claude/commands/`
 
 - [ ] Fill out key documents in `requirements/`
 - [ ] Define the project architecture and roadmap
-- [ ] Set up baseline CI (run `npm run 021-qa && npm run 021-spec:verify` once a stack is chosen)
+- [ ] Set up baseline CI (run `npx 021 qa && npx 021 spec verify` once a stack is chosen)
 

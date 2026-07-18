@@ -4,7 +4,12 @@
   "private": true,
   "description": "Zero Two One — an agentic product framework that takes new products from point 0 (idea) to point 1 (MVP) via project-level refinement loops and Spec Kit-driven feature delivery. (Root dev workspace — the publishable snapshot lives in package/.)",
   "bin": {
-    "zero-two-one-init": "bin/init.js"
+    "zero-two-one-init": "bin/init.js",
+    "021": "bin/021.js"
+  },
+  "exports": {
+    "./speckit": "./scripts/speckit/lib.js",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "021-status": "node scripts/workflow-status.js",

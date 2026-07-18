@@ -8,9 +8,9 @@
 2. **Clarify:** Resolve underspecified areas through QA rounds (Status: In Review).
 3. **Plan:** Generate `plan.md`, `research.md`, `data-model.md`, and `contracts/`.
 4. **Task:** Generate a dependency-ordered `tasks.md`.
-5. **Approval:** A human must explicitly approve the spec (`npm run 021-spec:status -- set NNN Approved`). **This opens the Refinement Gate.**
+5. **Approval:** A human must explicitly approve the spec (`npx 021 spec status set NNN Approved`). **This opens the Refinement Gate.**
 6. **Implement:** Execute `tasks.md` (Status: In Progress).
-7. **Verify & QA:** Run `npm run 021-spec:verify` and `npm run 021-qa` (Status: Done).
+7. **Verify & QA:** Run `npx 021 spec verify` and `npx 021 qa` (Status: Done).
 
 ## 2. The Refinement Gate
 
@@ -18,6 +18,6 @@
 
 ## 3. Implementation Loop (Agent-Executed)
 
-1. **Context Generation:** Run `npm run 021-spec:context` to generate the `.ai/context/NNN-feature-name.md` bundle. This seamlessly injects `CODE.md`, `PRODUCT.md`, and `04-BACKLOG.md`.
+1. **Context Generation:** Run `npx 021 spec context` to generate the `.ai/context/NNN-feature-name.md` bundle. This seamlessly injects `CODE.md`, `PRODUCT.md`, and `04-BACKLOG.md`.
 2. **Execution:** Work through `tasks.md`.
-3. **Verification:** Run `npm run 021-spec:verify` after meaningful units of work to ensure spec compliance.
+3. **Verification:** Run `npx 021 spec verify` after meaningful units of work to ensure spec compliance.

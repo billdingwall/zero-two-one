@@ -50,4 +50,4 @@ Init asks two tool questions (TDD §9): the **stack** — `claude` (Claude Code 
 
 ## Agent Guidance
 
-AI assistants should read `.zero-two-one.json` (when present) to learn the lifecycle phase and tool stack instead of inferring from directory contents, and record it in memory. `npm run 021-status` uses the manifest's `phase` field as the source of truth once available.
+AI assistants should read `.zero-two-one.json` (when present) to learn the lifecycle phase and tool stack instead of inferring from directory contents, and record it in memory. `npx 021 status` uses the manifest's `phase` field as the source of truth once available.

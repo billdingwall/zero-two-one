@@ -14,7 +14,7 @@ This document outlines the coding standards, behavior constraints, and generatio
 
 ## 3. Workflow Constraints
 * **Refinement Loop:** When updating project-level requirements, follow the refinement loop (Review -> Synthesize -> Update). Create `r{n}-review.md` and `r{n}-update-{doc}.md` in `requirements/_refinement/`. Deliverables through GitHub Speckit should be tracked and versioned in the `specs/` directory following the naming convention `specs/NNN-feature-name/`.
-* **Pre-commit:** Always verify changes through testing and linting before submitting code. Locally: `npm run lint` (`node --check` + `sh -n`, zero-dependency), `npm test`, `npm run check:links`, and `npm run 021-qa`; CI runs the same plus an init smoke test and a package sync-drift check ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), r7).
+* **Pre-commit:** Always verify changes through testing and linting before submitting code. Locally: `npm run lint` (`node --check` + `sh -n`, zero-dependency), `npm test`, `npm run check:links`, and `npx 021 qa`; CI runs the same plus an init smoke test and a package sync-drift check ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), r7).
 
 ## 4. Communication
 * **Clarity over cleverness:** Use simple, understandable language in PRDs, commit messages, and code comments.
