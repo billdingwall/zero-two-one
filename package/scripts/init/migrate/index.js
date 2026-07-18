@@ -11,6 +11,7 @@
  */
 
 const path = require('path');
+const { getAdapter } = require('../adapters');
 const { classifyAll } = require('../classify');
 const { applyPlan } = require('../apply');
 const { buildManifest, writeManifest } = require('../manifest');
@@ -43,6 +44,16 @@ function migrateFramework(targetDir, opts, ctx) {
       : resolveStack(surfaces, opts);
   const reuse = speckitReuse(targetDir);
 
+  // A reserved-but-unpopulated stack (kiro) can't be rendered yet — fail loudly
+  // rather than write a mismatched tree (analyze A5). Migrate resolves its own
+  // stack, so it guards independently of the scaffold-path guard.
+  try {
+    getAdapter(stack);
+  } catch (e) {
+    console.error(`Error: ${e.message}`);
+    return 1;
+  }
+
   // --- Report detection before any write (FR-001) ---
   const ev = inferred.evidence;
   log('Detected (migrate mode):');
@@ -53,7 +64,7 @@ function migrateFramework(targetDir, opts, ctx) {
   }
   log('');
 
-  const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts });
+  const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts, stack });
 
   if (opts.dryRun) {
     log(renderPlan(plan, { dryRun: true }));
@@ -64,10 +75,10 @@ function migrateFramework(targetDir, opts, ctx) {
   // A duplicate is a doc the user already had; it must be resolved before the
   // base pipeline instantiates the *missing* user docs (else those newly
   // created files would be mis-detected as pre-existing collisions).
-  const migrate = resolveDuplicates({ sourceDir, targetDir, opts, prevManifest });
+  const migrate = resolveDuplicates({ sourceDir, targetDir, opts, prevManifest, stack });
 
   // --- Base pipeline (001, non-destructive): create remaining missing docs ---
-  const applied = applyPlan({ sourceDir, targetDir, plan, prevManifest });
+  const applied = applyPlan({ sourceDir, targetDir, plan, prevManifest, stack });
   if (phase === 'growth') growthEntry({ sourceDir, targetDir });
 
   // --- Manifest (migrate block) ---

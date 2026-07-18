@@ -26,11 +26,12 @@ const ACTION = {
 };
 
 /**
- * @param {object} args - { sourceDir, targetDir, manifest, opts }
+ * @param {object} args - { sourceDir, targetDir, manifest, opts, stack }
  *   opts: { upgrade:boolean, force:string[] }
+ *   stack: active stack (spec 006) — parameterizes the install surface; default claude
  * @returns {{actions:Action[], conflicts:Action[], orphans:Action[], prereqs:string[]}}
  */
-function classifyAll({ sourceDir, targetDir, manifest, opts = {} }) {
+function classifyAll({ sourceDir, targetDir, manifest, opts = {}, stack = 'claude' }) {
   const upgrade = !!opts.upgrade;
   const force = new Set((opts.force || []).map((p) => p.replace(/\\/g, '/')));
   const prevFiles = (manifest && manifest.files) || {};
@@ -38,8 +39,8 @@ function classifyAll({ sourceDir, targetDir, manifest, opts = {} }) {
 
   const add = (a) => actions.push(a);
 
-  // --- Framework-owned files ---
-  const srcFiles = frameworkFiles(sourceDir);
+  // --- Framework-owned files (stack-scoped surface) ---
+  const srcFiles = frameworkFiles(sourceDir, stack);
   const srcSet = new Set(srcFiles);
 
   for (const rel of srcFiles) {
@@ -74,13 +75,15 @@ function classifyAll({ sourceDir, targetDir, manifest, opts = {} }) {
     }
   }
 
-  // --- User-owned docs (instantiated from templates) ---
-  for (const m of userDocMappings(sourceDir)) {
+  // --- User-owned docs (rendered entrypoint or instantiated from templates) ---
+  for (const m of userDocMappings(sourceDir, stack)) {
     const destPath = path.join(targetDir, m.dest);
+    const render = m.action === 'render';
+    const reason = render ? 'render from neutral source' : 'instantiate from template';
     if (!fs.existsSync(destPath)) {
-      add({ path: m.dest, class: CLASS.USER, action: ACTION.CREATE, reason: 'instantiate from template', template: m.template });
+      add({ path: m.dest, class: CLASS.USER, action: ACTION.CREATE, reason, template: m.template, render });
     } else if (force.has(m.dest)) {
-      add({ path: m.dest, class: CLASS.USER, action: ACTION.FORCE, reason: '--force overwrite', template: m.template });
+      add({ path: m.dest, class: CLASS.USER, action: ACTION.FORCE, reason: '--force overwrite', template: m.template, render });
     } else {
       add({ path: m.dest, class: CLASS.USER, action: ACTION.SKIP, reason: 'user-owned, present' });
     }

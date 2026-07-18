@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const { ACTION } = require('./classify');
 const { instantiate } = require('./instantiate');
+const { renderEntrypoint } = require('./render');
 const { hashFile } = require('./hash');
 const { mergeGitignore, mergePackageJson } = require('./merge');
 const { installHook } = require('./hook');
@@ -23,10 +24,27 @@ function copyFile(src, dest) {
 }
 
 /**
- * @param {object} args - { sourceDir, targetDir, plan, prevManifest }
+ * Produce a user-owned doc at `dest`: render the neutral source for the
+ * entrypoint (spec 006), or verbatim-instantiate its template. On a render
+ * overwrite, an existing file's marked local section is preserved (FR-003).
+ */
+function writeUserDoc(a, sourceDir, targetDir, stack) {
+  const templatePath = path.join(sourceDir, 'templates', a.template);
+  const destPath = path.join(targetDir, a.path);
+  if (a.render) {
+    const existing = fs.existsSync(destPath) ? fs.readFileSync(destPath, 'utf8') : undefined;
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(destPath, renderEntrypoint(templatePath, stack, { existing }));
+  } else {
+    instantiate(templatePath, destPath);
+  }
+}
+
+/**
+ * @param {object} args - { sourceDir, targetDir, plan, prevManifest, stack }
  * @returns {{ files: object, merged: object, hook: string }}
  */
-function applyPlan({ sourceDir, targetDir, plan, prevManifest }) {
+function applyPlan({ sourceDir, targetDir, plan, prevManifest, stack = 'claude' }) {
   const files = {};
   const merged = {};
   const prevMerged = (prevManifest && prevManifest.merged) || {};
@@ -38,7 +56,7 @@ function applyPlan({ sourceDir, targetDir, plan, prevManifest }) {
         if (a.class === 'framework-owned') {
           copyFile(path.join(sourceDir, a.path), path.join(targetDir, a.path));
         } else if (a.class === 'user-owned') {
-          instantiate(path.join(sourceDir, 'templates', a.template), path.join(targetDir, a.path));
+          writeUserDoc(a, sourceDir, targetDir, stack);
         } else if (a.class === 'generated') {
           const dir = path.join(targetDir, a.path);
           fs.mkdirSync(dir, { recursive: true });
@@ -47,7 +65,7 @@ function applyPlan({ sourceDir, targetDir, plan, prevManifest }) {
         }
         break;
       case ACTION.FORCE:
-        instantiate(path.join(sourceDir, 'templates', a.template), path.join(targetDir, a.path));
+        writeUserDoc(a, sourceDir, targetDir, stack);
         break;
       case ACTION.MERGE:
         applyMerge(a.path, targetDir, prevMerged, merged);

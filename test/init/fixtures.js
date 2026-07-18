@@ -39,8 +39,10 @@ function makeSourceFixture({ source = false } = {}) {
   write(dir, '.github/ISSUE_TEMPLATE/bug.yml', 'name: bug\n');
   write(dir, 'hooks/pre-commit', '#!/bin/sh\nexit 0\n');
   write(dir, '.claude/commands/021-init.md', 'init v1\n');
-  // templates (framework-owned AND instantiation source)
-  write(dir, 'templates/CLAUDE-Template.md', '# CLAUDE (template)\n');
+  // templates (framework-owned AND instantiation/render source)
+  // ASSISTANT-Template.md is the neutral entrypoint source (spec 006); the claude
+  // render is identity, so CLAUDE.md == this file's bytes.
+  write(dir, 'templates/ASSISTANT-Template.md', '# ASSISTANT (template)\n');
   write(dir, 'templates/01-PRD-Template.md', '# PRD (template)\n');
   // excluded from surface
   write(dir, 'bin/init.js', '// cli\n');

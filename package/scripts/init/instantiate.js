@@ -3,10 +3,11 @@
 /**
  * instantiate.js — produce a user-owned doc from its template (spec 001 FR-017).
  *
- * Default `claude`-stack mapping: instantiation is a verbatim copy of
- * `templates/<name>-Template.md` to its destination. Stack-aware rendering of
- * the neutral `ASSISTANT-Template.md` (per-stack output names/formats,
- * TDD §9.1–9.2) is deferred to mvp-4.
+ * Instantiation is a verbatim copy of `templates/<name>-Template.md` to its
+ * destination — used for the common guiding docs (CODE/PRODUCT/DESIGN/README)
+ * and the requirements docs. The stack **entrypoint** doc is instead produced
+ * by `scripts/init/render.js` from the neutral `ASSISTANT-Template.md` source
+ * (spec 006, TDD §9.1–9.2).
  */
 
 const fs = require('fs');

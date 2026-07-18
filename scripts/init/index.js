@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classify: classifyPath, CLASS } = require('./classes');
+const { getAdapter } = require('./adapters');
 const { classifyAll } = require('./classify');
 const { applyPlan } = require('./apply');
 const { loadManifest, buildManifest, writeManifest } = require('./manifest');
@@ -44,11 +45,11 @@ function resolveTools(opts, prev) {
   return { stack, assistant, ssd, design };
 }
 
-/** Validate --force targets are user-owned (FR-004). Returns an error string or null. */
-function validateForce(force) {
+/** Validate --force targets are user-owned for the active stack (FR-004). Returns an error string or null. */
+function validateForce(force, stack = 'claude') {
   for (const raw of force || []) {
     const rel = raw.replace(/\\/g, '/');
-    if (classifyPath(rel) !== CLASS.USER) {
+    if (classifyPath(rel, stack) !== CLASS.USER) {
       return `--force is for user-owned files only; '${rel}' is not one. Use --upgrade to refresh framework files.`;
     }
   }
@@ -83,13 +84,26 @@ function initFramework(targetDir, opts = {}) {
   const sourceDir = opts.sourceDir || PACKAGE_ROOT;
   const log = opts.quiet ? () => {} : (m) => console.log(m);
 
-  const forceErr = validateForce(opts.force);
+  const prevManifest = loadManifest(targetDir);
+
+  // Resolve the active stack up front — it parameterizes the whole install
+  // surface (spec 006). A reserved-but-unpopulated stack (kiro) fails loudly
+  // here rather than mid-classify (analyze A5).
+  const tools = resolveTools(opts, prevManifest);
+  const stack = tools.stack;
+  try {
+    getAdapter(stack);
+  } catch (e) {
+    console.error(`Error: ${e.message}`);
+    return 1;
+  }
+
+  const forceErr = validateForce(opts.force, stack);
   if (forceErr) {
     console.error(`Error: ${forceErr}`);
     return 1;
   }
 
-  const prevManifest = loadManifest(targetDir);
   const mode = resolveMode(targetDir, sourceDir, prevManifest);
 
   // Migrate-mode (spec 002): detection/interview/import/duplicate-resolution
@@ -98,14 +112,14 @@ function initFramework(targetDir, opts = {}) {
     return migrateFramework(targetDir, opts, { sourceDir, prevManifest, resolveTools, log, reportHook });
   }
 
-  const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts });
+  const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts, stack });
 
   if (opts.dryRun) {
     log(renderPlan(plan, { dryRun: true }));
     return 0;
   }
 
-  const applied = applyPlan({ sourceDir, targetDir, plan, prevManifest });
+  const applied = applyPlan({ sourceDir, targetDir, plan, prevManifest, stack });
 
   const pkgVersion = require(path.join(sourceDir, 'package.json')).version;
   const manifest = buildManifest({
@@ -113,7 +127,7 @@ function initFramework(targetDir, opts = {}) {
     version: pkgVersion,
     mode,
     phase: opts.phase || (prevManifest && prevManifest.phase) || 'planning',
-    tools: resolveTools(opts, prevManifest),
+    tools,
     files: applied.files,
     merged: applied.merged,
     hook: applied.hook,

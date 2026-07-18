@@ -15,9 +15,24 @@ const fs = require('fs');
 const path = require('path');
 const { userDocMappings } = require('../sources');
 const { instantiate } = require('../instantiate');
+const { renderEntrypoint } = require('../render');
 const { resolveDuplicate } = require('./interview');
 const { updateCatalog } = require('./import');
 const { toPosix } = require('../classes');
+
+/**
+ * Produce a framework doc at `destAbs` from mapping `m`: render the entrypoint
+ * from the neutral source (spec 006), else verbatim-instantiate its template.
+ */
+function writeFrameworkDoc(m, sourceDir, destAbs, stack) {
+  const templatePath = path.join(sourceDir, 'templates', m.template);
+  if (m.action === 'render') {
+    fs.mkdirSync(path.dirname(destAbs), { recursive: true });
+    fs.writeFileSync(destAbs, renderEntrypoint(templatePath, stack));
+  } else {
+    instantiate(templatePath, destAbs);
+  }
+}
 
 /** Guiding/router docs whose framework version must survive a leave (FR-007). */
 const GUIDING = new Set(['CLAUDE.md', 'CODE.md', 'PRODUCT.md', 'DESIGN.md']);
@@ -30,9 +45,9 @@ const ROLE = {
   'README.md': 'project readme',
 };
 
-/** Exact-dest collisions: instantiable user docs that already exist. */
-function findCollisions(sourceDir, targetDir) {
-  return userDocMappings(sourceDir).filter((m) => fs.existsSync(path.join(targetDir, m.dest)));
+/** Exact-dest collisions: instantiable user docs that already exist (stack-scoped). */
+function findCollisions(sourceDir, targetDir, stack = 'claude') {
+  return userDocMappings(sourceDir, stack).filter((m) => fs.existsSync(path.join(targetDir, m.dest)));
 }
 
 /** Pick an unused archive path (never overwrite an existing archive). */
@@ -61,7 +76,7 @@ function roleFor(dest) {
  * Resolve every collision and apply the chosen action.
  * @returns {{ duplicates:object, imported:string[], archived:object }}
  */
-function resolveDuplicates({ sourceDir, targetDir, opts, prevManifest }) {
+function resolveDuplicates({ sourceDir, targetDir, opts, prevManifest, stack = 'claude' }) {
   const prev = (prevManifest && prevManifest.migrate) || null;
 
   // Re-run: the duplicate set is fixed at the first migrate pass. Honor the
@@ -79,7 +94,7 @@ function resolveDuplicates({ sourceDir, targetDir, opts, prevManifest }) {
   const record = { duplicates: {}, imported: [], archived: {} };
   const catalogRows = [];
 
-  for (const m of findCollisions(sourceDir, targetDir)) {
+  for (const m of findCollisions(sourceDir, targetDir, stack)) {
     const dest = m.dest;
     const action = resolveDuplicate(dest, opts);
     const absDest = path.join(targetDir, dest);
@@ -89,20 +104,23 @@ function resolveDuplicates({ sourceDir, targetDir, opts, prevManifest }) {
       const archiveAbs = uniqueArchivePath(path.join(targetDir, 'requirements', '_notes', 'archive', dest));
       fs.mkdirSync(path.dirname(archiveAbs), { recursive: true });
       fs.renameSync(absDest, archiveAbs);
-      instantiate(templatePath, absDest); // fresh template at the dest
+      writeFrameworkDoc(m, sourceDir, absDest, stack); // fresh framework doc at the dest
       record.archived[dest] = toPosix(path.relative(targetDir, archiveAbs));
       record.duplicates[dest] = 'archive';
     } else if (action === 'update') {
       const userContent = fs.readFileSync(absDest, 'utf8');
-      const template = fs.readFileSync(templatePath, 'utf8').replace(/\s*$/, '');
-      fs.writeFileSync(absDest, `${template}\n\n## Imported content\n\n${userContent.replace(/\s*$/, '')}\n`);
+      const framework =
+        m.action === 'render'
+          ? renderEntrypoint(templatePath, stack).replace(/\s*$/, '')
+          : fs.readFileSync(templatePath, 'utf8').replace(/\s*$/, '');
+      fs.writeFileSync(absDest, `${framework}\n\n## Imported content\n\n${userContent.replace(/\s*$/, '')}\n`);
       record.duplicates[dest] = 'update';
     } else {
       // leave-alongside: keep the user's file, catalog it, coexist for guiding docs.
       record.duplicates[dest] = 'leave';
       record.imported.push(dest);
       catalogRows.push({ path: dest, role: roleFor(dest) });
-      if (GUIDING.has(dest)) instantiate(templatePath, path.join(targetDir, namespaced(dest)));
+      if (GUIDING.has(dest)) writeFrameworkDoc(m, sourceDir, path.join(targetDir, namespaced(dest)), stack);
     }
   }
 

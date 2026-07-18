@@ -17,4 +17,5 @@ Templates for creating standardized project documentation.
 - `08-STAKEHOLDER-PERSONA-Template.md`: Template for Stakeholder Persona.
 - `09-CONTRIBUTOR-PERSONA-Template.md`: Template for Contributor Persona.
 - `10-RELEASE-Template.md`: Template for release files (`requirements/_releases/`) — MVP and Growth releases (r4).
-- `CLAUDE-Template.md`, `CODE-Template.md`, `PRODUCT-Template.md`, `DESIGN-Template.md`, `README-Template.md`: Guiding-doc templates instantiated by init (TDD §5).
+- `ASSISTANT-Template.md`: Neutral assistant-entrypoint **source** (spec 006, TDD §9.1) — rendered per stack into the entrypoint doc (`claude` → `CLAUDE.md`, `antigravity` → `AGENTS.md`) by `scripts/init/render.js`. Not a verbatim copy.
+- `CODE-Template.md`, `PRODUCT-Template.md`, `DESIGN-Template.md`, `README-Template.md`: Guiding-doc templates instantiated verbatim by init (TDD §5).

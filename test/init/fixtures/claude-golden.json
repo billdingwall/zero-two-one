@@ -1,0 +1,6 @@
+{
+  "_note": "Golden byte-reference for the claude entrypoint render (spec 006 FR-010, T001). sha256 of the pre-006 engine's output; stored as hashes (not .md copies) so check-links.js does not scan rendered relative links (analyze A3). Regenerate only with an intentional, reviewed change to the claude rendering.",
+  "CLAUDE.md": "16c102b209cc2d6679d3289300072cb4e1d37c3b3e07986da3040d26088b5040",
+  ".claude/commands/021-init.md": "df4e89ba48b437b34797f712ddfdeded1fbeca6ed649060ff5807be392285a1f",
+  ".claude/commands/021-status.md": "8e9eeeb676f2da709cc043f330368ea450ef2e511975f0bbb5e723f04323d4a5"
+}

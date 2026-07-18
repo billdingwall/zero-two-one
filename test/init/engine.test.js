@@ -44,7 +44,7 @@ test('T005 fresh install creates the framework surface + populated manifest', ()
   const target = fx.makeTargetDir();
   const code = install(target, source);
   assert.equal(code, 0);
-  for (const f of ['scripts/run-qa.sh', 'skills/verify.md', 'workflow/workflows.md', 'hooks/pre-commit', '.claude/commands/021-init.md', 'templates/CLAUDE-Template.md']) {
+  for (const f of ['scripts/run-qa.sh', 'skills/verify.md', 'workflow/workflows.md', 'hooks/pre-commit', '.claude/commands/021-init.md', 'templates/ASSISTANT-Template.md']) {
     assert.ok(fx.exists(target, f), `expected ${f}`);
   }
   const m = loadManifest(target);
@@ -61,9 +61,9 @@ test('T006 instantiates user docs from templates; bin/ and specs/ are not writte
   const source = fx.makeSourceFixture();
   const target = fx.makeTargetDir();
   install(target, source);
-  assert.ok(fx.exists(target, 'CLAUDE.md'), 'CLAUDE.md instantiated');
+  assert.ok(fx.exists(target, 'CLAUDE.md'), 'CLAUDE.md rendered');
   assert.ok(fx.exists(target, 'requirements/01-PRD.md'), 'PRD instantiated');
-  assert.equal(fx.read(target, 'CLAUDE.md'), fx.read(source, 'templates/CLAUDE-Template.md'));
+  assert.equal(fx.read(target, 'CLAUDE.md'), fx.read(source, 'templates/ASSISTANT-Template.md'), 'claude render is identity of the neutral source');
   assert.ok(!fx.exists(target, 'bin/init.js'), 'bin/ excluded');
   assert.ok(!fx.exists(target, 'specs/_INDEX.md'), 'specs/ excluded');
   fx.rm(source); fx.rm(target);
@@ -113,7 +113,7 @@ test('T009 user doc never modified without --force; --force overwrites', () => {
   install(target, source, { now: '2026-02-02T00:00:00.000Z' });
   assert.match(fx.read(target, 'CLAUDE.md'), /my customized/, 'untouched without --force');
   install(target, source, { now: '2026-03-03T00:00:00.000Z', force: ['CLAUDE.md'] });
-  assert.equal(fx.read(target, 'CLAUDE.md'), fx.read(source, 'templates/CLAUDE-Template.md'), 'overwritten with --force');
+  assert.equal(fx.read(target, 'CLAUDE.md'), fx.read(source, 'templates/ASSISTANT-Template.md'), 'overwritten with --force (re-rendered from neutral source)');
   fx.rm(source); fx.rm(target);
 });
 
