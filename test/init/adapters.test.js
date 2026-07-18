@@ -17,7 +17,7 @@ const { userDocMappings } = require('../../scripts/init/sources');
 const REPO_ROOT = path.join(__dirname, '..', '..');
 
 // --- T003 · getAdapter ------------------------------------------------------
-test('T003 getAdapter: claude/antigravity resolve; absent/unknown → claude; kiro throws', () => {
+test('T003 getAdapter: claude/antigravity/kiro resolve; absent/unknown → claude', () => {
   assert.equal(getAdapter('claude').entrypoint.dest, 'CLAUDE.md');
   assert.deepEqual(getAdapter('claude').surfaceDirs, ['.claude/commands']);
   assert.equal(getAdapter('antigravity').entrypoint.dest, 'AGENTS.md');
@@ -26,7 +26,9 @@ test('T003 getAdapter: claude/antigravity resolve; absent/unknown → claude; ki
   assert.equal(getAdapter(undefined), ADAPTERS.claude, 'absent → claude (FR-007)');
   assert.equal(getAdapter('nonsense'), ADAPTERS.claude, 'unknown → claude');
 
-  assert.throws(() => getAdapter('kiro'), /not yet supported/, 'reserved stack fails loudly (analyze A5)');
+  // kiro is populated as of spec 008 — no longer reserved/throwing (was analyze A5).
+  assert.doesNotThrow(() => getAdapter('kiro'), 'kiro resolves (spec 008)');
+  assert.equal(getAdapter('kiro').entrypoint, undefined, 'kiro is entrypoint-less (steering is the surface)');
 });
 
 // --- T004 (spec 007) · antigravity adapter shape ----------------------------

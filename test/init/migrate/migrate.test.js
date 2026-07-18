@@ -83,9 +83,8 @@ test('T006 --phase overrides inferred phase', () => {
 // --- T007 · stack detection + conflict resolution ---------------------------
 test('T007 stack from surface; conflicting surfaces resolved by --stack', () => {
   const source = fx.makeMigrateSource();
-  // A .kiro/ surface resolves stack=kiro, which is reserved-but-unrenderable
-  // until spec 008 — migrate must refuse loudly, not write a claude tree under
-  // a kiro manifest (spec 006 analyze A5).
+  // A .kiro/ surface resolves stack=kiro — installable as of spec 008 (the
+  // adapter is populated; kiro is no longer reserved).
   const kiro = fx.makeTarget();
   fx.write(kiro, '.kiro/config', 'x\n');
   const both = fx.makeTarget();
@@ -95,8 +94,8 @@ test('T007 stack from surface; conflicting surfaces resolved by --stack', () => 
   const kiroCode = migrate(kiro, source);
   migrate(both, source, { stack: 'claude' });
 
-  assert.equal(kiroCode, 1, 'kiro is not yet installable (spec 008)');
-  assert.equal(loadManifest(kiro), null, 'no manifest written for an unsupported stack');
+  assert.equal(kiroCode, 0, 'kiro is installable (spec 008)');
+  assert.equal(loadManifest(kiro).tools.stack, 'kiro', 'kiro surface detected → kiro manifest');
   assert.equal(loadManifest(both).tools.stack, 'claude', 'conflicting surfaces resolved by --stack claude');
   fx.rm(source); fx.rm(kiro); fx.rm(both);
 });

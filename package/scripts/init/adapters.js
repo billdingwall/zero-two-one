@@ -49,11 +49,27 @@ const ADAPTERS = {
       { fromDir: '.claude/commands', match: '021-*.md', toDir: '.agents/skills', kind: 'command' },
     ],
   },
-  // kiro — reserved; populated by spec 008 (steering + .kiro/agents + kiro-specs dispatch).
+  kiro: {
+    // No entrypoint — steering is the instruction surface, not an ASSISTANT-Template
+    // rendering (spec 008 FR-001). Every entrypoint reader null-guards this.
+    surfaceDirs: [],
+    surfaceRenders: [
+      // Stable framework operating-guidance steering, flat-relocated (keep filename).
+      { fromDir: 'templates/kiro-steering', match: '021-*.md', toDir: '.kiro/steering', kind: 'steering' },
+      // The Kiro CLI agent definition.
+      { fromDir: 'templates/kiro-agent', match: '021.json', toDir: '.kiro/agents', kind: 'agent-json' },
+      // The skills library, materialized natively (reuses the spec 007 skill render).
+      { fromDir: 'skills', match: '*.md', exclude: ['_INDEX.md'], toDir: '.kiro/skills', kind: 'skill' },
+    ],
+  },
 };
 
-/** Stacks accepted by the CLI but not yet renderable (fail loudly — analyze A5). */
-const RESERVED = new Set(['kiro']);
+/**
+ * Stacks accepted by the CLI but not yet renderable (fail loudly — analyze A5).
+ * Empty now that kiro is populated (spec 008); kept as the seam for any future
+ * reserved stack.
+ */
+const RESERVED = new Set();
 
 /**
  * Resolve a stack's adapter. Absent/unknown → `claude` (FR-007 back-compat for

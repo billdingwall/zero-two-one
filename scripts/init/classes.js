@@ -84,11 +84,13 @@ function frameworkDirs(stack) {
 /**
  * User-owned guiding docs for a stack = the rendered entrypoint (plus any
  * `honored` alternatives, e.g. antigravity's `GEMINI.md` — spec 007 FR-004) +
- * the common set.
+ * the common set. The entrypoint is **optional** (spec 008): `kiro` has none —
+ * steering is its instruction surface — so only the common docs apply.
  */
 function userFiles(stack) {
   const { entrypoint } = getAdapter(stack);
-  return [entrypoint.dest, ...(entrypoint.honored || []), ...USER_FILES_COMMON];
+  const ep = entrypoint ? [entrypoint.dest, ...(entrypoint.honored || [])] : [];
+  return [...ep, ...USER_FILES_COMMON];
 }
 
 /** Normalize a relative path to POSIX separators for stable comparison/keys. */

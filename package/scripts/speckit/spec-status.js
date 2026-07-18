@@ -45,8 +45,9 @@ switch (command) {
       console.log('No specs found in specs/. Run /speckit-specify to create one.');
       break;
     }
+    const primary = lib.engineFor().docs.primary;
     for (const s of specs) {
-      const status = lib.readStatus(s) || 'MISSING spec.md';
+      const status = lib.readStatus(s) || `MISSING ${primary}`;
       const gate = lib.isGatePassing(status) ? '✅' : '⛔';
       console.log(`${gate} ${s.padEnd(40)} ${status}`);
     }
@@ -61,7 +62,7 @@ switch (command) {
     }
     const status = lib.readStatus(spec);
     if (status === null) {
-      console.error(`${spec}: spec.md is missing.`);
+      console.error(`${spec}: ${lib.engineFor().docs.primary} is missing.`);
       process.exit(1);
     }
     console.log(`${spec}: ${status} (${lib.isGatePassing(status) ? 'gate-passing' : 'blocked from implementation'})`);

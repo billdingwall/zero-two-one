@@ -167,3 +167,63 @@ test('T012 antigravity install emits an MCP note; nothing written to ~/.gemini',
   assert.match(out, /~\/\.gemini/, 'MCP note references the gemini config path');
   assert.ok(!fs.existsSync(path.join(target, '.gemini')), 'no .gemini written into the target');
 });
+
+// === spec 008 · Kiro adapter (Part A — install) =============================
+
+// --- 008-T004 · renderSurface for kiro --------------------------------------
+test('008-T004 renderSurface(kiro): steering (flat) + agent-json + materialized skills', () => {
+  const surface = renderSurface(REPO_ROOT, 'kiro');
+  const dests = surface.map((s) => s.dest);
+
+  for (const s of ['021-product', '021-tech', '021-structure']) {
+    assert.ok(dests.includes(`.kiro/steering/${s}.md`), `flat steering ${s}.md (keep filename, no SKILL.md)`);
+  }
+  assert.ok(dests.includes('.kiro/agents/021.json'), 'agent-json relocated flat');
+  for (const name of EXPECTED_SKILLS) {
+    assert.ok(dests.includes(`.kiro/skills/${name}/SKILL.md`), `skill ${name} materialized under .kiro`);
+  }
+  // steering content is the template verbatim (frontmatter authored at rest)
+  const product = surface.find((s) => s.dest === '.kiro/steering/021-product.md');
+  assert.match(product.content, /^---\ninclusion: always\n---/, 'steering inclusion-mode frontmatter');
+  assert.deepEqual(dests, [...dests].sort(), 'sorted by dest');
+});
+
+// --- 008-T005 · kiro install surface (scaffold + migrate) -------------------
+test('008-T005 kiro install: steering + agent + skills; no other stack surface', () => {
+  const target = tmp();
+  install(target, 'kiro');
+
+  for (const s of ['021-product', '021-tech', '021-structure']) {
+    assert.ok(fs.existsSync(path.join(target, '.kiro/steering', `${s}.md`)), `${s}.md written`);
+  }
+  assert.ok(fs.existsSync(path.join(target, '.kiro/agents/021.json')), '021.json written');
+  assert.ok(fs.existsSync(path.join(target, '.kiro/skills/021-generate-prd/SKILL.md')), 'skills materialized');
+  assert.ok(!fs.existsSync(path.join(target, 'CLAUDE.md')), 'no CLAUDE.md');
+  assert.ok(!fs.existsSync(path.join(target, 'AGENTS.md')), 'no AGENTS.md (kiro is entrypoint-less)');
+  assert.ok(!tree(target).some((p) => p.startsWith('.claude/') || p.startsWith('.agents/')), 'no claude/agents surface');
+
+  const m = loadManifest(target);
+  assert.equal(m.tools.stack, 'kiro');
+  assert.equal(m.tools.ssd, 'kiro-specs');
+  assert.ok(m.files['.kiro/steering/021-product.md'], 'steering in manifest inventory');
+
+  // migrate path: a .kiro/ repo with no --stack detects kiro and installs the surface
+  const mig = tmp();
+  fs.writeFileSync(path.join(mig, 'src.js'), "console.log('x');\n");
+  fs.mkdirSync(path.join(mig, '.kiro'), { recursive: true });
+  install(mig, undefined, { now: '2026-02-01T00:00:00.000Z' });
+  assert.equal(loadManifest(mig).tools.stack, 'kiro', 'migrate detected kiro');
+  assert.ok(fs.existsSync(path.join(mig, '.kiro/steering/021-product.md')), 'surface installed in migrate');
+});
+
+// --- 008-T006 · entrypoint-optional ownership; .kiro/specs unmanaged --------
+test('008-T006 classify: kiro .kiro surface owned; entrypoint-less; .kiro/specs unmanaged', () => {
+  assert.equal(classify('.kiro/steering/021-product.md', 'kiro'), CLASS.FRAMEWORK);
+  assert.equal(classify('.kiro/agents/021.json', 'kiro'), CLASS.FRAMEWORK);
+  assert.equal(classify('.kiro/skills/021-generate-prd/SKILL.md', 'kiro'), CLASS.FRAMEWORK);
+  assert.equal(classify('.kiro/steering/021-product.md', 'claude'), null, 'unmanaged under other stacks');
+  assert.equal(classify('CLAUDE.md', 'kiro'), null, 'kiro has no CLAUDE.md entrypoint');
+  assert.equal(classify('AGENTS.md', 'kiro'), null, 'kiro has no AGENTS.md entrypoint');
+  // analyze A3: engine spec state is disjoint from the install surface
+  assert.equal(classify('.kiro/specs/my-feature/requirements.md', 'kiro'), null, '.kiro/specs unmanaged by install');
+});

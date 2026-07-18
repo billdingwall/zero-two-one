@@ -111,7 +111,8 @@ function classifyAll({ sourceDir, targetDir, manifest, opts = {}, stack = 'claud
   // file (antigravity's GEMINI.md) is the entrypoint instead of the default
   // (spec 007 FR-004).
   const { entrypoint } = getAdapter(stack);
-  const honoredDest = (entrypoint.honored || []).find((h) => fs.existsSync(path.join(targetDir, h)));
+  const honoredDest =
+    entrypoint && (entrypoint.honored || []).find((h) => fs.existsSync(path.join(targetDir, h)));
   for (const m of userDocMappings(sourceDir, stack)) {
     const render = m.action === 'render';
     const dest = render && honoredDest ? honoredDest : m.dest;

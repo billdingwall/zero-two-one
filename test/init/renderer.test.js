@@ -99,14 +99,16 @@ test('T005 antigravity renders AGENTS.md and no claude surface', () => {
 test('T006 neutral core is byte-identical across stacks; only Layer-2 differs', () => {
   const cl = tmp();
   const ag = tmp();
+  const ki = tmp();
   install(cl, 'claude');
   install(ag, 'antigravity');
+  install(ki, 'kiro');
 
-  // Exclude Layer-2 (entrypoints + .claude/.agents surfaces) and the non-content
-  // carve-outs from the byte-identical assertion: the manifest + empty
-  // .ai/context (analyze A1), and the MERGED files (.gitignore, package.json)
-  // which carry target-specific identity like the project name (analyze A7).
-  // The .agents/ skills surface is antigravity's Layer-2 (spec 007).
+  // Exclude Layer-2 (entrypoints + .claude/.agents/.kiro surfaces) and the
+  // non-content carve-outs from the byte-identical assertion: the manifest +
+  // empty .ai/context (analyze A1), and the MERGED files (.gitignore,
+  // package.json) which carry target-specific identity (analyze A7). The
+  // .agents/ (spec 007) and .kiro/ (spec 008) surfaces are Layer-2.
   const isLayer2OrCarveOut = (rel) =>
     rel === 'CLAUDE.md' ||
     rel === 'AGENTS.md' ||
@@ -114,6 +116,8 @@ test('T006 neutral core is byte-identical across stacks; only Layer-2 differs', 
     rel.startsWith('.claude/') ||
     rel === '.agents' ||
     rel.startsWith('.agents/') ||
+    rel === '.kiro' ||
+    rel.startsWith('.kiro/') ||
     rel === '.zero-two-one.json' ||
     rel === '.ai' ||
     rel.startsWith('.ai/') ||
@@ -124,12 +128,14 @@ test('T006 neutral core is byte-identical across stacks; only Layer-2 differs', 
 
   const snapCl = snapshot(cl, (rel) => isLayer2OrCarveOut(rel));
   const snapAg = snapshot(ag, (rel) => isLayer2OrCarveOut(rel));
+  const snapKi = snapshot(ki, (rel) => isLayer2OrCarveOut(rel));
   assert.deepEqual(
     Object.keys(snapAg).sort(),
     Object.keys(snapCl).sort(),
     'Layer-1 path sets match across stacks'
   );
   assert.deepEqual(snapAg, snapCl, 'every Layer-1 content path is byte-identical across stacks');
+  assert.deepEqual(snapKi, snapCl, 'kiro Layer-1 byte-identical to claude');
   assert.ok(Object.keys(snapCl).length > 5, 'sanity: Layer-1 is non-trivial');
 });
 

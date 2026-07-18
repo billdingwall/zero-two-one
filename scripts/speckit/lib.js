@@ -14,9 +14,20 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const githubSpeckit = require('./engines/github-speckit');
+const kiroSpecs = require('./engines/kiro-specs');
 
 const STATUSES = ['Draft', 'In Review', 'Approved', 'Ready for Dev', 'In Progress', 'Done'];
 const GATE_PASSING = ['Approved', 'Ready for Dev', 'In Progress', 'Done'];
+
+/**
+ * Resolve the active SSD engine from the manifest `tools.ssd` (spec 008 FR-007).
+ * Anything other than `kiro-specs` (absent, `github-speckit`, unknown) → the
+ * default `github-speckit`, preserving pre-mvp-4 / claude / antigravity behavior.
+ */
+function engineFor(root = repoRoot()) {
+  return manifestFacts(root).ssd === 'kiro-specs' ? kiroSpecs : githubSpeckit;
+}
 
 function repoRoot() {
   try {
@@ -29,7 +40,7 @@ function repoRoot() {
 }
 
 function specsDir(root = repoRoot()) {
-  return path.join(root, 'specs');
+  return engineFor(root).specsDir(root);
 }
 
 function contextDir() {
@@ -46,15 +57,9 @@ function currentBranch() {
   }
 }
 
-/** All spec directories following the NNN-feature-name convention, sorted. */
+/** All spec directories for the active engine, sorted (delegates — spec 008). */
 function listSpecs(root = repoRoot()) {
-  const dir = specsDir(root);
-  if (!fs.existsSync(dir)) return [];
-  return fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((e) => e.isDirectory() && /^\d{3}-/.test(e.name))
-    .map((e) => e.name)
-    .sort();
+  return engineFor(root).listSpecs(root);
 }
 
 /**
@@ -81,61 +86,21 @@ function resolveSpec(idOrName) {
 }
 
 function specPath(name, root = repoRoot()) {
-  return path.join(specsDir(root), name);
+  return engineFor(root).specPath(name, root);
 }
 
 /**
- * Read the lifecycle status from a spec's spec.md.
- * Returns null when spec.md is missing, 'Draft' when no status is declared.
+ * Read the lifecycle status for a feature via the active engine (spec 008).
+ * `github-speckit` reads `spec.md`; `kiro-specs` reads `requirements.md`.
+ * Returns null when the primary doc is missing, 'Draft' when undeclared.
  */
 function readStatus(name, root = repoRoot()) {
-  const specFile = path.join(specPath(name, root), 'spec.md');
-  if (!fs.existsSync(specFile)) return null;
-  const text = fs.readFileSync(specFile, 'utf8');
-
-  const fm = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (fm) {
-    const m = fm[1].match(/^status:[ \t]*(.+)$/im);
-    if (m) return m[1].trim().replace(/^['"]|['"]$/g, '');
-  }
-  const inline = text.match(/^\*\*Status\*\*:[ \t]*(.+)$/im);
-  if (inline) return inline[1].replace(/\*+\s*$/, '').trim();
-
-  return 'Draft';
+  return engineFor(root).readStatus(name, root);
 }
 
-/**
- * Persist a lifecycle status into spec.md, updating whichever declaration
- * style the file already uses (frontmatter preferred), or inserting an
- * inline `**Status**:` line directly under the first heading.
- */
-function writeStatus(name, status) {
-  const specFile = path.join(specPath(name), 'spec.md');
-  if (!fs.existsSync(specFile)) {
-    throw new Error(`spec.md not found for ${name}`);
-  }
-  let text = fs.readFileSync(specFile, 'utf8');
-
-  const fm = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (fm) {
-    if (/^status:[ \t]*.+$/im.test(fm[1])) {
-      const updated = fm[1].replace(/^status:[ \t]*.+$/im, `status: ${status}`);
-      text = text.replace(fm[0], `---\n${updated}\n---`);
-    } else {
-      text = text.replace(fm[0], `---\n${fm[1]}\nstatus: ${status}\n---`);
-    }
-  } else if (/^\*\*Status\*\*:[ \t]*.+$/im.test(text)) {
-    text = text.replace(/^\*\*Status\*\*:[ \t]*.+$/im, `**Status**: ${status}`);
-  } else {
-    // Insert after the first markdown heading so the status is always visible.
-    const lines = text.split('\n');
-    const headingIdx = lines.findIndex((l) => /^#/.test(l));
-    const insertAt = headingIdx === -1 ? 0 : headingIdx + 1;
-    lines.splice(insertAt, 0, '', `**Status**: ${status}`);
-    text = lines.join('\n');
-  }
-
-  fs.writeFileSync(specFile, text);
+/** Persist a lifecycle status via the active engine (spec 008). */
+function writeStatus(name, status, root = repoRoot()) {
+  return engineFor(root).writeStatus(name, status, root);
 }
 
 function isGatePassing(status) {
@@ -227,6 +192,7 @@ function inferFacts(root) {
     phaseNum: num,
     phaseLabel: num === 1 ? 'MVP Build (One)' : 'Planning (Zero)',
     stack: null,
+    ssd: 'github-speckit',
     mode: null,
     source: 'inferred',
   };
@@ -251,6 +217,7 @@ function manifestFacts(root = repoRoot()) {
       phaseNum: v.num,
       phaseLabel: v.label,
       stack: (manifest.tools && manifest.tools.stack) || null,
+      ssd: (manifest.tools && manifest.tools.ssd) || 'github-speckit',
       mode: manifest.mode || null,
       source: 'manifest',
     };
@@ -277,6 +244,7 @@ module.exports = {
   readManifest,
   manifestFacts,
   inferFacts,
+  engineFor,
 };
 
 // --- CLI (spec 003): `node scripts/speckit/lib.js phase` → phaseNum ---------

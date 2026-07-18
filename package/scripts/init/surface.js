@@ -47,25 +47,40 @@ function firstLine(body) {
   return '';
 }
 
+/** Descriptor kinds that relocate a file flat (keep its filename), vs. the
+ * per-item `021-<name>/SKILL.md` subdir shape used by skills/commands. */
+const FLAT_KINDS = new Set(['steering', 'agent-json']);
+
 /**
  * Render one descriptor's files into `{ dest, content }` entries.
- * - `kind: 'skill'`   → the source file verbatim (frontmatter already added at rest, FR-002).
- * - `kind: 'command'` → synthesized `name`/`description` frontmatter + body (the command
- *   source is golden-pinned and cannot carry frontmatter — research R2).
+ * - `kind: 'skill'`     → per-item `<toDir>/021-<name>/SKILL.md`, source verbatim
+ *   (frontmatter already added at rest, FR-002).
+ * - `kind: 'command'`   → per-item `SKILL.md` with synthesized `name`/`description`
+ *   frontmatter + body (the command source is golden-pinned — research R2).
+ * - `kind: 'steering'`  → flat `<toDir>/<basename>`, source verbatim (the steering
+ *   template already carries its Kiro inclusion-mode frontmatter — spec 008 FR-002).
+ * - `kind: 'agent-json'`→ flat `<toDir>/021.json`, source verbatim (spec 008 FR-003).
  */
 function renderDescriptor(sourceDir, desc) {
   const dirAbs = path.join(sourceDir, desc.fromDir);
   if (!fs.existsSync(dirAbs)) return [];
   const exclude = new Set(desc.exclude || []);
+  const flat = FLAT_KINDS.has(desc.kind);
   const out = [];
 
   for (const entry of fs.readdirSync(dirAbs, { withFileTypes: true })) {
     if (!entry.isFile() || exclude.has(entry.name) || !matchName(entry.name, desc.match)) continue;
 
-    const base = namespaced(entry.name.replace(/\.md$/, ''));
-    const dest = toPosix(path.join(desc.toDir, base, 'SKILL.md'));
     const body = fs.readFileSync(path.join(dirAbs, entry.name), 'utf8');
 
+    if (flat) {
+      // Keep the filename (already 021-namespaced in the source); no subdir, no rename.
+      out.push({ dest: toPosix(path.join(desc.toDir, entry.name)), content: body });
+      continue;
+    }
+
+    const base = namespaced(entry.name.replace(/\.md$/, ''));
+    const dest = toPosix(path.join(desc.toDir, base, 'SKILL.md'));
     const content =
       desc.kind === 'command'
         ? `---\nname: ${base}\ndescription: ${firstLine(body)}\n---\n\n${body}`

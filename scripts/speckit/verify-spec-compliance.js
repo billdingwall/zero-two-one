@@ -66,15 +66,17 @@ if (!spec) {
 let status = null;
 if (spec) {
   const specDir = lib.specPath(spec);
+  const engine = lib.engineFor();
+  const primary = engine.docs.primary;
 
-  // --- G2: spec.md + status -------------------------------------------------
+  // --- G2: primary spec doc + status ----------------------------------------
   status = lib.readStatus(spec);
   if (status === null) {
-    add('G2', 'FAIL', `${spec}/spec.md is missing.`);
+    add('G2', 'FAIL', `${spec}/${primary} is missing.`);
   } else if (!lib.STATUSES.includes(status)) {
     add('G2', 'WARN', `Status "${status}" is not a recognized lifecycle status (${lib.STATUSES.join(' | ')}). Treating as blocking.`);
   } else {
-    add('G2', 'PASS', `spec.md present with status "${status}".`);
+    add('G2', 'PASS', `${primary} present with status "${status}".`);
   }
 
   // --- G3: implementation gate ----------------------------------------------
@@ -92,8 +94,8 @@ if (spec) {
   }
 
   if (!args.gate && status !== null) {
-    // --- C1: required artifacts ----------------------------------------------
-    for (const f of ['plan.md', 'tasks.md']) {
+    // --- C1: required artifacts (engine-specific — analyze A2) ----------------
+    for (const f of engine.requiredArtifacts) {
       const exists = fs.existsSync(path.join(specDir, f));
       if (exists) {
         add('C1', 'PASS', `${f} present.`);
@@ -102,8 +104,8 @@ if (spec) {
       }
     }
 
-    // --- C2: optional artifacts ------------------------------------------------
-    for (const f of ['data-model.md', 'contracts']) {
+    // --- C2: optional artifacts (engine-specific — analyze A2) -----------------
+    for (const f of engine.optionalArtifacts) {
       if (!fs.existsSync(path.join(specDir, f))) {
         add('C2', 'WARN', `${f} not present — fine if this feature has no data/contract surface.`);
       }
@@ -132,7 +134,7 @@ if (spec) {
     }
 
     // --- C4: Done means done -----------------------------------------------------
-    const tasksFile = path.join(specDir, 'tasks.md');
+    const tasksFile = path.join(specDir, engine.docs.tasks);
     if (fs.existsSync(tasksFile)) {
       const t = lib.countTasks(fs.readFileSync(tasksFile, 'utf8'));
       if (status === 'Done' && t.remaining > 0) {

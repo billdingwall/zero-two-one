@@ -13,7 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const lib = require('./lib');
-const { repoRoot, listSpecs, readStatus, specPath, countTasks, manifestFacts, inferFacts } = lib;
+const { repoRoot, listSpecs, readStatus, specPath, countTasks, manifestFacts, inferFacts, engineFor } = lib;
 
 // --- status vocabularies ----------------------------------------------------
 
@@ -63,7 +63,7 @@ function parseIndexTable(root) {
 
 /** A spec's frontmatter `release:` value, or null. */
 function specRelease(name, root) {
-  const p = path.join(specPath(name, root), 'spec.md');
+  const p = path.join(specPath(name, root), engineFor(root).docs.primary);
   const text = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : null;
   const fm = text && text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   const m = fm && fm[1].match(/^release:[ \t]*(.+)$/im);
@@ -144,7 +144,7 @@ function checkSpecWork(root) {
   const out = [];
   for (const name of listSpecs(root)) {
     if (!specStatusEq(readStatus(name, root), 'Done')) continue; // only Done asserts completion (R7)
-    const tasks = readFile(specPath(name, root), 'tasks.md');
+    const tasks = readFile(specPath(name, root), engineFor(root).docs.tasks);
     if (!tasks) continue;
     const { remaining } = countTasks(tasks);
     if (remaining > 0) {

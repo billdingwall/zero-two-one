@@ -58,7 +58,11 @@ function userDocMappings(sourceDir, stack = 'claude') {
   const common = ['CODE', 'PRODUCT', 'DESIGN', 'README'];
   const requirements = ['01-PRD', '02-EDD', '03-TDD', '04-BACKLOG', '05-ROADMAP'];
 
-  const mappings = [{ template: entrypoint.template, dest: entrypoint.dest, action: 'render' }];
+  // The entrypoint render mapping is emitted only when the stack has an
+  // entrypoint; kiro (spec 008) has none — steering is its surface.
+  const mappings = entrypoint
+    ? [{ template: entrypoint.template, dest: entrypoint.dest, action: 'render' }]
+    : [];
   for (const name of common) {
     mappings.push({ template: `${name}-Template.md`, dest: `${name}.md`, action: 'instantiate' });
   }
