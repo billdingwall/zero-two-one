@@ -28,9 +28,9 @@ const path = require('path');
 const lib = require('./lib');
 
 // Concatenation order mirrors how an agent should consume the feature:
-// what/why first, then how, then the executable task list.
-const FILE_ORDER = ['spec.md', 'plan.md', 'research.md', 'data-model.md', 'quickstart.md', 'tasks.md'];
-const DIR_ORDER = ['contracts', 'checklists'];
+// what/why first, then how, then the executable task list. The file/dir order
+// comes from the active SSD engine (spec 008): github-speckit uses spec.md/…;
+// kiro-specs uses requirements.md/design.md/tasks.md.
 
 function parseArgs(argv) {
   const args = { spec: null, outDir: null, jsonOnly: false, mdOnly: false };
@@ -44,13 +44,13 @@ function parseArgs(argv) {
   return args;
 }
 
-function collectSources(specDir) {
+function collectSources(specDir, fileOrder, dirOrder) {
   const sources = [];
-  for (const f of FILE_ORDER) {
+  for (const f of fileOrder) {
     const p = path.join(specDir, f);
     if (fs.existsSync(p)) sources.push(p);
   }
-  for (const d of DIR_ORDER) {
+  for (const d of dirOrder) {
     const dirPath = path.join(specDir, d);
     if (!fs.existsSync(dirPath)) continue;
     for (const f of fs.readdirSync(dirPath).sort()) {
@@ -78,9 +78,10 @@ if (!spec) {
   process.exit(1);
 }
 
+const engine = lib.engineFor();
 const specDir = lib.specPath(spec);
-const status = lib.readStatus(spec) || 'MISSING spec.md';
-const sources = collectSources(specDir);
+const status = lib.readStatus(spec) || `MISSING ${engine.docs.primary}`;
+const sources = collectSources(specDir, engine.contextFiles, engine.contextDirs);
 
 if (sources.length === 0) {
   console.error(`${spec}: no Spec Kit artifacts found in ${specDir}.`);
@@ -95,10 +96,10 @@ const rel = (p) => path.relative(root, p).split(path.sep).join('/');
 const generatedAt = new Date().toISOString();
 
 // ---- Structured JSON artifact -------------------------------------------
-const specText = fs.existsSync(path.join(specDir, 'spec.md'))
-  ? fs.readFileSync(path.join(specDir, 'spec.md'), 'utf8')
+const specText = fs.existsSync(path.join(specDir, engine.docs.primary))
+  ? fs.readFileSync(path.join(specDir, engine.docs.primary), 'utf8')
   : '';
-const tasksFile = path.join(specDir, 'tasks.md');
+const tasksFile = path.join(specDir, engine.docs.tasks);
 const tasksText = fs.existsSync(tasksFile) ? fs.readFileSync(tasksFile, 'utf8') : '';
 const dataModelFile = path.join(specDir, 'data-model.md');
 const dataModelText = fs.existsSync(dataModelFile) ? fs.readFileSync(dataModelFile, 'utf8') : '';

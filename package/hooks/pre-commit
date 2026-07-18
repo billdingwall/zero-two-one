@@ -22,8 +22,9 @@ echo "Running Zero-Two-One pre-commit validation..."
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
 # 1. Spec changes should stay aligned with the project-level docs.
-if git diff --cached --name-only | grep -E '^specs/.*\.md$' > /dev/null; then
-    echo "Notice: Changes detected in 'specs/'. Ensure these align with 'requirements/01-PRD.md' and 'requirements/03-TDD.md'."
+#    Covers both SSD engines: specs/ (github-speckit) and .kiro/specs/ (kiro-specs).
+if git diff --cached --name-only | grep -E '^(specs|\.kiro/specs)/.*\.md$' > /dev/null; then
+    echo "Notice: Changes detected in the spec surface. Ensure these align with 'requirements/01-PRD.md' and 'requirements/03-TDD.md'."
 fi
 
 # 2. Discourage direct commits to main — features flow through NNN-feature-name branches.
@@ -38,7 +39,7 @@ fi
 #    documentation/refinement/tooling surface and not markdown.
 if echo "$branch" | grep -Eq '^[0-9]{3}-'; then
     impl_files=$(git diff --cached --name-only \
-        | grep -Ev '^(specs/|requirements/|workflow/|skills/|templates/|prototype/|hooks/|scripts/|bin/|\.github/|\.ai/)' \
+        | grep -Ev '^(specs/|\.kiro/|requirements/|workflow/|skills/|templates/|prototype/|hooks/|scripts/|bin/|\.github/|\.ai/)' \
         | grep -Ev '\.md$' || true)
 
     if [ -n "$impl_files" ]; then

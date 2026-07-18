@@ -13,7 +13,9 @@
  * Skipped trees: node_modules/, .git/, package/ (generated snapshot — root is
  * the source of truth and the sync drift check covers it), templates/
  * (template links are relative to where init INSTANTIATES them, not where
- * they live in-source, so they cannot resolve here by design).
+ * they live in-source, so they cannot resolve here by design), .ai/
+ * (gitignored Speckit context bundles — generated on demand, absent in CI,
+ * with links relative to the source spec dir, not the bundle location).
  * Skipped targets: paths containing `<` (placeholder convention, e.g.
  * `_releases/v1.x-<theme>.md`).
  *
@@ -24,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 
 const rootDir = path.resolve(__dirname, '..');
-const SKIP_DIRS = new Set(['node_modules', '.git', 'package', 'templates']);
+const SKIP_DIRS = new Set(['node_modules', '.git', 'package', 'templates', '.ai']);
 
 function mdFiles(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {

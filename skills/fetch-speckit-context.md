@@ -1,3 +1,8 @@
+---
+name: 021-fetch-speckit-context
+description: Fetch and assemble the Spec Kit context bundle for a feature before implementation.
+---
+
 # Skill: Fetch Speckit Context
 
 **Description:**
@@ -8,7 +13,7 @@ Run this skill BEFORE beginning any implementation work on a feature (Phase 1: M
 
 **Execution Steps for AI Agent:**
 1. **Resolve the feature:** Determine the active spec from the current `NNN-feature-name` branch, or ask the user which spec to load if the branch does not follow the convention.
-2. **Generate the bundle:** Run `npm run 021-spec:context` (i.e. `node scripts/speckit/fetch-speckit-context.js [spec]`). This concatenates `spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md`, `tasks.md`, and `checklists/` into `.ai/context/NNN-feature-name.md`, and extracts a structured `.ai/context/NNN-feature-name.json` (status, gate state, acceptance criteria, entities, task progress).
+2. **Generate the bundle:** Run `npx 021 spec context` (i.e. `node scripts/speckit/fetch-speckit-context.js [spec]`). This concatenates `spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md`, `tasks.md`, and `checklists/` into `.ai/context/NNN-feature-name.md`, and extracts a structured `.ai/context/NNN-feature-name.json` (status, gate state, acceptance criteria, entities, task progress).
 3. **Load the context:** Read `.ai/context/NNN-feature-name.md` into your working context. Treat the JSON artifact's `acceptanceCriteria` array as the checklist your implementation must satisfy.
-4. **Check the gate:** If the JSON reports `gate.passing: false`, STOP. Do not write implementation code. Tell the user the spec status and what is required to open the gate (status `Approved` or `Ready for Dev` via `npm run 021-spec:status -- set <spec> <status>` after sign-off).
+4. **Check the gate:** If the JSON reports `gate.passing: false`, STOP. Do not write implementation code. Tell the user the spec status and what is required to open the gate (status `Approved` or `Ready for Dev` via `npx 021 spec status set <spec> <status>` after sign-off).
 5. **Proceed:** Implement strictly against the loaded bundle, working through `tasks.md` in dependency order.

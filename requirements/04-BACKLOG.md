@@ -45,16 +45,16 @@
 | Regenerate the framework's own `.zero-two-one.json` (`mode: source`, full hash inventory) | Done | Eng | mvp-3 |
 | **r9**: package distribution fixes — stop shipping internal specs (P1: 128→90 tarball files); single-source `.claude/commands` (W2); `.DS_Store` hygiene | Done | Eng | mvp-3 |
 | AI-led init walkthrough (TDD §1) driving the engine via flags; ask-don't-assume interview | Open | Eng | mvp-4 |
-| Source-layer generalization: `CLAUDE-Template.md` → `ASSISTANT-Template.md`; `AGENTS.md` neutral default | Open | Eng | mvp-4 |
-| `antigravity` stack: `AGENTS.md` rendering; `.agents/skills/021-<name>/SKILL.md`; MCP guidance; Spec Kit pairing | Open | Eng | mvp-4 |
-| `kiro` stack: `.kiro/steering/021-*` + `.kiro/agents/021.json`; `kiro-specs` `status:` injection; engine-dispatch | Open | Eng | mvp-4 |
+| Source-layer generalization: `CLAUDE-Template.md` → `ASSISTANT-Template.md`; `AGENTS.md` neutral default | Done | Eng | mvp-4 |
+| `antigravity` stack: `AGENTS.md` rendering; `.agents/skills/021-<name>/SKILL.md`; MCP guidance; Spec Kit pairing | Done | Eng | mvp-4 |
+| `kiro` stack: `.kiro/steering/021-*` + `.kiro/agents/021.json`; `kiro-specs` `status:` injection; engine-dispatch | Done | Eng | mvp-4 |
 | Design-system adapter (TDD §9.4): `DESIGN.md` token-mapping + `_design/tokens/`; `material-3` binding | Open | Design | mvp-4 |
 | Init integration: `--stack`/`--design` flags; migrate-mode stack detection; manifest `tools.*` | Open | Eng | mvp-4 |
 | **Acceptance matrix: 3 stacks × {none, material-3}** — gate green + `021 status`/`021 qa` in all six cells; **+ neutral-core invariant** (only adapter paths differ across stacks) (r9; reuses mvp-3 fixture harness) | Open | Eng | mvp-4 |
-| **r9**: stack-parameterized install surface — `classes.js`/`sources.js` resolve dirs + guiding docs from manifest `tools.stack` (spec 006) | Open | Eng | mvp-4 |
-| **r9**: the `021` CLI — single assistant-agnostic command surface (`021 status\|qa\|doctor\|spec …`) over existing scripts; adapters reference it (spec 009; replaces Makefile idea) | Open | Eng | mvp-4 |
-| **r7 G**: programmatic-API decision — expose `scripts/speckit/lib.js` via `exports` (`zero-two-one/speckit`)? (TDD §14) | Open | Eng | mvp-4 |
-| **r7 F**: remove README stack-availability caveats once `--stack antigravity\|kiro` is real | Open | PM | mvp-4 |
+| **r9**: stack-parameterized install surface — `classes.js`/`sources.js` resolve dirs + guiding docs from manifest `tools.stack` (spec 006) | Done | Eng | mvp-4 |
+| **r9**: the `021` CLI — single assistant-agnostic command surface (`021 status\|qa\|doctor\|spec …`) over existing scripts; adapters reference it (spec 009; replaces Makefile idea) | Done | Eng | mvp-4 |
+| **r7 G**: programmatic-API decision — expose `scripts/speckit/lib.js` via `exports` (`zero-two-one/speckit`)? (TDD §14) | Done | Eng | mvp-4 |
+| **r7 F**: remove README stack-availability caveats once `--stack antigravity\|kiro` is real | Done | PM | mvp-4 |
 | `021-feedback` (TDD §10): `gh` / pre-filled issue URL to `billdingwall/zero-two-one`; issue template | Open | Eng | mvp-5 |
 | `021-design` (TDD §11): design-system install / BYO over the §9.4 adapter | Open | Design | mvp-5 |
 | `021-prototype` (TDD §12): optional prototype generation from key docs; wire prototype steps on first run | Open | Eng | mvp-5 |

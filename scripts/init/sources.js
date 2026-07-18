@@ -3,15 +3,19 @@
 /**
  * sources.js — enumerate what the package ships (spec 001, TDD §5/§6).
  *
- * The install surface is derived from the source (package) root:
- *   - framework-owned files: every file under the framework dirs;
- *   - user-owned docs: instantiated from `templates/*-Template.md` under the
- *     default `claude` mapping (FR-017); per-stack rendering is mvp-4.
+ * The install surface is derived from the source (package) root and the active
+ * stack (spec 006):
+ *   - framework-owned files: every file under the stack's framework dirs
+ *     (Layer-1 base + the stack's Layer-2 surface dirs);
+ *   - user-owned docs: the stack's entrypoint (rendered from the neutral
+ *     `ASSISTANT-Template.md`, `action: 'render'`) plus the common guiding docs
+ *     and requirements docs (verbatim `instantiate`).
  */
 
 const fs = require('fs');
 const path = require('path');
-const { FRAMEWORK_DIRS, toPosix } = require('./classes');
+const { frameworkSourceDirs, toPosix } = require('./classes');
+const { getAdapter } = require('./adapters');
 
 /** Recursively list files under `dir`, as paths relative to `root`. */
 function walk(root, dir, acc) {
@@ -29,28 +33,41 @@ function walk(root, dir, acc) {
   return acc;
 }
 
-/** All framework-owned file paths shipped by the source root, sorted. */
-function frameworkFiles(sourceDir) {
+/**
+ * All framework-owned file paths shipped by the source root for `stack`, sorted.
+ * Walks only the stack's **source** dirs (Layer-1 + verbatim-copy surface dirs);
+ * the rendered Layer-2 surface (`.agents/skills/**`) is source-absent and is
+ * produced by `surface.renderSurface`, not enumerated here (spec 007).
+ */
+function frameworkFiles(sourceDir, stack = 'claude') {
   const files = [];
-  for (const dir of FRAMEWORK_DIRS) walk(sourceDir, dir, files);
+  for (const dir of frameworkSourceDirs(stack)) walk(sourceDir, dir, files);
   return files.sort();
 }
 
 /**
- * Template → user-doc install mapping (default `claude`, FR-017 / TDD §5).
- * Each entry: { template: <relpath under templates/>, dest: <target relpath> }.
+ * Template → user-doc install mapping for `stack` (TDD §5/§9.1).
+ * Each entry: { template, dest, action }, where action is:
+ *   - 'render'      → the entrypoint, transformed from the neutral source
+ *                     (`ASSISTANT-Template.md`) by render.js;
+ *   - 'instantiate' → a verbatim copy of `templates/<name>-Template.md`.
  * Only entries whose template exists in the source are returned.
  */
-function userDocMappings(sourceDir) {
-  const guiding = ['CLAUDE', 'CODE', 'PRODUCT', 'DESIGN', 'README'];
+function userDocMappings(sourceDir, stack = 'claude') {
+  const { entrypoint } = getAdapter(stack);
+  const common = ['CODE', 'PRODUCT', 'DESIGN', 'README'];
   const requirements = ['01-PRD', '02-EDD', '03-TDD', '04-BACKLOG', '05-ROADMAP'];
 
-  const mappings = [];
-  for (const name of guiding) {
-    mappings.push({ template: `${name}-Template.md`, dest: `${name}.md` });
+  // The entrypoint render mapping is emitted only when the stack has an
+  // entrypoint; kiro (spec 008) has none — steering is its surface.
+  const mappings = entrypoint
+    ? [{ template: entrypoint.template, dest: entrypoint.dest, action: 'render' }]
+    : [];
+  for (const name of common) {
+    mappings.push({ template: `${name}-Template.md`, dest: `${name}.md`, action: 'instantiate' });
   }
   for (const name of requirements) {
-    mappings.push({ template: `${name}-Template.md`, dest: `requirements/${name}.md` });
+    mappings.push({ template: `${name}-Template.md`, dest: `requirements/${name}.md`, action: 'instantiate' });
   }
 
   return mappings.filter((m) => fs.existsSync(path.join(sourceDir, 'templates', m.template)));

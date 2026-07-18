@@ -1,3 +1,8 @@
+---
+name: 021-generate-frontend-component
+description: Generate a frontend component from the design system and spec.
+---
+
 # Skill: Generate Frontend Component
 
 **Description:**

@@ -1,0 +1,21 @@
+{
+  "name": "021",
+  "description": "Zero Two One lifecycle agent — drives the 3-phase agentic product framework (Planning → MVP Build → Growth).",
+  "prompt": "file://.kiro/steering/021-product.md",
+  "resources": [
+    "file://PRODUCT.md",
+    "file://CODE.md",
+    "file://DESIGN.md",
+    "file://requirements/**/*.md",
+    "file://.kiro/specs/**/*.md",
+    "skill://021-generate-prd",
+    "skill://021-generate-edd",
+    "skill://021-generate-tdd",
+    "skill://021-generate-backlog",
+    "skill://021-verify-spec-compliance",
+    "skill://021-fetch-speckit-context",
+    "skill://021-check-framework-compliance",
+    "skill://021-generate-frontend-component"
+  ],
+  "hooks": {}
+}

@@ -126,9 +126,9 @@ All framework commands follow the zero-two-one naming convention (`021-` namespa
 | Command | Purpose |
 |---|---|
 | `npx zero-two-one-init [dir]` | Scaffold or migrate the framework into a repository |
-| `npm run 021-status` | Detect and print the current lifecycle phase |
-| `npm run 021-qa` | Phase-appropriate QA suite |
-| `npm run 021-spec:status -- list` | All specs with status and gate state |
-| `npm run 021-spec:status -- set <spec> <status>` | Advance a spec's lifecycle |
-| `npm run 021-spec:context` | Generate `.ai/context/` bundles for the active feature |
-| `npm run 021-spec:verify` | Full spec compliance audit (`--gate` for the fast subset, `--json` for agents) |
+| `npx 021 status` | Detect and print the current lifecycle phase |
+| `npx 021 qa` | Phase-appropriate QA suite |
+| `npx 021 spec status list` | All specs with status and gate state |
+| `npx 021 spec status set <spec> <status>` | Advance a spec's lifecycle |
+| `npx 021 spec context` | Generate `.ai/context/` bundles for the active feature |
+| `npx 021 spec verify` | Full spec compliance audit (`--gate` for the fast subset, `--json` for agents) |

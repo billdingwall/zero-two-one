@@ -1,0 +1,6 @@
+{
+  "_note": "Golden byte-reference for the claude entrypoint render (spec 006 FR-010). Re-baselined by spec 009 (FR-005): the CLI re-point changed the command references in CLAUDE.md + .claude/commands/*. Stored as sha256 hashes. Regenerate only with an intentional, reviewed change to the claude rendering.",
+  "CLAUDE.md": "62c6e35d6f1cc2bcfb14e98c68b8de40a2dac52b7b621d42d0e67da7304223ff",
+  ".claude/commands/021-init.md": "f09ea7a288bfdab2a555e867f032cdafd94c17da90ffcced78e75cb1f96601a6",
+  ".claude/commands/021-status.md": "8824f5592110606ff560afe12796e25e3704ce695ab742c2efa64c8e385113c5"
+}

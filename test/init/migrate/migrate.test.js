@@ -83,17 +83,20 @@ test('T006 --phase overrides inferred phase', () => {
 // --- T007 · stack detection + conflict resolution ---------------------------
 test('T007 stack from surface; conflicting surfaces resolved by --stack', () => {
   const source = fx.makeMigrateSource();
+  // A .kiro/ surface resolves stack=kiro — installable as of spec 008 (the
+  // adapter is populated; kiro is no longer reserved).
   const kiro = fx.makeTarget();
   fx.write(kiro, '.kiro/config', 'x\n');
   const both = fx.makeTarget();
   fx.write(both, '.kiro/config', 'x\n');
   fx.write(both, '.claude/settings.json', '{}\n');
 
-  migrate(kiro, source);
+  const kiroCode = migrate(kiro, source);
   migrate(both, source, { stack: 'claude' });
 
-  assert.equal(loadManifest(kiro).tools.stack, 'kiro');
-  assert.equal(loadManifest(both).tools.stack, 'claude');
+  assert.equal(kiroCode, 0, 'kiro is installable (spec 008)');
+  assert.equal(loadManifest(kiro).tools.stack, 'kiro', 'kiro surface detected → kiro manifest');
+  assert.equal(loadManifest(both).tools.stack, 'claude', 'conflicting surfaces resolved by --stack claude');
   fx.rm(source); fx.rm(kiro); fx.rm(both);
 });
 
@@ -154,7 +157,7 @@ test('T011 leave on CLAUDE.md keeps it + writes CLAUDE.zero-two-one.md', () => {
 
   assert.equal(fx.read(target, 'CLAUDE.md'), '# my claude\n', 'user CLAUDE untouched');
   assert.ok(fx.exists(target, 'CLAUDE.zero-two-one.md'), 'framework version coexists');
-  assert.equal(fx.read(target, 'CLAUDE.zero-two-one.md'), '# CLAUDE (template)\n');
+  assert.equal(fx.read(target, 'CLAUDE.zero-two-one.md'), '# ASSISTANT (template)\n', 'entrypoint rendered from the neutral source (spec 006)');
   fx.rm(source); fx.rm(target);
 });
 

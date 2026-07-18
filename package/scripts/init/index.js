@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classify: classifyPath, CLASS } = require('./classes');
+const { getAdapter } = require('./adapters');
 const { classifyAll } = require('./classify');
 const { applyPlan } = require('./apply');
 const { loadManifest, buildManifest, writeManifest } = require('./manifest');
@@ -44,11 +45,11 @@ function resolveTools(opts, prev) {
   return { stack, assistant, ssd, design };
 }
 
-/** Validate --force targets are user-owned (FR-004). Returns an error string or null. */
-function validateForce(force) {
+/** Validate --force targets are user-owned for the active stack (FR-004). Returns an error string or null. */
+function validateForce(force, stack = 'claude') {
   for (const raw of force || []) {
     const rel = raw.replace(/\\/g, '/');
-    if (classifyPath(rel) !== CLASS.USER) {
+    if (classifyPath(rel, stack) !== CLASS.USER) {
       return `--force is for user-owned files only; '${rel}' is not one. Use --upgrade to refresh framework files.`;
     }
   }
@@ -74,6 +75,29 @@ function reportHook(applied, log) {
 }
 
 /**
+ * Stack-specific post-install notes (spec 007). Sibling to `reportHook`. For
+ * `antigravity`, print MCP/tool registration guidance — the config lives at a
+ * user-global path, so the engine never writes it; it only tells the user how
+ * (FR-009).
+ */
+function reportStackNotes(stack, sourceDir, log) {
+  if (stack !== 'antigravity') return;
+  let toolCount = 0;
+  try {
+    const tools = require(path.join(sourceDir, 'skills', 'tools.json'));
+    toolCount = Array.isArray(tools.tools) ? tools.tools.length : 0;
+  } catch {
+    /* tools.json optional — still print the guidance */
+  }
+  log(
+    '\nNote (Antigravity MCP): to register the framework tools with Gemini, add them to ' +
+      '`~/.gemini/config/mcp_config.json`' +
+      (toolCount ? ` — ${toolCount} tool schema(s) are defined in \`skills/tools.json\`.` : '.') +
+      '\n(Not written automatically — that path is outside this project.)'
+  );
+}
+
+/**
  * Run the install engine.
  * @param {string} targetDir - absolute target path
  * @param {object} opts - { dryRun, upgrade, force:[], phase, design, stack, sourceDir, now, quiet }
@@ -83,13 +107,26 @@ function initFramework(targetDir, opts = {}) {
   const sourceDir = opts.sourceDir || PACKAGE_ROOT;
   const log = opts.quiet ? () => {} : (m) => console.log(m);
 
-  const forceErr = validateForce(opts.force);
+  const prevManifest = loadManifest(targetDir);
+
+  // Resolve the active stack up front — it parameterizes the whole install
+  // surface (spec 006). A reserved-but-unpopulated stack (kiro) fails loudly
+  // here rather than mid-classify (analyze A5).
+  const tools = resolveTools(opts, prevManifest);
+  const stack = tools.stack;
+  try {
+    getAdapter(stack);
+  } catch (e) {
+    console.error(`Error: ${e.message}`);
+    return 1;
+  }
+
+  const forceErr = validateForce(opts.force, stack);
   if (forceErr) {
     console.error(`Error: ${forceErr}`);
     return 1;
   }
 
-  const prevManifest = loadManifest(targetDir);
   const mode = resolveMode(targetDir, sourceDir, prevManifest);
 
   // Migrate-mode (spec 002): detection/interview/import/duplicate-resolution
@@ -98,14 +135,14 @@ function initFramework(targetDir, opts = {}) {
     return migrateFramework(targetDir, opts, { sourceDir, prevManifest, resolveTools, log, reportHook });
   }
 
-  const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts });
+  const plan = classifyAll({ sourceDir, targetDir, manifest: prevManifest, opts, stack });
 
   if (opts.dryRun) {
     log(renderPlan(plan, { dryRun: true }));
     return 0;
   }
 
-  const applied = applyPlan({ sourceDir, targetDir, plan, prevManifest });
+  const applied = applyPlan({ sourceDir, targetDir, plan, prevManifest, stack });
 
   const pkgVersion = require(path.join(sourceDir, 'package.json')).version;
   const manifest = buildManifest({
@@ -113,7 +150,7 @@ function initFramework(targetDir, opts = {}) {
     version: pkgVersion,
     mode,
     phase: opts.phase || (prevManifest && prevManifest.phase) || 'planning',
-    tools: resolveTools(opts, prevManifest),
+    tools,
     files: applied.files,
     merged: applied.merged,
     hook: applied.hook,
@@ -123,6 +160,7 @@ function initFramework(targetDir, opts = {}) {
 
   log(renderPlan(plan, { dryRun: false }));
   reportHook(applied, log);
+  reportStackNotes(stack, sourceDir, log);
   log(`\n✅ ${mode === 'source' ? 'Manifest regenerated' : 'Framework installed'} (${manifest.files ? Object.keys(manifest.files).length : 0} framework files tracked).`);
   return 0;
 }

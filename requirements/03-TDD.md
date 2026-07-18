@@ -70,8 +70,8 @@ The canonical contract for what crosses the root ↔ `package/` boundary. `scrip
 | `.ai/context/` (generated bundles) | Generated, gitignored artifacts — only the empty scaffold ships |
 
 ### Template → install mapping
-Guiding docs are delivered as templates and instantiated by `bin/init.js` in the user's repo:
-`templates/CLAUDE-Template.md` → `CLAUDE.md` · `templates/CODE-Template.md` → `CODE.md` · `templates/PRODUCT-Template.md` → `PRODUCT.md` · `templates/DESIGN-Template.md` → `DESIGN.md` · `templates/README-Template.md` → `README.md` · `templates/0N-*-Template.md` → `requirements/0N-*.md` (key docs: `01-PRD`, `02-EDD`, `03-TDD`, `04-BACKLOG`, `05-ROADMAP` — r6 numbering).
+Guiding docs are delivered as templates and instantiated by `bin/init.js` in the user's repo. The **entrypoint** is *rendered* per stack from the neutral source (spec 006, §9.1); the rest are verbatim instantiations:
+`templates/ASSISTANT-Template.md` → **rendered** entrypoint (`claude` → `CLAUDE.md`, `antigravity` → `AGENTS.md`) via `scripts/init/render.js` · `templates/CODE-Template.md` → `CODE.md` · `templates/PRODUCT-Template.md` → `PRODUCT.md` · `templates/DESIGN-Template.md` → `DESIGN.md` · `templates/README-Template.md` → `README.md` · `templates/0N-*-Template.md` → `requirements/0N-*.md` (key docs: `01-PRD`, `02-EDD`, `03-TDD`, `04-BACKLOG`, `05-ROADMAP` — r6 numbering).
 
 - **Install guarantee (r4)**: installing into a target repo **creates `requirements/` with the key docs — PRD, EDD, TDD, Roadmap, Backlog — instantiated from the templates** (create-if-missing in migrate mode, per §6).
 - **Template neutrality (r4)**: everything under `templates/` is **tool-agnostic**. Stack-specific formatting and naming is applied at render time by the init adapter (§9.1) — never authored into the templates.
