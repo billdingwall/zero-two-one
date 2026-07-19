@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
   "installedAt": "2026-07-12",
-  "updatedAt": "2026-07-18T17:12:55.931Z",
+  "updatedAt": "2026-07-18T23:53:40.777Z",
   "mode": "source",
   "phase": "mvp",
   "tools": {
@@ -11,15 +11,18 @@
     "design": "none"
   },
   "files": {
+    ".claude/commands/021-feedback.md": "8c9295fa9a18c79f15392a62f1ec1e3d5161381180a80da84a609a3c3b170827",
     ".claude/commands/021-init.md": "f09ea7a288bfdab2a555e867f032cdafd94c17da90ffcced78e75cb1f96601a6",
     ".claude/commands/021-status.md": "8824f5592110606ff560afe12796e25e3704ce695ab742c2efa64c8e385113c5",
-    ".github/ISSUE_TEMPLATE/_INDEX.md": "f2421641d7d00d178bc558e8398e860e124a63715c73a608347b6376720f627f",
+    ".github/ISSUE_TEMPLATE/021-feedback.yml": "48b4e9b2be785c1984311ea2520301a23c09ad9e731517e70aca614fee23d4e6",
+    ".github/ISSUE_TEMPLATE/_INDEX.md": "c1440248db1229522d703a0751a18d445491320627817c9275193dce288366f0",
     ".github/ISSUE_TEMPLATE/bug_report.md": "9cda579a42716295aacf8f9465865d4ffc1fa5b9eba30e637a8dfb3b7be403a1",
     ".github/ISSUE_TEMPLATE/feature_prd.md": "8939e125c6ca7c72b4b8342652ae462c8042b32bd821ce35fde9e7ce6403d4f7",
     ".github/workflows/ci.yml": "425054ed3200d881be87cdb0039661e9d0cf218783bd30bdb363e39d426e601e",
     "hooks/pre-commit": "88cdca6bc59867ec0364d4d87f40bc263194d89c67073a4048e7f49fb75bbe95",
-    "scripts/_INDEX.md": "3770e18d7fc8b06762bf9d2f57d51356550ff21ced839233d39070f4264fcf4a",
+    "scripts/_INDEX.md": "f97f48b71aa21c06020d0f0ef092e48e13224b7c16e221e636e127e1960d60dd",
     "scripts/check-links.js": "37a69847fe367e7482fbb518a8ea05bca278306855af535bfc7ecda1f9895946",
+    "scripts/feedback.js": "6ddafaa51edc6a9c1ea7033c173d82e387a7221dcbdacf1f00f2d3ad35eb81d5",
     "scripts/init/adapters.js": "3a1a775b8903ccb08b93500a639f2cc17037f086c835ed2691367ab78c5a1c8d",
     "scripts/init/apply.js": "8788d7ba4dbe6b60f5ffc9771c432c759d5ccb6c08c5560ad9deb66a56fe6749",
     "scripts/init/classes.js": "f2291ba48f783a4a4e33ad85cc0ce3cb108c4c00eedff9ed1ae88f217a504dbc",
@@ -29,7 +32,7 @@
     "scripts/init/index.js": "def11063a3b27b55683809e2461d910b45b595513a873d16338257ccde70adf1",
     "scripts/init/instantiate.js": "2e5585a6f2b770a87fd60b6172866c8239a0a009253fe1df676ba2d440a8626d",
     "scripts/init/manifest.js": "ec15c4b3e380336da31516299dae1b635237bb71a64ef25b7206915dc362fcc5",
-    "scripts/init/merge.js": "bd86ceafd365a284b80564e14f5186e48cebb3704aa391240ead29df70b393b0",
+    "scripts/init/merge.js": "aa791059c9f1fa4eacf26b61e3ae788d68f202a04c631a242058d5f521108d7c",
     "scripts/init/migrate/detect.js": "6cb472a40717f5d67037dbf04929e941df2382f8482e8d3b6b05c563557efffc",
     "scripts/init/migrate/duplicates.js": "6872c7fe227c3b71083e831958a15ea37c735738bbc38dcf8395a1c6ed13b9c1",
     "scripts/init/migrate/growth-entry.js": "99ed5e0f07ce2cc1534caf8fc01aed12fc0e98747dae625f51484bea89bafd34",

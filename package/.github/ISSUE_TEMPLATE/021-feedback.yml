@@ -1,0 +1,30 @@
+name: 021 Feedback
+description: Feedback from an installed Zero Two One framework repo (filed by `021 feedback`).
+title: "[feedback] "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the feedback! This form is normally pre-filled by `021 feedback`,
+        which attaches your install's context automatically. You can also fill it in by hand.
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Feedback
+      description: What happened, what you expected, or what you'd like to see. Steps to reproduce help for bugs.
+      placeholder: Describe the bug, request, or note…
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Install context (auto-attached)
+      description: Framework version, stack, and phase from `.zero-two-one.json`, plus the repo link. `021 feedback` fills this in.
+      placeholder: |
+        - version: `1.1.0`
+        - stack: `claude`
+        - phase: `mvp`
+        - repo: https://github.com/…
+    validations:
+      required: false
