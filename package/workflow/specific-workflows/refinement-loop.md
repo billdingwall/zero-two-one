@@ -7,7 +7,7 @@ The loop shape is constant; the per-step mechanics are documented in the named *
 ## The Process
 
 1. **Review (`r{n}-review.md`)** — see [review-sync.md](review-sync.md)
-   Capture raw feedback or analytics into a review document. Reviews are **stage-aware**: pick the template matching the manifest's lifecycle phase (3-phase, r6) from `templates/reviews/` — **Planning:** completing/refining key + guiding docs, roadmap definition, optional prototype reviews; **MVP:** code review and build testing; **Growth:** product review and user feedback (including `021-feedback` issues). `templates/06-REVIEW-Template.md` remains the generic fallback.
+   Capture raw feedback or analytics into a review document. Reviews are **stage-aware**: the template is resolved from the manifest's lifecycle phase (3-phase, r6) — run `npx 021 status`, which reports the **Review template** for the current phase (`reviewTemplateForPhase` in `scripts/speckit/lib.js`). The mapping: **Planning** → `templates/reviews/06-REVIEW-planning-Template.md` (completing/refining key + guiding docs, roadmap definition, optional prototype reviews); **MVP** → `06-REVIEW-mvp-Template.md` (code review and build testing); **Growth** → `06-REVIEW-growth-Template.md` (product review and user feedback, including `021-feedback` issues). An unknown phase falls back to the generic `templates/06-REVIEW-Template.md`.
    *Note: Inline `CHANGE:` notes can also be added directly to living documents during this phase to automatically queue them for the current round.*
 
 2. **Synthesize (`r{n}-update-{doc}.md`)**
