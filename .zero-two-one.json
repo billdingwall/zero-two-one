@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
   "installedAt": "2026-07-12",
-  "updatedAt": "2026-07-19T01:17:27.309Z",
+  "updatedAt": "2026-07-19T10:47:47.155Z",
   "mode": "source",
   "phase": "mvp",
   "tools": {
@@ -14,6 +14,7 @@
     ".claude/commands/021-design.md": "868c8e02106b7c5e5b17cc391ad12acf12776b1d16f02d3fb33998eb9a6bfb9b",
     ".claude/commands/021-feedback.md": "8c9295fa9a18c79f15392a62f1ec1e3d5161381180a80da84a609a3c3b170827",
     ".claude/commands/021-init.md": "f09ea7a288bfdab2a555e867f032cdafd94c17da90ffcced78e75cb1f96601a6",
+    ".claude/commands/021-prototype.md": "943f612fa1c228a824d0c3689dd5f2e868076e63732f2f3cc8ec0585a39bf91b",
     ".claude/commands/021-status.md": "8824f5592110606ff560afe12796e25e3704ce695ab742c2efa64c8e385113c5",
     ".github/ISSUE_TEMPLATE/021-feedback.yml": "48b4e9b2be785c1984311ea2520301a23c09ad9e731517e70aca614fee23d4e6",
     ".github/ISSUE_TEMPLATE/_INDEX.md": "c1440248db1229522d703a0751a18d445491320627817c9275193dce288366f0",
@@ -21,7 +22,7 @@
     ".github/ISSUE_TEMPLATE/feature_prd.md": "8939e125c6ca7c72b4b8342652ae462c8042b32bd821ce35fde9e7ce6403d4f7",
     ".github/workflows/ci.yml": "425054ed3200d881be87cdb0039661e9d0cf218783bd30bdb363e39d426e601e",
     "hooks/pre-commit": "88cdca6bc59867ec0364d4d87f40bc263194d89c67073a4048e7f49fb75bbe95",
-    "scripts/_INDEX.md": "5cb2cf03797b537c09619cf1432e2a5d50bdf149873ad58840feb542952d26fc",
+    "scripts/_INDEX.md": "5396e645b1da02649fe391b1ab259ccde53d61a10905a2f2c4ebc7440711ba55",
     "scripts/check-links.js": "37a69847fe367e7482fbb518a8ea05bca278306855af535bfc7ecda1f9895946",
     "scripts/design.js": "1f38badf23f7f953d8a93759bd241e2c7a9f7fc3fd313e5d02f787c6c89cff7c",
     "scripts/feedback.js": "6ddafaa51edc6a9c1ea7033c173d82e387a7221dcbdacf1f00f2d3ad35eb81d5",
@@ -46,6 +47,7 @@
     "scripts/init/report.js": "4493113091bcfe9f435891677d0b11866c70cdfc32ee651daa8435581b637fee",
     "scripts/init/sources.js": "68c1e8b3c055f401823c3d000bed03b731c9086350506dc1abf9a2c52815cc96",
     "scripts/init/surface.js": "432316a8f4e147f7a547ee5423452d9d7feefcfcfa10d659d09b2f67d38121cc",
+    "scripts/prototype.js": "f4076a9b5a34a868ddfdc83ece4db588173623b112a6ad617cd340dc7a7679a8",
     "scripts/run-qa.sh": "2891ccfeb09a86b82f96ca63ff4c331408ad0e72acb66962ec08d12fde77801a",
     "scripts/speckit/doctor.js": "207466e0ddb2323533bcf4098016c32d7c5cdec3f31d912a0c6593c31fcf62dc",
     "scripts/speckit/engines/github-speckit.js": "a747d5036a20b8e4a6cbeb90f6367b3bbd2aae25e9610167ae489ce388875b9e",

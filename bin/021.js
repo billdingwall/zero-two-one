@@ -32,6 +32,7 @@ const USAGE = [
   '  phase                  print the lifecycle phase number (for scripts/hooks)',
   '  feedback "<title>"     file a feedback issue to the framework repo (gh / pre-filled URL)',
   '  design set <system>    adopt/switch/remove a design system (none|material-3|<byo>); records tools.design',
+  '  prototype init         scaffold the optional static prototype (themed by the design system) [--force]',
   '  spec status [args]     list / show spec status',
   '  spec context <spec>    build a spec context bundle',
   '  spec verify [spec]     run the spec-compliance gate',
@@ -60,6 +61,10 @@ function resolve(argv) {
     case 'design': {
       if (rest[0] !== 'set') return null; // usage on unknown/absent leaf
       return { runner: 'node', file: script('design.js'), lead: [], rest };
+    }
+    case 'prototype': {
+      if (rest[0] !== 'init') return null; // usage on unknown/absent leaf
+      return { runner: 'node', file: script('prototype.js'), lead: [], rest };
     }
     case 'spec': {
       const leaf = { status: 'spec-status.js', context: 'fetch-speckit-context.js', verify: 'verify-spec-compliance.js' }[rest[0]];
