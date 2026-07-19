@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
   "installedAt": "2026-07-12",
-  "updatedAt": "2026-07-18T23:53:40.777Z",
+  "updatedAt": "2026-07-19T01:17:27.309Z",
   "mode": "source",
   "phase": "mvp",
   "tools": {
@@ -11,6 +11,7 @@
     "design": "none"
   },
   "files": {
+    ".claude/commands/021-design.md": "868c8e02106b7c5e5b17cc391ad12acf12776b1d16f02d3fb33998eb9a6bfb9b",
     ".claude/commands/021-feedback.md": "8c9295fa9a18c79f15392a62f1ec1e3d5161381180a80da84a609a3c3b170827",
     ".claude/commands/021-init.md": "f09ea7a288bfdab2a555e867f032cdafd94c17da90ffcced78e75cb1f96601a6",
     ".claude/commands/021-status.md": "8824f5592110606ff560afe12796e25e3704ce695ab742c2efa64c8e385113c5",
@@ -20,8 +21,9 @@
     ".github/ISSUE_TEMPLATE/feature_prd.md": "8939e125c6ca7c72b4b8342652ae462c8042b32bd821ce35fde9e7ce6403d4f7",
     ".github/workflows/ci.yml": "425054ed3200d881be87cdb0039661e9d0cf218783bd30bdb363e39d426e601e",
     "hooks/pre-commit": "88cdca6bc59867ec0364d4d87f40bc263194d89c67073a4048e7f49fb75bbe95",
-    "scripts/_INDEX.md": "f97f48b71aa21c06020d0f0ef092e48e13224b7c16e221e636e127e1960d60dd",
+    "scripts/_INDEX.md": "5cb2cf03797b537c09619cf1432e2a5d50bdf149873ad58840feb542952d26fc",
     "scripts/check-links.js": "37a69847fe367e7482fbb518a8ea05bca278306855af535bfc7ecda1f9895946",
+    "scripts/design.js": "1f38badf23f7f953d8a93759bd241e2c7a9f7fc3fd313e5d02f787c6c89cff7c",
     "scripts/feedback.js": "6ddafaa51edc6a9c1ea7033c173d82e387a7221dcbdacf1f00f2d3ad35eb81d5",
     "scripts/init/adapters.js": "3a1a775b8903ccb08b93500a639f2cc17037f086c835ed2691367ab78c5a1c8d",
     "scripts/init/apply.js": "8788d7ba4dbe6b60f5ffc9771c432c759d5ccb6c08c5560ad9deb66a56fe6749",
