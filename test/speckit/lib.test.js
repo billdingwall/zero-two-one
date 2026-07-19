@@ -133,4 +133,26 @@ test('T007 workflow-status.js --json preserves { phase:num, status, source }', (
   assert.equal(typeof j.phase, 'number');
   assert.equal(typeof j.status, 'string');
   assert.ok(['manifest', 'inferred'].includes(j.source));
+  // Stage-specific review template (mvp-5) is surfaced too.
+  assert.equal(typeof j.reviewTemplate, 'string');
+  assert.match(j.reviewTemplate, /06-REVIEW-.*Template\.md$/);
+});
+
+// --- T008 · reviewTemplateForPhase maps phase → staged template (mvp-5) ------
+test('T008 reviewTemplateForPhase resolves per phase (key or num), else generic', () => {
+  // by key
+  assert.equal(lib.reviewTemplateForPhase('planning'), 'templates/reviews/06-REVIEW-planning-Template.md');
+  assert.equal(lib.reviewTemplateForPhase('mvp'), 'templates/reviews/06-REVIEW-mvp-Template.md');
+  assert.equal(lib.reviewTemplateForPhase('growth'), 'templates/reviews/06-REVIEW-growth-Template.md');
+  // by num (workflow-status passes phaseNum)
+  assert.equal(lib.reviewTemplateForPhase(0), 'templates/reviews/06-REVIEW-planning-Template.md');
+  assert.equal(lib.reviewTemplateForPhase(1), 'templates/reviews/06-REVIEW-mvp-Template.md');
+  assert.equal(lib.reviewTemplateForPhase(2), 'templates/reviews/06-REVIEW-growth-Template.md');
+  // unknown → generic fallback
+  assert.equal(lib.reviewTemplateForPhase('bogus'), 'templates/06-REVIEW-Template.md');
+  assert.equal(lib.reviewTemplateForPhase(9), 'templates/06-REVIEW-Template.md');
+  // every staged template the resolver names actually exists (framework-owned)
+  for (const phase of ['planning', 'mvp', 'growth']) {
+    assert.ok(fs.existsSync(path.join(REPO, lib.reviewTemplateForPhase(phase))), `${phase} template exists`);
+  }
 });

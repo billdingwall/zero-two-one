@@ -55,10 +55,10 @@
 | **r9**: the `021` CLI — single assistant-agnostic command surface (`021 status\|qa\|doctor\|spec …`) over existing scripts; adapters reference it (spec 009; replaces Makefile idea) | Done | Eng | mvp-4 |
 | **r7 G**: programmatic-API decision — expose `scripts/speckit/lib.js` via `exports` (`zero-two-one/speckit`)? (TDD §14) | Done | Eng | mvp-4 |
 | **r7 F**: remove README stack-availability caveats once `--stack antigravity\|kiro` is real | Done | PM | mvp-4 |
-| `021-feedback` (TDD §10): `gh` / pre-filled issue URL to `billdingwall/zero-two-one`; issue template | Open | Eng | mvp-5 |
-| `021-design` (TDD §11): design-system install / BYO over the §9.4 adapter | Open | Design | mvp-5 |
-| `021-prototype` (TDD §12): optional prototype generation from key docs; wire prototype steps on first run | Open | Eng | mvp-5 |
-| Stage-specific review-template selection wired into the refinement loop by manifest `phase` (`{planning,mvp,growth}`) | Open | PM | mvp-5 |
+| `021-feedback` (TDD §10): `gh` / pre-filled issue URL to `billdingwall/zero-two-one`; issue template | Done | Eng | mvp-5 |
+| `021-design` (TDD §11): design-system install / BYO over the §9.4 adapter | Done | Design | mvp-5 |
+| `021-prototype` (TDD §12): optional prototype generation from key docs; wire prototype steps on first run | Done | Eng | mvp-5 |
+| Stage-specific review-template selection wired into the refinement loop by manifest `phase` (`{planning,mvp,growth}`) — `reviewTemplateForPhase` (`lib.js`) surfaced via `021 status` | Done | PM | mvp-5 |
 | End-to-end test via Claude Code — scaffold and migrate modes | Open | Eng | mvp-6 |
 | **r7 G**: CI publish pipeline — tag-triggered `npm publish --provenance` + pre-publish gate (dangling `main`/LICENSE/dummies/links); `sync --check` first (TDD §14) | Open | Eng | mvp-6 |
 | Publish `zero-two-one` v1.1.x to the NPM registry via the pipeline (**after** mvp-3 safe-install; name verified unclaimed) | Open | Eng | mvp-6 |

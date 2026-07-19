@@ -159,6 +159,23 @@ const PHASE = {
 };
 const PHASE_KEY_BY_NUM = { 0: 'planning', 1: 'mvp', 2: 'growth' };
 
+/**
+ * Stage-specific review template (mvp-5): resolve the refinement-loop review
+ * template from the lifecycle phase, so the loop's step-1 template selection is
+ * driven by the manifest `phase` rather than picked by hand. Planning/MVP/Growth
+ * each map to a staged template under `templates/reviews/`; an unknown phase
+ * falls back to the generic `templates/06-REVIEW-Template.md`. Repo-relative,
+ * framework-owned paths (present in every install). Pure — no fs.
+ * @param {string|number} phase - a phase key (`planning`/`mvp`/`growth`) or num (0/1/2).
+ */
+function reviewTemplateForPhase(phase) {
+  const key = typeof phase === 'number' ? PHASE_KEY_BY_NUM[phase] : phase && String(phase).toLowerCase();
+  const staged = { planning: 'planning', mvp: 'mvp', growth: 'growth' }[key];
+  return staged
+    ? `templates/reviews/06-REVIEW-${staged}-Template.md`
+    : 'templates/06-REVIEW-Template.md';
+}
+
 function manifestFile(root) {
   return path.join(root || repoRoot(), '.zero-two-one.json');
 }
@@ -241,6 +258,8 @@ module.exports = {
   countTasks,
   extractCriteria,
   PHASE,
+  PHASE_KEY_BY_NUM,
+  reviewTemplateForPhase,
   readManifest,
   manifestFacts,
   inferFacts,

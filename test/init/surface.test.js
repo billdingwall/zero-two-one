@@ -51,7 +51,7 @@ const EXPECTED_SKILLS = [
   '021-generate-tdd',
   '021-verify-spec-compliance',
 ];
-const EXPECTED_COMMANDS = ['021-init', '021-status'];
+const EXPECTED_COMMANDS = ['021-init', '021-status', '021-feedback', '021-design', '021-prototype'];
 
 // --- T003 · renderSurface unit ----------------------------------------------
 test('T003 renderSurface: antigravity yields skills + commands; claude yields none', () => {

@@ -6,6 +6,9 @@ Lifecycle automation for the Zero Two One framework. All scripts use Node built-
 
 - `workflow-status.js`: Detects the current lifecycle phase from repository state (`npm run 021-status`).
 - `run-qa.sh`: Phase-appropriate QA suite — docs & optional-prototype validation (Phase 0), tests/a11y/spec compliance (Phase 1), + feedback checks (Phase 2) (`npm run 021-qa`).
+- `feedback.js`: The mechanical layer behind `021 feedback` (spec 010) — reads the manifest context block, detects `gh`, and assembles a `gh issue create` invocation or a pre-filled new-issue URL for `billdingwall/zero-two-one`. Dry by default; posts only under `--submit` on the `gh` path. No token handling; Node built-ins only.
+- `design.js`: The mechanical layer behind `021 design set <system>` (spec 011) — records `tools.design` in the manifest (targeted write), scaffolds `requirements/_design/tokens/`, and regenerates the marker-bounded "Design System Mapping" section of `DESIGN.md` (material-3 / BYO / none). The assistant walks assess/map around it. Node built-ins only.
+- `prototype.js`: The mechanical layer behind `021 prototype init` (spec 012) — scaffolds the opt-in static prototype (`prototype/index.html`/`styles.css`/`app.js`) consuming the design-system CSS variables (`@import` the tokens file, or inline `:root` from `DESIGN.md`); non-destructive (`--force` to overwrite). The assistant builds the real screens from the PRD/EDD. Node built-ins only.
 
 ### `speckit/` — Spec Kit integration
 

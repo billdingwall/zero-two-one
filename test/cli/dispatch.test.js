@@ -37,7 +37,7 @@ function surfaceText(dir, rels) {
     .join('\n');
 }
 const SURFACES = {
-  claude: ['CLAUDE.md', '.claude/commands/021-init.md', '.claude/commands/021-status.md'],
+  claude: ['CLAUDE.md', '.claude/commands/021-init.md', '.claude/commands/021-status.md', '.claude/commands/021-feedback.md', '.claude/commands/021-design.md', '.claude/commands/021-prototype.md'],
   antigravity: ['AGENTS.md', '.agents/skills/021-verify-spec-compliance/SKILL.md', '.agents/skills/021-fetch-speckit-context/SKILL.md'],
   kiro: [
     '.kiro/steering/021-product.md',
