@@ -55,15 +55,16 @@
 | `021-design` (TDD §11): design-system install / BYO over the §9.4 adapter | Done | Design | mvp-5 |
 | `021-prototype` (TDD §12): optional prototype generation from key docs; wire prototype steps on first run | Done | Eng | mvp-5 |
 | Stage-specific review-template selection wired into the refinement loop by manifest `phase` (`{planning,mvp,growth}`) — `reviewTemplateForPhase` (`lib.js`) surfaced via `021 status` | Done | PM | mvp-5 |
-| End-to-end test via Claude Code — scaffold and migrate modes | Open | Eng | mvp-6 |
-| **r7 G**: CI publish pipeline — tag-triggered `npm publish --provenance` + pre-publish gate (dangling `main`/LICENSE/dummies/links); `sync --check` first (TDD §14) | Open | Eng | mvp-6 |
-| Publish `zero-two-one` v1.1.x to the NPM registry via the pipeline (**after** mvp-3 safe-install; name verified unclaimed) | Open | Eng | mvp-6 |
-| Field test: init into three real repos (Claude+Spec Kit at Growth · Antigravity+Spec Kit · Kiro) | Open | PM | mvp-6 |
-| Feedback loop live: `021-feedback` issues seeding the Growth backlog | Open | PM | mvp-6 |
+| End-to-end test (scaffold + migrate, all three stacks) — installs the packed tarball, asserts surface/manifest/gate/lifecycle (spec 013) | Done | Eng | mvp-6 |
+| **r7 G**: CI publish pipeline — tag-triggered `npm publish --provenance` + pre-publish gate (dangling `main`/LICENSE/dummies/links/internal-specs); `sync --check` first (TDD §14) | Open | Eng | mvp-6 |
+| Publish `zero-two-one` v1.1.x to the NPM registry via the pipeline (**after** mvp-3 safe-install + spec-013 e2e; name verified unclaimed) so the framework is installable in real repos | Open | Eng | mvp-6 |
+| Field test: install the **published** package into three real repos (Claude+Spec Kit at Growth · Antigravity+Spec Kit · Kiro) | Open | PM | mvp-7 |
+| Feedback loop live: `021-feedback` issues seeding the Growth backlog | Open | PM | mvp-7 |
+| Pre-Growth review: full-work audit across all MVP releases (mvp-1…mvp-7); decision point for one more MVP spec if a gap surfaces | Open | PM | mvp-7 |
 
 ## v2 / Growth Backlog
 
-*Empty of committed rows (r5) — the v2 feature set is **defined in the Growth phase**, after MVP ships (mvp-6 exit gate), driven by user value from `021-feedback` and field-test findings. The three former "Other v2 items" (native MCP server support, additional templates, issue-tracker integration) were **dropped** at r5; re-propose from real usage if warranted.*
+*Empty of committed rows (r5) — the v2 feature set is **defined in the Growth phase**, after MVP ships (mvp-7 exit gate), driven by user value from `021-feedback` and field-test findings. The three former "Other v2 items" (native MCP server support, additional templates, issue-tracker integration) were **dropped** at r5; re-propose from real usage if warranted.*
 
 **Design-noted Growth candidates (r9, [_notes/repo-refactor.md](_notes/repo-refactor.md) §5.4):** deferred here deliberately, not scheduled — (a) **scoped/hydrated refinement-loop instances** (multi-tier `.workflow/` per initiative — the standards-audit is the design note); (b) **runtime write-guards** for non-git-hook assistants (Kiro `beforeFileWrite` etc. enforcing the same spec-status gate); (c) **`021-doctor` apply-mode** (TDD §13 increment 2 — corrective, not just advisory). Revisit when real multi-team/multi-assistant usage warrants.
 
