@@ -1,7 +1,7 @@
 # Release: mvp-4 — AI-Led Init & Stack/Design Adapters
 
 - **Type:** MVP release
-- **Status:** In Progress — the **adapter cut (specs 006–009) is Delivered** (2026-07-18); the AI-led walkthrough and design-system adapter remain before the Exit Gate is met.
+- **Status:** Delivered — closed 2026-07-19 on the **adapter cut (specs 006–009)**; the AI-led walkthrough and init-time material-3 auto-binding were **descoped to the backlog** (see [04-BACKLOG.md](../04-BACKLOG.md) "Descoped from mvp-4").
 - **Lifecycle Phase:** MVP Build (Phase 1)
 - **Branch:** feature branches per spec (`NNN-feature-name`)
 - **Roadmap:** [05-ROADMAP.md](../05-ROADMAP.md) · [04-BACKLOG.md](../04-BACKLOG.md)
@@ -18,16 +18,16 @@ Make init assistant-led and multi-stack: the interactive walkthrough over the mv
 - [x] **Spec 007 — Antigravity adapter** (r9): `AGENTS.md` (root; `GEMINI.md` honored) entrypoint; `skills/*.md` → `.agents/skills/021-<name>/SKILL.md`; MCP registration guidance; wires through the migrate-mode `.agents/`/`AGENTS.md` detection already in spec 002. *(Done 2026-07-18. Steering ships both the library + lifecycle commands; frontmatter added to `skills/*.md` at rest.)*
 - [x] **Spec 008 — Kiro adapter + engine dispatch** (r9): `.kiro/steering/021-{product,tech,structure}.md` rendering (TDD §9.2 mapping); `.kiro/agents/021.json`; `kiro-specs` engine dispatch in `scripts/speckit/*` reading `tools.ssd` via the spec-003 `manifestFacts` seam. *(Done 2026-07-18. Steering is stable-template operating guidance; engine dispatch via `scripts/speckit/engines/{github-speckit,kiro-specs}.js` behind a `docs` filename-map.)*
 - [x] **Spec 009 — the `021` CLI** (r9): a single assistant-agnostic command surface (`021 status|qa|doctor|spec …`) dispatching over the existing scripts — Node built-ins only; adapters emit instructions referencing it. Replaces the Makefile idea (repo-refactor §1.2/§3.3); npm scripts stay as aliases. *(Done 2026-07-18. Bin name `021`; adapters reference `npx 021 …`; golden fixture re-baselined.)*
-- [ ] AI-led init walkthrough (TDD §1) driving the engine via flags; ask-don't-assume interview (stack, design, phase, conflicts). **← still pending.**
-- [ ] Design-system adapter (TDD §9.4): `DESIGN.md` token-mapping + `requirements/_design/tokens/`; `material-3` binding (Theme Builder import; M3 Expressive implications). **← still pending.**
-- [~] Init integration: `--stack`/`--design` flags, migrate-mode stack detection, manifest `tools.stack`/`tools.design`. *(Stack side done: `--stack` flag, migrate stack detection (spec 002), manifest `tools.stack`/`tools.ssd`. `--design` flag + `tools.design` wiring pending with the design adapter.)*
-- [~] **Acceptance matrix: 3 stacks × {none, material-3}** — gate green + `021 status`/`021 qa` working in all six cells; no framework file outside the `021-` namespace in shared dirs. Reuses the mvp-3 fixture-repo test harness (r7). **Plus the neutral-core invariant (r9):** diff the installed tree across stacks — **only Layer-2 (adapter) paths may differ.** *(The `{none}` × 3-stack row is proven — the neutral-core invariant is an automated test (`renderer.test.js` T006, all three stacks; `021`-namespacing enforced by `classify`). The `{material-3}` column awaits the design adapter.)*
+- [x] **Design-system binding *mechanism*** (TDD §9.4): `DESIGN.md` token-mapping + `requirements/_design/tokens/`; `material-3` skeleton (Theme Builder JSON/CSS import). *(Delivered — not by this release, but by `021-design`, spec 011, mvp-5. The mechanism exists; only wiring it to auto-run at init time is descoped below.)*
+- [→] **AI-led init walkthrough** (TDD §1): the interactive, ask-don't-assume interview driving the engine via flags. **Descoped to the backlog** (2026-07-19) — see [04-BACKLOG.md](../04-BACKLOG.md). The mechanical engine and every flag it needs already ship; only the guided interview is undelivered.
+- [→] **`--design material-3` auto-binding at init**: wiring `--design material-3` to invoke the (now-shipped) `021-design` mechanism automatically at `init`/`--upgrade` time, rather than requiring a manual follow-up call. **Descoped to the backlog** (2026-07-19).
+- [→] **Acceptance matrix — the `{material-3}` column** (r9 neutral-core invariant is proven for `{none}` across all 3 stacks; `renderer.test.js` T006). The `{material-3}` column needs the init-time auto-binding above. **Descoped to the backlog** (2026-07-19).
 - [x] **README stack-availability labels removed** (r7): once `--stack antigravity|kiro` is real, drop the "lands at mvp-4" caveats from the README install prompts. *(Done — spec 009 FR-008.)*
 - [x] **Programmatic API decision** (r7, audit §4): decide whether to expose `scripts/speckit/lib.js` via `exports` (`require('zero-two-one/speckit')`) for agent runtimes, alongside the `021` CLI shell bridge — decided with the adapter seam. (TDD §14.) *(Decided **yes** — spec 009 FR-009: `exports` map ships `./speckit`.)*
 
 ## Exit Gate
 
-The 3×2 acceptance matrix passes **and the neutral-core invariant holds** (only adapter paths differ across stacks); init/migrate works on all three stacks with either design binding; the `021` CLI drives all stacks; README stack caveats removed; the API-surface decision is recorded.
+**Met on the delivered scope (2026-07-19):** the neutral-core invariant holds (only Layer-2 adapter paths differ across the three stacks, proven for the `{none}` design row); init/migrate works on all three stacks; the `021` CLI drives all stacks; README stack caveats removed; the API-surface decision is recorded. The original gate additionally required the full 3×2 (stacks × {none, material-3}) matrix and the AI-led interactive walkthrough — both **descoped to the backlog** (04-BACKLOG.md) rather than held as blockers, since the underlying material-3 binding mechanism now exists independently (`021-design`, mvp-5) and can be re-scoped as its own Growth-release spec once the init-time wiring is prioritized.
 
 ## Delivered
 
@@ -42,13 +42,16 @@ The **three-layer neutral-core/adapter model** (r9 / repo-refactor §3) is reali
 
 **Proven guarantees:** the neutral-core invariant is an automated cross-stack test for all three stacks (only Layer-2 differs); `claude` byte-identical held through 006–008 and was intentionally, reviewably re-baselined at 009; `github-speckit` behavior unchanged by the engine dispatch; zero runtime dependencies throughout; 88 tests green.
 
-### Remaining before the Exit Gate (release **not** yet closed)
+### Descoped to the backlog (release closed 2026-07-19)
 
-- **AI-led init walkthrough** (interactive interview over the engine).
-- **Design-system adapter** — `DESIGN.md` token-mapping + `material-3` binding — and with it the `--design` flag/`tools.design` wiring and the `{material-3}` column of the 3×2 acceptance matrix.
+Rather than continue blocking the release, the two remaining items were moved to [04-BACKLOG.md](../04-BACKLOG.md)'s "Descoped from mvp-4" group for future re-proposal as Growth-release specs:
+
+- **AI-led init walkthrough** (interactive interview over the engine) — undelivered; the engine + flags it needs are stable.
+- **Design-system adapter — init-time `material-3` auto-binding** — the binding mechanism itself was **not actually missing at close**: it shipped independently as `021-design` (spec 011, mvp-5), which any project can already run post-init to adopt `material-3`. What's descoped is narrower than originally scoped — only wiring `--design material-3` to invoke that mechanism automatically during `init`/`--upgrade`, and the `{material-3}` acceptance-matrix column that depends on it.
 
 ## Changelog
-- **2026-07-18 (adapter cut delivered):** Specs 006–009 all `Done`; the stack-adapter three-layer model is live across `claude`/`antigravity`/`kiro`, plus the `021` CLI, README caveat removal, and the programmatic-API decision (`exports`). Release stays **In Progress** — the AI-led walkthrough + design-system/`material-3` adapter remain before the Exit Gate. Delivered on branch `mvp-4-stack-adapters` (commits `f830df3`/`9b991bb`/`039d2df`/`41d5d6c`).
+- **2026-07-19 (release closed):** mvp-4 marked **Delivered** on the adapter-cut scope. The AI-led walkthrough and init-time material-3 auto-binding descoped to `04-BACKLOG.md` rather than held as blockers — the material-3 binding mechanism had, in the interim, shipped anyway via `021-design` (mvp-5, spec 011), narrowing the real gap to init-time wiring only. Exit Gate and Scope re-worded to match the delivered state.
+- **2026-07-18 (adapter cut delivered):** Specs 006–009 all `Done`; the stack-adapter three-layer model is live across `claude`/`antigravity`/`kiro`, plus the `021` CLI, README caveat removal, and the programmatic-API decision (`exports`). Delivered on branch `mvp-4-stack-adapters` (commits `f830df3`/`9b991bb`/`039d2df`/`41d5d6c`).
 - **2026-07-16 (r9):** Scope organized into the three-layer model + an explicit spec cut — **006** source layer/stack-parameterized renderer, **007** Antigravity adapter, **008** Kiro adapter + engine dispatch, **009** the `021` CLI (replaces the Makefile idea). Added the **neutral-core invariant** to the acceptance matrix + exit gate. Per [_refinement/r9-review.md](../_refinement/r9-review.md) (source: [_notes/repo-refactor.md](../_notes/repo-refactor.md)).
 - **2026-07-15 (r7):** Added the programmatic-API decision (expose `lib.js` via `exports`?), README stack-caveat removal, and fixture-harness reuse from mvp-3. Per [_refinement/r7-review.md](../_refinement/r7-review.md).
 - **2026-07-12 (r5):** New release — absorbs the r4 mvp-3 "Stacks & Design Adapters" group + the AI-led walkthrough, sequenced after the Init v2 engine (mvp-3).

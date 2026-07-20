@@ -46,9 +46,13 @@ const dirsToCopy = [
   'workflow',
 ];
 
-/** Guiding files to sync (starting-point templates) */
+/**
+ * Guiding files to sync (starting-point templates).
+ * `README.md` is NOT here (spec 014): the shipped package/README.md is an
+ * install-focused file maintained independently from the contributor root
+ * README — it lives in preserveInPackage so sync never overwrites it.
+ */
 const filesToCopy = [
-  'README.md',
   'LICENSE',
   '.gitignore',
 ];
@@ -57,6 +61,7 @@ const filesToCopy = [
 const preserveInPackage = [
   'package.json',
   'node_modules',
+  'README.md', // install-focused shipped README, maintained separately (spec 014)
 ];
 
 /** Entries to skip when scanning the root */
@@ -75,6 +80,7 @@ const rootExclusions = new Set([
 const scriptExclusions = new Set([
   'sync-to-package.js',
   'check-links.js',
+  'prepublish-gate.js', // dev-only pre-publish gate (spec 014) — must not ship
 ]);
 
 /**

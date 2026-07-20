@@ -47,3 +47,18 @@ jobs:
 
       - name: Package sync drift check
         run: npm run sync:package -- --check
+
+  e2e:
+    # End-to-end (spec 013): install the packed package/ tarball into throwaway
+    # git repos across all three stacks × scaffold/migrate, and prove the gate
+    # with a real commit. Its own lane — kept out of the fast `npm test`.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: End-to-end install + gate suite
+        run: npm run test:e2e

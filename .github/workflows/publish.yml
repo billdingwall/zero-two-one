@@ -1,0 +1,45 @@
+name: Publish
+
+# Publishes zero-two-one to npm on a version tag (spec 014, TDD §14).
+#
+# Auth: npm trusted publishing (OIDC) — NO stored NPM_TOKEN. One-time setup by
+# the maintainer on npmjs.com: configure a trusted publisher for the
+# `zero-two-one` package pointing at this repo + this workflow. First publish:
+# either pre-configure the trusted publisher before the first tag, or seed the
+# package once locally via `npm run publish:package`, after which every tag
+# publishes through CI here.
+#
+# Release ritual: bump the version in root + package/ package.json, commit, then
+#   git tag vX.Y.Z && git push --tags
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+  id-token: write # provenance via trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      # No dependencies to install — zero runtime deps (TDD §3).
+
+      - name: Package sync drift check
+        run: npm run sync:package -- --check
+
+      - name: Pre-publish gate
+        run: npm run prepublish:check
+
+      - name: Publish with provenance
+        run: npm publish --provenance
+        working-directory: package
