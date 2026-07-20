@@ -23,7 +23,8 @@
     "test": "node --test $(find test -name '*.test.js' -not -path 'test/e2e/*') && node scripts/speckit/spec-status.js list && node scripts/workflow-status.js",
     "test:e2e": "node --test test/e2e/*.test.js",
     "sync:package": "node scripts/sync-to-package.js",
-    "publish:package": "npm run sync:package && cd package && npm publish"
+    "prepublish:check": "node scripts/prepublish-gate.js",
+    "publish:package": "npm run sync:package && npm run prepublish:check && cd package && npm publish"
   },
   "engines": {
     "node": ">=18"
